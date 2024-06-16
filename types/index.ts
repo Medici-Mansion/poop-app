@@ -113,3 +113,10 @@ export interface BreedData {
   data: BreedsGroupedByConsonant;
   error: AxiosError;
 }
+
+export interface SignInErrorType {
+  fieldErrors?: {
+    id?: string[];
+    password?: string[];
+  };
+}

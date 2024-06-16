@@ -1,14 +1,17 @@
 import { StatusBar } from "expo-status-bar";
-import { Redirect, router } from "expo-router";
-import { View, Text, Image, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Redirect } from "expo-router";
+import { useUserStore } from "@/store/user";
+
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const index = () => {
+  const { isLogin } = useUserStore();
+  if (!isLogin) return <Redirect href="/sign-in" />;
   return (
-    <View className="text-red-300 pt-20 px-10">
-      <Text className="text-rose-500">poop</Text>
-    </View>
+    <SafeAreaView className="bg-background h-full">
+      <StatusBar backgroundColor="#161622" style="light" />
+    </SafeAreaView>
   );
 };
 

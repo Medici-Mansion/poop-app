@@ -15,7 +15,7 @@ interface DateTimePickerProps {
 export default function CustomDateTimePicker(props: DateTimePickerProps) {
   const { children, date = '', onConfirm, isPending = false, ...rest } = props;
 
-  const [value, setValue] = useState<string>(date);
+  const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const showDatepicker = () => {
@@ -24,18 +24,21 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
   };
 
   const handleConfirm = () => {
-    if (value) onConfirm?.(value);
+    onConfirm?.(value);
     setShowDatePicker(false);
-  }
-  const handleDateChange = (newDate?: Date) => {
-    if (!newDate) return;
+  };
 
-    updateValue(newDate);
-  }
+  const handleDateChange = (event: any, newDate?: Date) => {
+    if (event.type === 'dismissed') {
+      setShowDatePicker(false);
+      return;
+    }
+    if (newDate) updateValue(newDate);
+  };
 
   const updateValue = (newDate: Date) => {
-    setValue(dayjs(newDate).format('YYYY-MM-DD'))
-  }
+    setValue(dayjs(newDate).format('YYYY-MM-DD'));
+  };
 
   return (
     <View className="flex-1 justify-center items-center">
@@ -55,13 +58,13 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
               value={value ? new Date(value) : new Date()}
               locale="ko"
               mode="date"
-              display='spinner'
-              onChange={(_, newDate) => handleDateChange(newDate)}
+              display="spinner"
+              onChange={handleDateChange}
               {...rest}
             />
           </View>
         )}
-    </Portal>
+      </Portal>
     </View>
   );
 }

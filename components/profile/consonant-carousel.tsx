@@ -10,6 +10,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+// TODO: 컴포넌트명 수정하기
 interface ConsonantCarouselProps {
   animationValue: SharedValue<number>;
   label: string;

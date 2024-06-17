@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Controller } from "react-hook-form";
-import FormField from "./form-field";
+import FormField from "@/components/form-field";
 
 interface FormControllerProps {
   control: any;

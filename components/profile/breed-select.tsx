@@ -1,43 +1,48 @@
-import { StyleSheet, ScrollView } from 'react-native';
-import React, { useMemo, useRef, useState } from 'react';;
-import { Input } from '@/components/ui/input';
-import { Dimensions } from 'react-native';
-import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
-import dayjs from 'dayjs';
-import DatePicker from 'react-native-date-picker';
-import useDebounce from '@/hooks/use-debounce';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, ScrollView, Dimensions, Pressable, Text } from 'react-native';
+import { Portal } from 'react-native-portalize';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import Carousel, { ICarouselInstance } from 'react-native-reanimated-carousel';
+
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
+import useGetBreeds from '@/hooks/use-get-breeds';
+import useDebounce from '@/hooks/use-debounce';
+import { consonantsList } from '@/constants';
+
+// TODO: 재사용 input 컴포넌트 연결하면서 수정
+// import { Input } from '@/components/ui/input';
+import CarouselWrapper from '@/components/carousel-wrapper';
+import ConsonantCarousel from '@/components/profile/consonant-carousel';
+import BreedListView from '@/components/profile/breed-list-view';
 
 const PAGE_WIDTH = 35;
 const PAGE_HEIGHT = 50;
 
-export default function breedSelect() {
+interface BreedSelectProps {
+  children: React.ReactElement;
+}
+
+export default function breedSelect(props: BreedSelectProps) {
+  const { children } = props;
+  const carouselRef = useRef<ICarouselInstance>(null);
 
   const { hideBottomSheet, ref, showBottomSheet, snapPoints } =
     useBottomSheet("50%");
 
   const width = Dimensions.get('window').width;
-  const [picker, setPicker] = useState(false);
+
+  const [value, setValue] = useState({});
   const [isBreedsVisible, setIsBreedsVisible] = useState(false);
   const [searchKey, setSearchKey] = useState('');
   const [searchInput, setSearchInput] = useState('');
   const searchValue = useDebounce(searchInput, 500);
 
-  const genders = useMemo(
-    () => [
-      { label: '암컷', value: 'FEMALE' },
-      { label: '수컷', value: 'MALE' },
-      { label: '선택안함', value: 'NONE' },
-    ],
-    [],
-  );
-  const { data: breeds } = useGetBreedds(searchKey, searchValue);
+  const { data: breeds } = useGetBreeds(searchKey, searchValue);
 
   return (
     <>
-    <Input
-      disabled={isPending}
+    {/* <Input
+      disabled={false}
       onOuterPressIn={() => {
         setIsBreedsVisible(true);
         showBottomSheet();
@@ -51,12 +56,21 @@ export default function breedSelect() {
       placeholderTextColor={'#5D5D5D'}
       editable={false}
       value={value.name || ''}
-    />
+    /> */}
+    <Pressable>
+      <Text
+        onPress={() => {
+          setIsBreedsVisible(true);
+          showBottomSheet();
+        }}
+        className="text-white text-[12px] border border-[#1C1C1C] px-5 py-3 rounded-2xl bg-[#1C1C1C]">
+        {value.name || '견종 선택'}
+      </Text>
+    </Pressable>
     <Portal>
       {isBreedsVisible && (
         <BottomSheet
           ref={ref}
-          // index={}
           detached
           snapPoints={snapPoints}
           enablePanDownToClose={true}
@@ -66,43 +80,33 @@ export default function breedSelect() {
           }}>
           <BottomSheetView style={{ flex: 1 }}>
             <ScrollView className="py-4">
-              <Input
+              {/* <Input
                 className="text-white border border-[#1C1C1C] px-5 py-3 rounded-2xl bg-[#1C1C1C] text-[12px]"
                 placeholder="검색어를 입력하세요"
                 placeholderTextColor={'#5D5D5D'}
                 onChangeText={text => setSearchInput(text)}
-              />
-              <Carousel
-                ref={r}
-                loop={false}
-                style={{
-                  width: width,
-                  height: PAGE_HEIGHT,
-                  alignItems: 'center',
-                  borderBottomWidth: 1,
-                  borderBottomColor: '#1C1C1C',
-                }}
-                data={consonantsList}
-                width={PAGE_WIDTH}
-                height={PAGE_HEIGHT}
-                renderItem={({ item, animationValue }) => {
-                  return (
-                    <ConsonantCarousel
-                      animationValue={animationValue}
-                      label={item.value}
-                      onPress={() => {
-                        r.current?.scrollTo({
+              /> */}
+              <Text>
+                검색어를 입력하세요
+              </Text>
+              <CarouselWrapper data={consonantsList}>
+                {/* TODO: ConsonantCarousel에 props를 바로 넘길 수 있게 수정하기 */}
+                {({ item, animationValue, carouselRef }) => (
+                  <ConsonantCarousel
+                    animationValue={animationValue}
+                    label={item.value}
+                    onPress={() => {
+                      carouselRef.current?.scrollTo({
                           count: animationValue.value,
                           animated: true,
                         });
-                        setSearchKey(item.value);
-                      }}
-                    />
-                  );
-                }}
-              />
+                      setSearchKey(item.value);
+                    }}
+                  />
+                )}
+              </CarouselWrapper>
             </ScrollView>
-            <SearchBreeds
+            <BreedListView
               breeds={breeds || {}}
               hideBottomSheet={hideBottomSheet}
               onSelect={setValue}

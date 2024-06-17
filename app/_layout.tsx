@@ -5,6 +5,7 @@ import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
 import QueryProvider from "@/providers/query-provider";
 import { Host } from 'react-native-portalize';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,13 +26,15 @@ export default function RootLayout() {
 
   return (
     <QueryProvider>
-      <Host>
-        <Stack>
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="profile" options={{ headerShown: false }} />
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-        </Stack>
-      </Host>
+      <GestureHandlerRootView>
+        <Host>
+          <Stack>
+              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+              <Stack.Screen name="profile" options={{ headerShown: false }} />
+              <Stack.Screen name="index" options={{ headerShown: false }} />
+          </Stack>
+        </Host>
+      </GestureHandlerRootView>
     </QueryProvider>
   );
 }

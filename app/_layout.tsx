@@ -4,6 +4,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
 import QueryProvider from "@/providers/query-provider";
+import { Host } from 'react-native-portalize';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -24,10 +25,13 @@ export default function RootLayout() {
 
   return (
     <QueryProvider>
-      <Stack>
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-      </Stack>
+      <Host>
+        <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="profile" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+        </Stack>
+      </Host>
     </QueryProvider>
   );
 }

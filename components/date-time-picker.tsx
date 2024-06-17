@@ -26,7 +26,6 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
   const handleConfirm = () => {
     if (value) onConfirm?.(value);
     setShowDatePicker(false);
-    alert(value);
   }
   const handleDateChange = (newDate?: Date) => {
     if (!newDate) return;

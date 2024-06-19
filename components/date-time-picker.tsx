@@ -9,19 +9,24 @@ interface DateTimePickerProps {
   isPending?: boolean;
   date?: string;
   onConfirm?: (date: string) => void;
+  onPickerToggle?: (show: boolean) => void;
   children: React.ReactElement;
 }
 
 export default function CustomDateTimePicker(props: DateTimePickerProps) {
-  const { children, date = '', onConfirm, isPending = false, ...rest } = props;
+  const { children, date = '', onConfirm, onPickerToggle, isPending = false, ...rest } = props;
 
   const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const showDatepicker = () => {
-    setShowDatePicker(true);
-    if (date) updateValue(new Date(date));
-  };
+
+  React.useEffect(() => {
+    setValue(date || dayjs().format('YYYY-MM-DD'));
+  }, [date]);
+
+  React.useEffect(() => {
+    onPickerToggle?.(showDatePicker);
+  }, [showDatePicker]);
 
   const handleConfirm = () => {
     onConfirm?.(value);
@@ -40,10 +45,15 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
     setValue(dayjs(newDate).format('YYYY-MM-DD'));
   };
 
+  const handlePress = () => {
+    setShowDatePicker(true);
+    if (date) updateValue(new Date(date));
+  }
+
   return (
     <View className="flex-1 justify-center items-center">
       <Pressable>
-        {children && React.cloneElement(children, { onPress: showDatepicker })}
+        {children && React.cloneElement(children, { onPress: handlePress })}
       </Pressable>
       <Portal>
         {showDatePicker && (

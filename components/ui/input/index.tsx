@@ -1,5 +1,4 @@
-import { mergeRefs } from '@/lib/utils';
-import { cn } from '@/lib/utils';
+import { mergeRefs, cn } from '@/lib/utils';
 import { theme } from '@/theme';
 import { RefObject, forwardRef, useRef } from 'react';
 import {

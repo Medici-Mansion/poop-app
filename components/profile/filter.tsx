@@ -25,8 +25,6 @@ export default function Filter({
   onChangeText = () => {},
   ...rest
 }: FormField) {
-  const [isFocused, setIsFocused] = React.useState(false);
-
   return (
     <View className="w-full py-1.5 space-y-2">
       {label && <Text className="text-gray-200 b-12 text-14 font-bold mb-2">{label}</Text>}
@@ -35,8 +33,6 @@ export default function Filter({
           value={value}
           onChangeText={onChangeText}
           className="text-white w-full"
-          style={{ borderColor: isFocused ? theme.colors.gray[300] : theme.colors.gray[500]  }}
-          onFocus={() => setIsFocused(true)}
           placeholderTextColor={theme.colors.gray[300]}
           editable={false}
           {...rest}

@@ -3,12 +3,11 @@ import React from 'react';
 
 import { router } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
-// import ImagePicker from '@/components/profile/image-picker';
 import DateTimePicker from '@/components/date-time-picker';
 import Input from '@/components/profile/input';
-import Filter from '@/components/profile/filter';
 import RadioGroup from '@/components/profile/radio-group';
 import GalleryButton from '@/components/profile/gallery-button';
+import BreedSelect from '@/components/profile/breed-select';
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -46,10 +45,8 @@ export default function CreateProfile() {
     <SafeAreaView className="w-full h-full bg-gray-600">
         <View className="px-4 flex flex-col py-10 items-center w-full h-full">
           <GalleryButton onPress={() => router.push('select-photo')} /> 
-            {/* <ImagePicker /> */}
             {/* TODO: 반려견 이름 글자수 제한 */}
             <Input label='반려견 이름' placeholder='이름' onChangeText={setName} value={name} /> 
-            {/* TODO: DateTimePicker 클릭 후 반려견 이름 focus시 DatePicker가 유지되는 이슈 */}
             <Input 
               ref={birthRef} 
               label='반려견 생년월일'
@@ -59,8 +56,7 @@ export default function CreateProfile() {
               onChangeText={handleBirthChange} 
               onPress={() => timePicker.current?.show()}
               />
-            <Filter label='견종' placeholder='견종 선택' />
-            
+            <BreedSelect />
             <View className="w-full mt-6">
               <Text className="text-gray-200 b-12 text-14 font-bold mb-4">성별</Text>
               <RadioGroup options={gender} selectedOption={selectedGender} onSelect={setSelectedGender} />

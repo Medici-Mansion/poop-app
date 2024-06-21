@@ -1,6 +1,5 @@
 import React, { useEffect, useCallback, useState } from 'react';
-import { View, Pressable, FlatList } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { View, FlatList } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { router } from 'expo-router';
 import { Platform } from 'react-native';
@@ -94,11 +93,6 @@ const SelectPhoto = () => {
 
   return (
     <View className='flex-1 bg-black h-full'>
-      <View className='flex-1 flex-row justify-between items-center p-3'>
-        <Pressable onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={25} color="white" />
-        </Pressable>
-      </View>
       <View style={{ flex: COLUMN * COLUMN }}>
         <FlatList
           data={photos}

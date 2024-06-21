@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-// import Header from "@/components/profile/Header";
+import Header from "@/components/select-photo/Header";
 
 const SelectPhotoLayout = () => {
   return (
@@ -10,9 +10,8 @@ const SelectPhotoLayout = () => {
         <Stack.Screen name="index" 
           options={{
             title: "",
-            // headerLeft: () => <Header.LeftButton />,
-            // headerRight: () => <Header.RightButton />,
-            // headerStyle: { backgroundColor: "#161622" },
+            headerLeft: () => <Header />,
+            headerStyle: { backgroundColor: "#161622" },
           }}
         />
       </Stack>

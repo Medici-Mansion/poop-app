@@ -1,6 +1,7 @@
-import { TouchableWithoutFeedback, Keyboard, Text, View } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, Text, View, Pressable } from 'react-native';
 import React from 'react';
 
+import { router } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 // import ImagePicker from '@/components/profile/image-picker';
 import DateTimePicker from '@/components/date-time-picker';
@@ -8,6 +9,9 @@ import Input from '@/components/profile/input';
 import Filter from '@/components/profile/filter';
 import RadioGroup from '@/components/profile/radio-group';
 import GalleryButton from '@/components/profile/gallery-button';
+
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 
 // TODO: 분리
 const gender = [
@@ -18,6 +22,7 @@ const gender = [
 
 export default function CreateProfile() {
   const birthRef = React.useRef(null);
+  const timePicker = React.useRef(null);
   const [name, setName] = React.useState('');
   const [date, setDate] = React.useState('');
   const [selectedGender, setSelectedGender] = React.useState('FEMALE');
@@ -37,16 +42,23 @@ export default function CreateProfile() {
   // Keyboard.dismiss
   return (
   <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+  <GestureHandlerRootView>
     <SafeAreaView className="w-full h-full bg-gray-600">
         <View className="px-4 flex flex-col py-10 items-center w-full h-full">
-            <GalleryButton />
+          <GalleryButton onPress={() => router.push('select-photo')} /> 
             {/* <ImagePicker /> */}
             {/* TODO: 반려견 이름 글자수 제한 */}
             <Input label='반려견 이름' placeholder='이름' onChangeText={setName} value={name} /> 
             {/* TODO: DateTimePicker 클릭 후 반려견 이름 focus시 DatePicker가 유지되는 이슈 */}
-            <DateTimePicker date={date} onConfirm={handleBirthChange} onPickerToggle={handlePickerToggle}>
-              <Input ref={birthRef} label='반려견 생년월일' placeholder='생년월일' editable={false} value={date} onChangeText={handleBirthChange} />
-            </DateTimePicker>
+            <Input 
+              ref={birthRef} 
+              label='반려견 생년월일'
+              placeholder='생년월일' 
+              editable={false} 
+              value={date} 
+              onChangeText={handleBirthChange} 
+              onPress={() => timePicker.current?.show()}
+              />
             <Filter label='견종' placeholder='견종 선택' />
             
             <View className="w-full mt-6">
@@ -54,7 +66,9 @@ export default function CreateProfile() {
               <RadioGroup options={gender} selectedOption={selectedGender} onSelect={setSelectedGender} />
             </View>
         </View>
+      <DateTimePicker dateTimeRef={timePicker} date={date} onConfirm={handleBirthChange} onPickerToggle={handlePickerToggle} />
     </SafeAreaView>
+  </GestureHandlerRootView>
   </TouchableWithoutFeedback>
   );
 }

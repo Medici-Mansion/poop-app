@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Pressable, Text } from 'react-native';
-import { Portal } from 'react-native-portalize';
+import React, { useImperativeHandle, useState, useCallback } from 'react';
+import { StyleSheet, Pressable, Text } from 'react-native';
+import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import { useBottomSheet } from "@/hooks/use-bottom-sheet";
 
 import dayjs from 'dayjs';
 
@@ -10,32 +11,39 @@ interface DateTimePickerProps {
   date?: string;
   onConfirm?: (date: string) => void;
   onPickerToggle?: (show: boolean) => void;
-  children: React.ReactElement;
+  dateTimeRef?: React.Ref<any>;
 }
 
+const renderHandle = ({ isPending, handleConfirm }: { isPending: boolean, handleConfirm: () => void }) => {
+  return (
+    <Pressable
+      disabled={isPending}
+      onPress={handleConfirm}>
+      <Text className="bg-white text-black text-center py-3 font-bold">확인</Text>
+    </Pressable>
+  );
+}
+
+
 export default function CustomDateTimePicker(props: DateTimePickerProps) {
-  const { children, date = '', onConfirm, onPickerToggle, isPending = false, ...rest } = props;
+  const { date = '', dateTimeRef, onConfirm, onPickerToggle, isPending = false, ...rest } = props;
 
   const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
+  const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet("43%");
 
   React.useEffect(() => {
     setValue(date || dayjs().format('YYYY-MM-DD'));
   }, [date]);
 
-  React.useEffect(() => {
-    onPickerToggle?.(showDatePicker);
-  }, [showDatePicker]);
-
   const handleConfirm = () => {
     onConfirm?.(value);
-    setShowDatePicker(false);
+    hideBottomSheet();
   };
 
   const handleDateChange = (event: any, newDate?: Date) => {
     if (event.type === 'dismissed') {
-      setShowDatePicker(false);
+      hideBottomSheet();
       return;
     }
     if (newDate) updateValue(newDate);
@@ -45,41 +53,58 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
     setValue(dayjs(newDate).format('YYYY-MM-DD'));
   };
 
-  const handlePress = () => {
-    setShowDatePicker(true);
-    if (date) updateValue(new Date(date));
-  }
+  useImperativeHandle(dateTimeRef, () => (
+    {
+      show: showBottomSheet,
+      hide: hideBottomSheet,
+    }
+  ));
+
+  const renderBackdrop = useCallback(
+  (props: any) =>
+  <BottomSheetBackdrop 
+    {...props} 
+    disappearsOnIndex={-1}
+    appearsOnIndex={0}
+    opacity={0}
+    onPress={hideBottomSheet}
+  />,
+  []
+);
 
   return (
-    <View className="flex-1 justify-center items-center">
-      <Pressable>
-        {children && React.cloneElement(children, { onPress: handlePress })}
-      </Pressable>
-      <Portal>
-        {showDatePicker && (
-          <View className="absolute bottom-0 w-screen">
-            <Pressable
-              disabled={isPending}
-              onPress={handleConfirm}>
-              <Text className="bg-white text-black text-center py-3">확인</Text>
-            </Pressable>
-            <RNDateTimePicker
-              style={styles.dateTimePicker}
-              value={value ? new Date(value) : new Date()}
-              locale="ko"
-              mode="date"
-              display="spinner"
-              onChange={handleDateChange}
-              {...rest}
-            />
-          </View>
-        )}
-      </Portal>
-    </View>
+    <BottomSheetModalProvider>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        snapPoints={snapPoints}
+        enablePanDownToClose={true}
+        handleComponent={() => renderHandle({ isPending, handleConfirm })}
+        backdropComponent={renderBackdrop}
+      >
+        <BottomSheetView>
+          <RNDateTimePicker
+            style={styles.dateTimePicker}
+            value={value ? new Date(value) : new Date()}
+            locale="ko"
+            mode="date"
+            display="spinner"
+            onChange={handleDateChange}
+            {...rest}
+          />
+        </BottomSheetView>
+      </BottomSheet>
+    </BottomSheetModalProvider>
   );
 }
 
 const styles = StyleSheet.create({
+    container: {
+    flex: 1,
+    padding: 24,
+    justifyContent: 'center',
+    backgroundColor: 'grey',
+  },
     dateTimePicker: {
       backgroundColor: 'rgb(229 231 235)', // bg-gray-200
       width: '100%',

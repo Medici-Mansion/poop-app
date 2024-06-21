@@ -5,13 +5,17 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 interface GalleryButtonProps {
   image?: string;
+  onPress?: () => void;
 }
 
 
 export default function GalleryButton(props: GalleryButtonProps) {
-  const { image = '' } = props;
+  const { image = '', onPress } = props;
   return (
-    <Pressable className="flex items-center justify-center w-20 h-20 bg-gray-500 rounded-full">
+    <Pressable 
+      onPress={onPress}
+      className="flex items-center justify-center w-20 h-20 bg-gray-500 rounded-full"
+    >
       {image ? (
         <Image
           source={{ uri: image }}

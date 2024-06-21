@@ -1,5 +1,3 @@
-// app/profile/_layout.tsx
-
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -14,9 +12,10 @@ const ProfileLayout = () => {
             title: "",
             headerLeft: () => <Header.LeftButton />,
             headerRight: () => <Header.RightButton />,
-            headerStyle: { backgroundColor: "dark" },
+            headerStyle: { backgroundColor: "#161622" },
           }} 
         />
+        {/* bg-gray-600 */}
       </Stack>
 
       <StatusBar backgroundColor="#161622" style="dark" />

@@ -31,7 +31,10 @@ const SelectPhotoScreen = () => {
 
   const handleEditComplete = (result) => {
     setPhoto(result);
-    profileStore.setAvatar(result.uri);
+    profileStore.setAvatar({
+      uri: result.uri,
+      filename: result.uri.split('/').pop(),
+    });
     setTimeout(() => {
       router.back(); 
       // TODO: 라이브러리 이슈로 300ms 후에 뒤로가기

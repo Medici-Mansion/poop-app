@@ -9,8 +9,8 @@ const PAGE_HEIGHT = 50;
 type CarouselRefType = ICarouselInstance | null;
 
 type ChildrenProps<T> = {
-  item: T; 
-  animationValue: SharedValue<number>; 
+  item: T;
+  animationValue: SharedValue<number>;
   carouselRef: React.MutableRefObject<CarouselRefType>;
 };
 
@@ -19,10 +19,10 @@ interface CarouselWrapperProps<T> {
   children: (props: ChildrenProps<T>) => React.ReactElement;
 }
 
-/** 
+/**
  * CarouselWrapper
  * 아이템(children)을 캐러셀로 변경하는 Wrapper
- * */ 
+ * */
 export default function CarouselWrapper<T>(props: CarouselWrapperProps<T>) {
   const { children, data = [], ...rest } = props;
   const carouselRef = useRef<CarouselRefType>(null);

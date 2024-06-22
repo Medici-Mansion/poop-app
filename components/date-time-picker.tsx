@@ -18,6 +18,7 @@ const renderHandle = ({ isPending, handleConfirm }: { isPending: boolean, handle
   return (
     <Pressable
       disabled={isPending}
+      className='h-12 bg-white w-full items-center justify-center'
       onPress={handleConfirm}>
       <Text className="bg-white text-black text-center py-3 font-bold">확인</Text>
     </Pressable>
@@ -30,7 +31,7 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
 
   const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
 
-  const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet("43%");
+  const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet("50%");
 
   React.useEffect(() => {
     setValue(date || dayjs().format('YYYY-MM-DD'));
@@ -89,6 +90,7 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
             locale="ko"
             mode="date"
             display="spinner"
+            themeVariant="light"
             onChange={handleDateChange}
             {...rest}
           />
@@ -107,6 +109,7 @@ const styles = StyleSheet.create({
   },
     dateTimePicker: {
       backgroundColor: 'rgb(229 231 235)', // bg-gray-200
+      height: 350,
       width: '100%',
   },
 });

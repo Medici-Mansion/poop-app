@@ -9,7 +9,7 @@ import { gender } from '@/constants';
 
 import { Input } from '@/components/ui/input';
 import RadioGroup from '@/components/profile/create/radio-group';
-import GalleryButton from '@/components/profile/gallery-button';
+import GalleryButton from '@/components/profile/create/gallery-button';
 import DateTimePicker from '@/components/profile/create/date-time-picker';
 import BreedSelectSheet from '@/components/profile/create/breed-select-sheet';
 

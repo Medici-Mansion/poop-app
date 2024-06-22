@@ -9,7 +9,7 @@ import { useBottomSheet } from "@/hooks/use-bottom-sheet";
 
 import { Input } from '@/components/ui/input';
 import { MaterialIcons } from '@expo/vector-icons';
-import BreedListView from '@/components/profile/breed-list-view';
+import BreedListView from '@/components/profile/create/breed-list-view';
 import ConsonantCarousel from '@/components/profile/create/consonant-carousel';
 
 import type { Breed } from '@/types';
@@ -42,6 +42,11 @@ export default function breedSelectSheet(props: BreedSelectProps) {
     },
   }));
 
+  const handleBreedSelect = (breed: Breed) => {
+    onSelect(breed);
+    hideBottomSheet();
+  }
+
   return (
   <Portal>
     {isBreedsVisible && (
@@ -71,7 +76,7 @@ export default function breedSelectSheet(props: BreedSelectProps) {
           <BreedListView
             breeds={breeds || {}}
             hideBottomSheet={hideBottomSheet}
-            onSelect={onSelect}
+            onSelect={handleBreedSelect}
           />
         </BottomSheetView>
       </BottomSheet>

@@ -70,6 +70,16 @@ export default function CreateProfile() {
                 onSelect={profileStore.setGender}
               />
             </View>
+
+            <View className="w-full mt-6">
+              <Input
+                label='반려견 생년월일'
+                placeholder='생년월일'
+                editable={false}
+                value={profileStore.profile.birthday}
+                onPress={() => timePicker.current?.show()}
+                />
+            </View>
           </View>
         </ScrollView>
         <DateTimeSheet ref={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
@@ -78,4 +88,3 @@ export default function CreateProfile() {
     </GestureHandlerRootView>
   );
 }
-

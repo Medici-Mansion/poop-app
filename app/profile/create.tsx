@@ -5,11 +5,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { gender } from '@/constants';
-import { selectImage } from '@/utils/image'; // 변경
 
-import DateTimePicker from '@/components/date-time-picker';
-import Input from '@/components/profile/input'; // 변경
-import RadioGroup from '@/components/profile/radio-group';
+import { Input } from '@/components/ui/input';
+
+import DateTimePicker from '@/components/profile/create/date-time-picker';
+import RadioGroup from '@/components/profile/create/radio-group';
 import BreedSelect from '@/components/profile/breed-select';
 import GalleryButton from '@/components/profile/gallery-button';
 
@@ -36,10 +36,12 @@ export default function CreateProfile() {
   <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <GestureHandlerRootView>
       <SafeAreaView className="w-full h-full bg-gray-600">
-          <View className="px-4 flex flex-col py-10 items-center w-full h-full">
+          <View className="px-4 flex flex-col py-10 items-center w-full h-ful">
             <GalleryButton onPress={() => router.push('select-photo')} /> 
-              {/* TODO: 반려견 이름 글자수 제한 */}
+            <View className="w-full mt-6">
               <Input label='반려견 이름' placeholder='이름' onChangeText={setName} value={name} /> 
+            </View>
+            <View className="w-full mt-6">
               <Input 
                 ref={birthRef} 
                 label='반려견 생년월일'
@@ -49,11 +51,12 @@ export default function CreateProfile() {
                 onChangeText={handleBirthChange} 
                 onPress={() => timePicker.current?.show()}
                 />
-              <BreedSelect />
-              <View className="w-full mt-6">
-                <Text className="text-gray-200 b-12 text-14 font-bold mb-4">성별</Text>
-                <RadioGroup options={gender} selectedOption={selectedGender} onSelect={setSelectedGender} />
-              </View>
+            </View>
+            <BreedSelect />
+            <View className="w-full mt-6">
+              <Text className="text-gray-200 b-12 text-14 font-bold mb-4">성별</Text>
+              <RadioGroup options={gender} selectedOption={selectedGender} onSelect={setSelectedGender} />
+            </View>
           </View>
         <DateTimePicker dateTimeRef={timePicker} date={date} onConfirm={handleBirthChange} onPickerToggle={handlePickerToggle} />
       </SafeAreaView>

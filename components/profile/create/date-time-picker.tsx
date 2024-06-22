@@ -1,10 +1,11 @@
-import React, { useImperativeHandle, useState, useCallback } from 'react';
+import dayjs from 'dayjs';
+import React, { useImperativeHandle, useState } from 'react';
 import { StyleSheet, Pressable, Text } from 'react-native';
-import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+
+import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
 
-import dayjs from 'dayjs';
 
 interface DateTimePickerProps {
   isPending?: boolean;
@@ -14,7 +15,13 @@ interface DateTimePickerProps {
   dateTimeRef?: React.Ref<any>;
 }
 
-const renderHandle = ({ isPending, handleConfirm }: { isPending: boolean, handleConfirm: () => void }) => {
+interface HandleProps {
+  isPending: boolean;
+  handleConfirm: () => void;
+}
+
+const renderHandle = (props: HandleProps) => {
+  const { isPending, handleConfirm } = props;
   return (
     <Pressable
       disabled={isPending}
@@ -25,12 +32,22 @@ const renderHandle = ({ isPending, handleConfirm }: { isPending: boolean, handle
   );
 }
 
+const renderBackdrop = ((props: any) => {
+  const { onPress, ...rest } = props;
+    return (
+      <BottomSheetBackdrop 
+      disappearsOnIndex={-1}
+      appearsOnIndex={0}
+      opacity={0}
+      onPress={onPress}
+      {...rest} 
+      />
+    )
+  });
 
 export default function CustomDateTimePicker(props: DateTimePickerProps) {
   const { date = '', dateTimeRef, onConfirm, onPickerToggle, isPending = false, ...rest } = props;
-
   const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
-
   const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet("50%");
 
   React.useEffect(() => {
@@ -55,23 +72,8 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
   };
 
   useImperativeHandle(dateTimeRef, () => (
-    {
-      show: showBottomSheet,
-      hide: hideBottomSheet,
-    }
+    { show: showBottomSheet, hide: hideBottomSheet }
   ));
-
-  const renderBackdrop = useCallback(
-  (props: any) =>
-  <BottomSheetBackdrop 
-    {...props} 
-    disappearsOnIndex={-1}
-    appearsOnIndex={0}
-    opacity={0}
-    onPress={hideBottomSheet}
-  />,
-  []
-);
 
   return (
     <BottomSheetModalProvider>
@@ -81,7 +83,7 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
         snapPoints={snapPoints}
         enablePanDownToClose={true}
         handleComponent={() => renderHandle({ isPending, handleConfirm })}
-        backdropComponent={renderBackdrop}
+        backdropComponent={(props) => renderBackdrop({ ...props, onPress: hideBottomSheet })}
       >
         <BottomSheetView>
           <RNDateTimePicker
@@ -101,15 +103,9 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-    flex: 1,
-    padding: 24,
-    justifyContent: 'center',
-    backgroundColor: 'grey',
-  },
-    dateTimePicker: {
-      backgroundColor: 'rgb(229 231 235)', // bg-gray-200
-      height: 350,
-      width: '100%',
-  },
+  dateTimePicker: {
+    backgroundColor: 'rgb(229 231 235)', // bg-gray-200
+    height: 350,
+    width: '100%',
+},
 });

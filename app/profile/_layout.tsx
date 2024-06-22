@@ -1,8 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import Header from "@/components/profile/Header";
-
+import Header from "@/components/profile/create/header";
 const ProfileLayout = () => {
   return (
     <>
@@ -15,9 +14,7 @@ const ProfileLayout = () => {
             headerStyle: { backgroundColor: "#161622" },
           }} 
         />
-        {/* bg-gray-600 */}
       </Stack>
-
       <StatusBar backgroundColor="#161622" style="dark" />
     </>
   );

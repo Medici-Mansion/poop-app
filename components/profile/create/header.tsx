@@ -3,7 +3,6 @@ import { Pressable, Text } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
-// TODO: 프로필 편집에 대응되도록 커스텀 열기
 const HeaderLeftButton = () => {
   const navigation = useNavigation();
 

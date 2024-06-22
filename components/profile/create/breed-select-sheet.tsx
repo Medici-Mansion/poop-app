@@ -75,7 +75,6 @@ export default function breedSelectSheet(props: BreedSelectProps) {
           </ScrollView>
           <BreedListView
             breeds={breeds || {}}
-            hideBottomSheet={hideBottomSheet}
             onSelect={handleBreedSelect}
           />
         </BottomSheetView>

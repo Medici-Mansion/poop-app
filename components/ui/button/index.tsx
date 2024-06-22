@@ -2,7 +2,7 @@ import React from 'react';
 import { Pressable, PressableProps, Text, View } from 'react-native';
 import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
 import { VariantProps, cva } from 'class-variance-authority';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils';
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const buttonVariatns = cva(

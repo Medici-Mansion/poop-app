@@ -1,6 +1,5 @@
-import { Pressable, Image } from 'react-native'
 import React from 'react'
-
+import { Pressable, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface GalleryButtonProps {
@@ -8,7 +7,10 @@ interface GalleryButtonProps {
   onPress?: () => void;
 }
 
-
+/**
+ * GalleryButton
+ * 프로필 사진 변경 버튼
+ **/ 
 export default function GalleryButton(props: GalleryButtonProps) {
   const { image = '', onPress } = props;
   return (

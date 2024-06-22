@@ -20,6 +20,10 @@ interface HandleProps {
   handleConfirm: () => void;
 }
 
+/** 
+ * renderHandle
+ * bottom의 핸들이자 확인 버튼
+ * */ 
 const renderHandle = (props: HandleProps) => {
   const { isPending, handleConfirm } = props;
   return (
@@ -32,6 +36,10 @@ const renderHandle = (props: HandleProps) => {
   );
 }
 
+/** 
+ * renderBackdrop
+ * bottom의 배경이자 bottom의 clickOutside를 위한 컴포넌트
+ * */ 
 const renderBackdrop = ((props: any) => {
   const { onPress, ...rest } = props;
     return (
@@ -43,8 +51,12 @@ const renderBackdrop = ((props: any) => {
       {...rest} 
       />
     )
-  });
+});
 
+/** 
+ * CustomDateTimePicker
+ * 날짜 선택을 위한 커스텀 DateTimePicker
+ * */ 
 export default function CustomDateTimePicker(props: DateTimePickerProps) {
   const { date = '', dateTimeRef, onConfirm, onPickerToggle, isPending = false, ...rest } = props;
   const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));

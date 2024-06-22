@@ -11,7 +11,11 @@ interface RadioButtonProps {
   label?: string;
 }
 
-const RadioButton = (props: RadioButtonProps) => {
+/** 
+ * RadioGroup
+ * press 애니메이션이 적용된 라디오 버튼 그룹
+ * */ 
+const RadioGroup = (props: RadioButtonProps) => {
   const { options = [], selectedOption = '', label = '', onSelect = () => {} } = props;
   return (
     <>
@@ -39,4 +43,4 @@ const RadioButton = (props: RadioButtonProps) => {
   );
 };
 
-export default RadioButton;
+export default RadioGroup;

@@ -18,6 +18,10 @@ interface BreedSelectProps {
   children: (props: ChildrenProps) => React.ReactElement;
 }
 
+/** 
+ * CarouselWrapper
+ * 아이템(children)을 캐러셀로 변경하는 Wrapper
+ * */ 
 export default function CarouselWrapper(props: BreedSelectProps) {
   const { children, data = [], ...rest } = props;
   const carouselRef = useRef<CarouselRefType>(null);

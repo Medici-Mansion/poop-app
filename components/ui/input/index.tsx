@@ -21,11 +21,12 @@ interface InputProps extends TextInputProps {
   error?: string;
   hint?: string;
   disabled?: boolean;
+  inputClass?: string
   onOuterPressIn?: (event: GestureResponderEvent) => void;
 }
 
 export const Input = forwardRef<TextInput, InputProps>(
-  ({ label, error, hint, disabled, onOuterPressIn, ...props }, ref) => {
+  ({ inputClass = '', label, error, hint, disabled, onOuterPressIn, ...props }, ref) => {
     const bgColor = error ? theme.colors.system.red : 'transparent';
     const animatedStyles = useAnimatedProps(() => {
       return {
@@ -48,14 +49,15 @@ export const Input = forwardRef<TextInput, InputProps>(
           <TextInput
             ref={mergeRefs(innerRef, ref)}
             placeholderTextColor={theme.colors.gray[300]}
-            {...props}
             autoCorrect={false}
             spellCheck={false}
             clearButtonMode="while-editing"
             className={cn(
-            'text-body-m14 text-white px-6 rounded-xl bg-gray-500',
-            Platform.OS === 'ios' && 'py-4',
-          )}
+              'text-body-m14 text-white px-6 rounded-xl bg-gray-500',
+              Platform.OS === 'ios' && 'py-4',
+              inputClass,
+            )}
+            {...props}
           />
         </Animated.View>
         {hint ? (

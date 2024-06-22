@@ -58,16 +58,16 @@ export default function breedSelectSheet(props: BreedSelectProps) {
         backgroundStyle={{ backgroundColor: '#121212' }}
         handleIndicatorStyle={{ backgroundColor: 'white' }}
       >
-        <BottomSheetView style={{ flex: 1 }}>
+        <BottomSheetView className="flex-1">
           <ScrollView className="py-4">
             <View className='relative px-3'>
               <Input
-                className='px-3'
+                inputClass='px-10'
                 placeholder="검색어를 입력하세요"
                 placeholderTextColor={'#5D5D5D'}
                 onChangeText={text => setSearchInput(text)}
               />
-              <View className='absolute top-3 left-5'>
+              <View className='absolute top-3 left-6'>
                 <MaterialIcons name="search" size={24} color="#5D5D5D" />
               </View>
             </View>

@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { View, FlatList } from 'react-native';
 import { router } from 'expo-router';
-import { useGallery } from '@/hooks/use-gallery';
+import React, { useState } from 'react';
+import { View, FlatList } from 'react-native';
 import { ImageEditor } from "expo-image-editor";
 
-import PhotoBox from '@/components/select-photo/PhotoBox';
+import { useGallery } from '@/hooks/use-gallery';
+import { useProfileStore } from '@/stores/profile';
+
+import PhotoBox from '@/components/select-photo/photo-box';
 import BottomLoader from '@/components/select-photo/bottom-loader';
 
 const COLUMN = 3;
 
-const SelectPhoto = () => {
+const SelectPhotoScreen = () => {
   const [editorVisible, setEditorVisible] = useState(false);
   const [photo, setPhoto] = useState(null);
+
+  const profileStore = useProfileStore();
   const { loadNextPagePictures, photos, hasNextPage, isLoading } = useGallery({
     pageSize: 20,
   });
@@ -27,12 +31,13 @@ const SelectPhoto = () => {
 
   const handleEditComplete = (result) => {
     setPhoto(result);
-    setEditorVisible(false);
-  }
-
-  // useEffect(() => {
-  //     if (!editorVisible) router.back();
-  //   }, [editorVisible]);
+    profileStore.setAvatar(result.uri);
+    setTimeout(() => {
+      router.back(); 
+      // TODO: 라이브러리 이슈로 300ms 후에 뒤로가기
+      // TODO: 라이브러리 대신 자체 구축 형태로 변경하기
+    }, 300);
+  };
 
   const renderItem = ({ item }) => (
     <PhotoBox item={item} onPress={handleSelectImage(item)} column={COLUMN} />
@@ -56,7 +61,7 @@ const SelectPhoto = () => {
       <ImageEditor
         visible={editorVisible}
         onCloseEditor={() => setEditorVisible(false)}
-        imageUri={photo?.uri}
+        imageUri={photo?.uri || ''}
         fixedCropAspectRatio={1 / 1}
         lockAspectRatio={true}
         mode="crop-only"
@@ -67,4 +72,4 @@ const SelectPhoto = () => {
   );
 };
 
-export default SelectPhoto;
+export default SelectPhotoScreen;

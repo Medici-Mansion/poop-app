@@ -1,5 +1,5 @@
 import React from 'react'
-import { Pressable, Image } from 'react-native'
+import { Pressable, Image, View } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons';
 
 interface GalleryButtonProps {
@@ -16,16 +16,18 @@ export default function GalleryButton(props: GalleryButtonProps) {
   return (
     <Pressable 
       onPress={onPress}
-      className="flex items-center justify-center w-20 h-20 bg-gray-500 rounded-full"
+      className="flex relative items-center justify-center w-20 h-20 bg-gray-500 rounded-full"
     >
-      {image ? (
+      {image && (
         <Image
           source={{ uri: image }}
           className="object-cover -z-10 w-20 h-20 rounded-full"
         />
       )
-      : <MaterialIcons name="insert-photo" size={24} color="white" />
     }
+    <View className='absolute'>
+      <MaterialIcons name="insert-photo" size={24} color="white" />
+    </View>
     </Pressable>
   )
 }

@@ -1,12 +1,15 @@
 import { Pressable, Image } from 'react-native';
 
-
 interface ImageBoxProps {
   item: any;
   column: number;
   onPress: (item: any) => void;
 }
 
+/** 
+ * PhotoBox
+ * 이미지 박스
+ * */ 
 const PhotoBox = (props: ImageBoxProps) => {
   const { item, onPress } = props;
   return (

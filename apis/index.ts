@@ -1,3 +1,6 @@
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import { Token, XCI } from "@/constants/index";
 import {
   BreedData,
@@ -10,8 +13,6 @@ import { Response } from "@/types/server";
 import { LoginSuccess } from "@/types/server/auth/login";
 import { GetMyProfiles } from "@/types/server/profile";
 import { GetMeResponse } from "@/types/server/user/me";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
 
 const PoopApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
@@ -20,6 +21,7 @@ const PoopApi = axios.create({
 // Common
 export const getBreeds = async () => {
   const { data } = await PoopApi.get<BreedData>("/v1/common/breeds");
+  console.log("data", data);
   return data;
 };
 

@@ -15,6 +15,7 @@ const useGetBreeds = (searchKey: string, searchInput: string) => {
     staleTime: Infinity,
     gcTime: Infinity,
     select: (breeds) => {
+      console.log("breeds", breeds);
       if (!breeds) return {};
 
       const filteredBreeds: BreedsGroupedByConsonant = {};

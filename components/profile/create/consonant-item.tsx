@@ -13,36 +13,29 @@ import Animated, {
 interface ConsonantCarouselProps {
   animationValue: SharedValue<number>;
   label: string;
+  selected: boolean;
   onPress?: () => void;
 }
 
-const ConsonantCarousel = (props: ConsonantCarouselProps) => {
+/** 
+ * ConsonantItem
+ * 자음 아이템
+ * 선택시 애니메이션 효과가 적용되는 컴포넌트
+ * */ 
+const ConsonantItem = (props: ConsonantCarouselProps) => {
   const { animationValue, label, onPress } = props;
 
   const translateY = useSharedValue(0);
 
   const containerStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(
-      animationValue.value,
-      [-1, 0, 1],
-      [0.5, 1, 0.5],
-      Extrapolation.CLAMP,
-    );
+    const opacity = interpolate(animationValue.value, [-1, 0, 1], [0.5, 1, 0.5], Extrapolation.CLAMP);
+
     return { opacity };
   }, [animationValue]);
 
   const labelStyle = useAnimatedStyle(() => {
-    const scale = interpolate(
-      animationValue.value,
-      [-1, 0, 1],
-      [1, 1.25, 1],
-      Extrapolation.CLAMP,
-    );
-    const color = interpolateColor(
-      animationValue.value,
-      [-1, 0, 1],
-      ['#959595', '#959595', 'white'],
-    );
+    const scale = interpolate(animationValue.value, [-1, 0, 1], [1, 1.25, 1], Extrapolation.CLAMP);
+    const color = interpolateColor(animationValue.value, [-1, 0, 1], ['#959595', '#959595', 'white']);
 
     return {
       transform: [{ scale }, { translateY: translateY.value }],
@@ -82,5 +75,4 @@ const style = StyleSheet.create({
   }
 });
 
-
-export default ConsonantCarousel;
+export default ConsonantItem;

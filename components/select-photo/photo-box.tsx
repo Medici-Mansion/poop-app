@@ -6,10 +6,10 @@ interface ImageBoxProps {
   onPress: (item: any) => void;
 }
 
-/** 
+/**
  * PhotoBox
  * 이미지 박스
- * */ 
+ * */
 const PhotoBox = (props: ImageBoxProps) => {
   const { item, onPress } = props;
   return (

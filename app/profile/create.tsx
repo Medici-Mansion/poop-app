@@ -93,6 +93,15 @@ export default function CreateProfile() {
                 <MaterialIcons name="keyboard-arrow-down" size={24} color='white' />
               </View>
             </View>
+
+            <View className="w-full mt-6">
+              <Text className="text-gray-200 b-12 text-14 font-bold mb-4">성별</Text>
+              <RadioGroup
+                options={gender}
+                selectedOption={profileStore.profile.gender}
+                onSelect={profileStore.setGender}
+              />
+            </View>
           </View>
         </ScrollView>
         <DateTimeSheet ref={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />

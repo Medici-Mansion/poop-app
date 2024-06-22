@@ -80,6 +80,19 @@ export default function CreateProfile() {
                 onPress={() => timePicker.current?.show()}
                 />
             </View>
+
+            <View className="w-full mt-6 relative">
+              <Input
+                label='견종'
+                placeholder='견종 선택'
+                editable={false}
+                value={profileStore.profile.breed?.name || ''}
+                onPress={() => breedRef.current?.open()}
+              />
+              <View className="absolute right-4 flex items-center top-10">
+                <MaterialIcons name="keyboard-arrow-down" size={24} color='white' />
+              </View>
+            </View>
           </View>
         </ScrollView>
         <DateTimeSheet ref={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />

@@ -1,5 +1,5 @@
 import React, { useImperativeHandle, useState } from 'react';
-import { ScrollView, View} from 'react-native';
+import { Dimensions, ScrollView, StyleSheet, View} from 'react-native';
 import { Portal } from 'react-native-portalize';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 
@@ -59,18 +59,18 @@ export default function breedSelectSheet(props: BreedSelectProps) {
         handleIndicatorStyle={{ backgroundColor: 'white' }}
       >
         <BottomSheetView className="flex-1">
-          <ScrollView className="py-4">
-            <View className='relative px-3'>
-              <Input
-                inputClass='px-10'
-                placeholder="검색어를 입력하세요"
-                placeholderTextColor={'#5D5D5D'}
-                onChangeText={text => setSearchInput(text)}
-              />
-              <View className='absolute top-3 left-6'>
-                <MaterialIcons name="search" size={24} color="#5D5D5D" />
-              </View>
+          <View className='relative px-3'>
+            <Input
+              inputClass='px-10'
+              placeholder="검색어를 입력하세요"
+              placeholderTextColor={'#5D5D5D'}
+              onChangeText={text => setSearchInput(text)}
+            />
+            <View className='absolute top-3 left-6'>
+              <MaterialIcons name="search" size={24} color="#5D5D5D" />
             </View>
+          </View>
+          <ScrollView className="py-4" horizontal showsHorizontalScrollIndicator={false}>
             <ConsonantCarousel value={selectedConsonant} onSelect={setSelectedConsonant} />
           </ScrollView>
           <BreedListView

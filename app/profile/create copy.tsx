@@ -16,6 +16,7 @@ import GalleryButton from '@/components/profile/gallery-button';
 export default function CreateProfile() {
   const birthRef = useRef(null);
   const timePicker = useRef(null);
+  const [photo, setPhoto] = useState(null);
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [selectedGender, setSelectedGender] = useState('FEMALE');
@@ -32,12 +33,20 @@ export default function CreateProfile() {
     
   }
 
+  const handleGallery = () => {
+    selectImage((croppedImage) => {
+      setPhoto(croppedImage);
+      alert('이미지 선택 완료');
+      alert(croppedImage);
+    });
+  }
+
   return (
   <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <GestureHandlerRootView>
       <SafeAreaView className="w-full h-full bg-gray-600">
           <View className="px-4 flex flex-col py-10 items-center w-full h-full">
-            <GalleryButton onPress={() => router.push('select-photo')} /> 
+            <GalleryButton onPress={handleGallery} image={photo.uri} />
               {/* TODO: 반려견 이름 글자수 제한 */}
               <Input label='반려견 이름' placeholder='이름' onChangeText={setName} value={name} /> 
               <Input 

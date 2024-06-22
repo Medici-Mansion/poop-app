@@ -13,3 +13,9 @@ export const loginFormSchema = z.object({
     .min(PASSWORD_MIN_LENGT, { message: "6자 이상 작성해주세요" })
     .regex(PASSWORD_REGEX, { message: "ㅎㅇㅎㅇㅎㅇㅎㅇ" }),
 });
+
+
+
+export const createProfileSchema = z.object({
+  name: z.string().min(2, { message: "2글자 이상 작성해주세요!" }),
+});

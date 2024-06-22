@@ -120,3 +120,9 @@ export interface SignInErrorType {
     password?: string[];
   };
 }
+
+export interface CreateProfileType {
+  fieldErrors?: {
+    name?: string[];
+  }
+}

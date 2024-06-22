@@ -1,6 +1,7 @@
 import * as MediaLibrary from 'expo-media-library';
 import { Platform } from 'react-native';
-
+import * as ImageManipulator from 'expo-image-manipulator';
+import * as ImagePicker from 'expo-image-picker';
 
 const getImageUri = async (uri: string) => {
   let imageUri = uri;
@@ -13,4 +14,18 @@ const getImageUri = async (uri: string) => {
   return imageUri;
 };
 
-export { getImageUri };
+const selectImage = async (onCompleted) => {
+  const croppedImage = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 1,
+  });
+
+  if (!croppedImage.canceled) {
+    onCompleted(croppedImage);
+  }
+}
+
+
+export { getImageUri, selectImage };

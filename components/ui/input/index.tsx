@@ -44,12 +44,7 @@ export const Input = forwardRef<TextInput, InputProps>(
           (ref as RefObject<TextInput>)?.current?.focus();
         }}>
         {label && <Text className="text-body-b12 text-gray-200">{label}</Text>}
-        <Animated.View
-          style={[animatedStyles]}
-          className={cn(
-            'rounded-xl bg-gray-500 border px-6',
-            Platform.OS === 'ios' && 'py-4',
-          )}>
+        <Animated.View style={[animatedStyles]}>
           <TextInput
             ref={mergeRefs(innerRef, ref)}
             placeholderTextColor={theme.colors.gray[300]}
@@ -57,7 +52,10 @@ export const Input = forwardRef<TextInput, InputProps>(
             autoCorrect={false}
             spellCheck={false}
             clearButtonMode="while-editing"
-            className="text-body-m14 text-white"
+            className={cn(
+            'text-body-m14 text-white px-6 rounded-xl bg-gray-500',
+            Platform.OS === 'ios' && 'py-4',
+          )}
           />
         </Animated.View>
         {hint ? (

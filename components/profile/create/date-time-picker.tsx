@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import React, { useImperativeHandle, useState } from 'react';
-import { StyleSheet, Pressable, Text } from 'react-native';
+import { StyleSheet, Pressable, Text, Keyboard } from 'react-native';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
@@ -11,7 +11,6 @@ interface DateTimePickerProps {
   isPending?: boolean;
   date?: string;
   onConfirm?: (date: string) => void;
-  onPickerToggle?: (show: boolean) => void;
   dateTimeRef?: React.Ref<any>;
 }
 
@@ -58,7 +57,7 @@ const renderBackdrop = ((props: any) => {
  * 날짜 선택을 위한 커스텀 DateTimePicker
  * */ 
 export default function CustomDateTimePicker(props: DateTimePickerProps) {
-  const { date = '', dateTimeRef, onConfirm, onPickerToggle, isPending = false, ...rest } = props;
+  const { date = '', dateTimeRef, onConfirm, isPending = false, ...rest } = props;
   const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
   const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet("50%");
 
@@ -83,9 +82,15 @@ export default function CustomDateTimePicker(props: DateTimePickerProps) {
     setValue(dayjs(newDate).format('YYYY-MM-DD'));
   };
 
+  const show = async () => {
+    await Keyboard.dismiss();
+    showBottomSheet();
+  }
+
   useImperativeHandle(dateTimeRef, () => (
-    { show: showBottomSheet, hide: hideBottomSheet }
+    { show, hide: hideBottomSheet }
   ));
+
 
   return (
     <BottomSheetModalProvider>

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, FlatList } from 'react-native';
 import { router } from 'expo-router';
 import { useGallery } from '@/hooks/use-gallery';
 import { ImageEditor } from "expo-image-editor";
 
 import PhotoBox from '@/components/select-photo/PhotoBox';
-import BottomLoader from '@/components/select-photo/BottomLoader';
+import BottomLoader from '@/components/select-photo/bottom-loader';
 
 const COLUMN = 3;
 
@@ -27,8 +27,12 @@ const SelectPhoto = () => {
 
   const handleEditComplete = (result) => {
     setPhoto(result);
-    // router.replace('create-profile', result);
+    setEditorVisible(false);
   }
+
+  // useEffect(() => {
+  //     if (!editorVisible) router.back();
+  //   }, [editorVisible]);
 
   const renderItem = ({ item }) => (
     <PhotoBox item={item} onPress={handleSelectImage(item)} column={COLUMN} />

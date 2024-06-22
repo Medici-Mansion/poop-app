@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import Header from "@/components/select-photo/Header";
+import Header from "@/components/select-photo/header";
 
 const SelectPhotoLayout = () => {
   return (

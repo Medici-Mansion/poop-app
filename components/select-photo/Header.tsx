@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const Header = () => {
   return (
-    <View className='flex-row items-center justify-between p-3'>
+    <View className='flex-row items-center justify-between'>
       <Pressable onPress={() => router.back()}>
         <Ionicons name="chevron-back" size={25} color="white" />
       </Pressable>

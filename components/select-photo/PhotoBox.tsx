@@ -8,7 +8,7 @@ interface ImageBoxProps {
 }
 
 const PhotoBox = (props: ImageBoxProps) => {
-  const { item, onPress, column } = props;
+  const { item, onPress } = props;
   return (
     <Pressable
       className="h-[120px] w-[33%] p-1"

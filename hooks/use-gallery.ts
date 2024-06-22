@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { AppState, EmitterSubscription, Platform } from 'react-native';
 import * as MediaLibrary from 'expo-media-library';
 import { getImageUri } from '@/utils/image';
 
@@ -52,9 +51,21 @@ export const useGallery = ({ pageSize = 30 }: GalleryOptions): GalleryLogic => {
     }
   }, [isLoading, isLoadingNextPage, nextCursor, pageSize]);
 
+  const getPermissions = async () => {
+    const {
+        status,
+        canAskAgain,
+    } = await MediaLibrary.getPermissionsAsync();
+
+    if (status === "undetermined" && canAskAgain) {
+        const { status } = await MediaLibrary.requestPermissionsAsync();
+        if (status !== "undetermined") loadNextPagePictures();
+    } else if (status !== "undetermined") loadNextPagePictures();
+};
+
   useEffect(() => {
-    if (!photos) loadNextPagePictures();
-  }, [loadNextPagePictures]);
+    getPermissions();
+  }, []);
 
   return {
     photos,

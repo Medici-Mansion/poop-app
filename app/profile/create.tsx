@@ -1,24 +1,60 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 import { router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
 import { Text, View } from 'react-native';
+import { useRoute } from "@react-navigation/native";
 
+import { getFormData } from '@/utils';
 import { gender } from '@/constants';
+import Event from '@/constants/RouteEvent';
 import { useProfileStore } from '@/store/profile';
+import useCreateProfile from '@/hooks/use-create-profile';
 
 import { Input } from '@/components/profile/create/input';
+import NameInput from '@/components/profile/create/name-input';
 import RadioGroup from '@/components/profile/create/radio-group';
 import GalleryButton from '@/components/profile/create/gallery-button';
 import DateTimeSheet from '@/components/profile/create/date-time-sheet';
 import BreedSelectSheet from '@/components/profile/create/breed-select-sheet';
 
 export default function CreateProfile() {
+  const nameInputRef = useRef<{ checkError: () => void }>(null);
   const timePicker = useRef(null);
   const breedRef = useRef(null);
 
+  const route = useRoute();
   const profileStore = useProfileStore();
+
+  const onSuccess = () => {
+    router.push('profile');
+  }
+  const { mutate: createProfileMutate, isPending: createPending } = useCreateProfile({ onSuccess });
+
+  useEffect(() => {
+    const event = route.params?.event;
+    if (!event) return;
+
+    if (event !== Event['PROFILE:CREATE']) return;
+    createProfile();
+  }, [route.params?.event]);
+
+  const createProfile = useCallback(() => {
+    const isValid = nameInputRef.current?.checkError();
+    if (createPending || !isValid) return;
+    
+    const { avatar, name, birthday, gender, breed } = profileStore.profile;
+    const avatarData = { name: avatar?.filename, type: 'image/jpeg', uri: avatar?.uri };
+    const formData = getFormData({
+      name,
+      birthday,
+      gender,
+      breedId: breed?.id,
+      avatar: avatarData,
+    });
+    createProfileMutate(formData);
+  }, []);
 
   return (
     <GestureHandlerRootView>
@@ -27,17 +63,12 @@ export default function CreateProfile() {
         <ScrollView className="w-full h-full flex-1">
           <View className="px-4 flex flex-col py-10 items-center w-full h-ful">
             <GalleryButton 
-              image={profileStore.profile.avatar}
+              image={profileStore.profile.avatar?.uri}
               onPress={() => router.push('select-photo')} 
             /> 
 
             <View className="w-full mt-6">
-              <Input 
-                label='반려견 이름'
-                placeholder='이름' 
-                onChangeText={profileStore.setName} 
-                value={profileStore.profile.name}
-              /> 
+              <NameInput ref={nameInputRef} />
             </View>
 
             <View className="w-full mt-6">

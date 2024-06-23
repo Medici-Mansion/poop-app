@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { router } from 'expo-router';
+import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
 import { View } from 'react-native';
@@ -9,9 +10,11 @@ import { useProfileStore } from '@/store/profile';
 import { Input } from '@/components/profile/create/input';
 import GalleryButton from '@/components/profile/create/gallery-button';
 import DateTimeSheet from '@/components/profile/create/date-time-sheet';
+import BreedSelectSheet from '@/components/profile/create/breed-select-sheet';
 
 export default function CreateProfile() {
   const timePicker = useRef(null);
+  const breedRef = useRef(null);
 
   const profileStore = useProfileStore();
 
@@ -44,10 +47,24 @@ export default function CreateProfile() {
                 onPress={() => timePicker.current?.show()}
                 />
             </View>
+
+            <View className="w-full mt-6 relative">
+              <Input 
+                label='견종'
+                placeholder='견종 선택' 
+                editable={false} 
+                value={profileStore.profile.breed?.name || ''}
+                onPress={() => breedRef.current?.open()}
+              />
+              <View className="absolute right-4 flex items-center top-10">
+                <MaterialIcons name="keyboard-arrow-down" size={24} color='white' />
+              </View>
+            </View>
           </View>
 
         </ScrollView>
         <DateTimeSheet dateTimeRef={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
+        <BreedSelectSheet value={profileStore.profile.breed?.id} onSelect={profileStore.setBreed} breedRef={breedRef} />
       </SafeAreaView>
     </GestureHandlerRootView>
   );

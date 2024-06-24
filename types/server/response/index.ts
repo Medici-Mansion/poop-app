@@ -1,6 +1,6 @@
-import { ApiError } from '@/types';
+import { ApiError } from "@/types";
 
 export type Response<T> = {
-  data: T;
-  error?: ApiError;
+  result: T;
+  body?: any;
 };

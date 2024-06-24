@@ -5,50 +5,56 @@ import { useForm } from "react-hook-form";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Images from "@/constants/Images";
-import { loginFormSchema } from "@/schema";
-import { SignInErrorType } from "@/types";
+import { signinFormSchema } from "@/schema";
+import { SignInErrorType, Token } from "@/types";
 
 import ConfirmButton from "@/components/confirm-button";
 import FormController from "@/components/form-controller";
 import TermsSheet from "@/components/bottom-sheet/turms-sheet";
-
-interface SignInFields {
-  id: number;
-  name: "id" | "password";
-}
-
-const formValues: SignInFields[] = [
-  {
-    id: 1,
-    name: "id",
-  },
-  {
-    id: 2,
-    name: "password",
-  },
-];
+import { SigninFormField } from "@/constants/form-filed";
+import { z } from "zod";
+import useLogin from "@/hooks/user/use-login";
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getMyProfileList, injectInterceptor } from "@/apis";
 
 const SignIn = () => {
+  const { mutateAsync } = useLogin({
+    onSuccess: async (data) => {
+      const { accessToken } = data.body || {};
+      await Promise.allSettled([AsyncStorage.setItem(Token.ACT, accessToken)]);
+      injectInterceptor({ accessToken });
+
+      const response = await getMyProfileList();
+      if (!response.result.length) {
+        return router.replace("/create-profile");
+      }
+    },
+    onError: (err) => console.log(err),
+  });
   const [error, setError] = useState<SignInErrorType>({});
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       id: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: { id: string; password: string }) => {
-    const result = await loginFormSchema.spa(data);
+  const onSubmit = async (fields: z.infer<typeof signinFormSchema>) => {
+    const result = await signinFormSchema.spa(fields);
     if (!result.success) {
       setError(result.error.flatten());
       return;
+    } else {
+      const convertLowerCase = { ...fields, id: getValues("id").toLowerCase() };
+      mutateAsync(convertLowerCase);
     }
 
     setError({});
   };
 
   return (
-    <GestureHandlerRootView className="bg-background h-full">
+    <GestureHandlerRootView className="bg-gray-600 h-full">
       <View className="px-10 flex flex-col py-20 items-center h-full justify-between">
         <View className="w-full flex items-center pt-5">
           <Image
@@ -57,7 +63,7 @@ const SignIn = () => {
             style={{ width: 150, height: 140 }}
           />
           <View className="w-full pt-12">
-            {formValues.map((field) => (
+            {SigninFormField.map((field) => (
               <FormController
                 key={field.id}
                 control={control}
@@ -67,7 +73,7 @@ const SignIn = () => {
               />
             ))}
             <View className="py-2">
-              <ConfirmButton title="확인" onPress={handleSubmit(onSubmit)} />
+              <ConfirmButton title="로그인" onPress={handleSubmit(onSubmit)} />
             </View>
           </View>
         </View>

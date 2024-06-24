@@ -1,23 +1,19 @@
+import React from "react";
+import { router } from "expo-router";
 import { View, Text, Pressable } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import React from "react";
 
 import { TERMS } from "@/constants";
-import { AnimatedPressable } from "../ui/animate-pressable";
+import { AnimatedPressable } from "@/components/ui/animate-pressable";
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
-
-interface TermsSheetProps {
-  ref: any;
-  snapPoints: any;
-}
 
 const TermsSheet = () => {
   const { hideBottomSheet, ref, showBottomSheet, snapPoints } =
     useBottomSheet("50%");
   return (
     <>
-      <AnimatedPressable onPress={showBottomSheet} className="px-4 w-full">
-        <View className="flex flex-row justify-center border border-gray-500 rounded-2xl mb-5">
+      <AnimatedPressable onPress={showBottomSheet} className="w-full">
+        <View className="flex flex-row justify-center border border-gray-300 rounded-2xl mb-5">
           <Text className="text-white font-bold py-4 w-full text-center">
             회원가입
           </Text>
@@ -58,7 +54,10 @@ const TermsSheet = () => {
             <View className="pb-3">
               <Pressable
                 className="bg-white py-3 rounded-2xl flex items-center justify-center"
-                onPress={() => {}}
+                onPress={() => {
+                  router.push("/sign-up");
+                  hideBottomSheet();
+                }}
               >
                 <Text className="text-black font-bold text-center">
                   동의하고 계속

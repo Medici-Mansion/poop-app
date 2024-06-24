@@ -1,6 +1,6 @@
 import { Token, XCI } from "@/constants/index";
 import {
-  BreedData,
+  ApiResponse,
   LoginParam,
   SignupParam,
   SuccessSignupRes,
@@ -13,15 +13,16 @@ import { GetMeResponse } from "@/types/server/user/me";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const PoopApi = axios.create({
+export const PoopApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
 
-// Common
-export const getBreeds = async () => {
-  const { data } = await PoopApi.get<BreedData>("/v1/common/breeds");
+export const getHealthCheck = async () => {
+  const { data } = await PoopApi.get("/v1");
   return data;
 };
+
+// Common
 
 // User
 export const getMe = async () => {
@@ -59,12 +60,10 @@ export const getMyProfileList = async () => {
 };
 
 // Auth
-export const signUp = async (body: SignupParam) => {
-  const { data } = await PoopApi.put<Response<SuccessSignupRes>>(
-    "/v1/auth/signup",
-    body
-  );
-  return data;
+
+export const signUp = async (body: SignupParam): Promise<ApiResponse> => {
+  const response = await axios.post("/api/signup", body);
+  return response.data;
 };
 
 export const verify = async (body: VerifyParam) => {
@@ -77,12 +76,19 @@ export const getVerifyCode = async (params: VerifyParam) => {
   return data;
 };
 
-export const login = async (body: LoginParam) => {
-  const { data } = await PoopApi.post<Response<LoginSuccess>>(
-    "/v1/auth/login",
-    body
-  );
-  return data.data;
+export const login = async (body: LoginParam): Promise<ApiResponse> => {
+  try {
+    const response = await PoopApi.post<ApiResponse>("/v1/auth/login", body);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Axios error: ", error.response?.data);
+      throw error;
+    } else {
+      console.error("Unexpected error: ", error);
+      throw error;
+    }
+  }
 };
 
 export const refresh = async () => {
@@ -103,8 +109,8 @@ const setAccessToken = async ({
   if (shouldRefresh) {
     const response = await refresh();
     const data = response as unknown as Response<LoginSuccess>;
-    await AsyncStorage.setItem(Token.ACT, data.data.accessToken);
-    PoopApi.defaults.headers.common[XCI] = data.data.accessToken;
+    await AsyncStorage.setItem(Token.ACT, data.result.accessToken);
+    PoopApi.defaults.headers.common[XCI] = data.result.accessToken;
   }
 };
 

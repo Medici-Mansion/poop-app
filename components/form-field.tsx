@@ -118,7 +118,6 @@ export default function FormField({
       )}
       {errors &&
         errors.map((error, idx) => {
-          console.log(error, "<<<<");
           return (
             <Animated.Text
               entering={FadeIn.duration(100).springify().mass(0.3)}

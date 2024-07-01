@@ -1,4 +1,6 @@
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { gender } from '@/constants';
 import type { Breed } from '@/types';
@@ -30,14 +32,21 @@ const initProfile: Profile = {
   breed: null,
 };
 
-export const useProfileStore = create<ProfileStore>(
-  (set) => ({
-    profile: initProfile,
 
-    setName: (name) => set((state) => ({ profile: { ...state.profile, name } })),
-    setAvatar: (avatar) => set((state) => ({ profile: { ...state.profile, avatar } })),
-    setBirthday: (birthday) => set((state) => ({ profile: { ...state.profile, birthday } })),
-    setGender: (gender) => set((state) => ({ profile: { ...state.profile, gender } })),
-    setBreed: (breed) => set((state) => ({ profile: { ...state.profile, breed } })),
-  })
+export const useProfileStore = create<ProfileStore>()(
+  persist(
+    (set) => ({
+      profile: initProfile,
+
+      setName: (name) => set((state) => ({ profile: { ...state.profile, name } })),
+      setAvatar: (avatar) => set((state) => ({ profile: { ...state.profile, avatar } })),
+      setBirthday: (birthday) => set((state) => ({ profile: { ...state.profile, birthday } })),
+      setGender: (gender) => set((state) => ({ profile: { ...state.profile, gender } })),
+      setBreed: (breed) => set((state) => ({ profile: { ...state.profile, breed } })),
+    }),
+    {
+      name: 'profile-storage',
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
 );

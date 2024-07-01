@@ -47,7 +47,7 @@ export default function CreateProfile() {
           </View>
 
         </ScrollView>
-        <DateTimeSheet dateTimeRef={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
+        <DateTimeSheet ref={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
       </SafeAreaView>
     </GestureHandlerRootView>
   );

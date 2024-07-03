@@ -15,7 +15,6 @@ import BreedSelectSheet from '@/components/profile/create/breed-select-sheet';
 export default function CreateProfile() {
   const timePicker = useRef(null);
   const breedRef = useRef(null);
-
   const profileStore = useProfileStore();
 
   return (

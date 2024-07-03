@@ -12,7 +12,6 @@ import DateTimeSheet from '@/components/profile/create/date-time-sheet';
 
 export default function CreateProfile() {
   const timePicker = useRef(null);
-
   const profileStore = useProfileStore();
 
   return (
@@ -25,7 +24,6 @@ export default function CreateProfile() {
               image={profileStore.profile.avatar}
               onPress={() => router.push('select-photo')} 
             /> 
-
             <View className="w-full mt-6">
               <Input 
                 label='반려견 이름'
@@ -34,7 +32,6 @@ export default function CreateProfile() {
                 value={profileStore.profile.name}
               /> 
             </View>
-
             <View className="w-full mt-6">
               <Input 
                 label='반려견 생년월일'
@@ -52,3 +49,11 @@ export default function CreateProfile() {
     </GestureHandlerRootView>
   );
 }
+          </View>
+
+        </ScrollView>
+      </SafeAreaView>
+    </GestureHandlerRootView>
+  );
+}
+

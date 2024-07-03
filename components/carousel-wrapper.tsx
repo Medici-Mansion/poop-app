@@ -11,8 +11,9 @@ type CarouselRefType = ICarouselInstance | null;
 type ChildrenProps = {
   item: any; 
   animationValue: SharedValue<number>; 
-  carouselRef: CarouselRefType;
+  carouselRef: React.MutableRefObject<CarouselRefType>;
 };
+
 interface BreedSelectProps {
   data: any[];
   children: (props: ChildrenProps) => React.ReactElement;

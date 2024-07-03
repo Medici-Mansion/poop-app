@@ -3,11 +3,15 @@ import { router } from 'expo-router';
 import { MaterialIcons } from '@expo/vector-icons';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 
+import { gender } from '@/constants';
 import { useProfileStore } from '@/store/profile';
 
 import { Input } from '@/components/profile/create/input';
+import RadioGroup from '@/components/profile/create/radio-group';
+import { View } from 'react-native';
+
 import GalleryButton from '@/components/profile/create/gallery-button';
 import DateTimeSheet from '@/components/profile/create/date-time-sheet';
 import BreedSelectSheet from '@/components/profile/create/breed-select-sheet';
@@ -59,8 +63,16 @@ export default function CreateProfile() {
                 <MaterialIcons name="keyboard-arrow-down" size={24} color='white' />
               </View>
             </View>
-          </View>
 
+            <View className="w-full mt-6">
+              <Text className="text-gray-200 b-12 text-14 font-bold mb-4">성별</Text>
+              <RadioGroup 
+                options={gender} 
+                selectedOption={profileStore.profile.gender}
+                onSelect={profileStore.setGender}
+              />
+            </View>
+          </View>
         </ScrollView>
         <DateTimeSheet ref={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
         <BreedSelectSheet value={profileStore.profile.breed?.id} onSelect={profileStore.setBreed} breedRef={breedRef} />

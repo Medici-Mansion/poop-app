@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { router } from 'expo-router';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { GestureHandlerRootView, ScrollView } from "react-native-gesture-handler";
@@ -7,9 +8,10 @@ import { useProfileStore } from '@/store/profile';
 
 import { Input } from '@/components/profile/create/input';
 import GalleryButton from '@/components/profile/create/gallery-button';
+import DateTimeSheet from '@/components/profile/create/date-time-sheet';
 
 export default function CreateProfile() {
-
+  const timePicker = useRef(null);
   const profileStore = useProfileStore();
 
   return (
@@ -30,6 +32,23 @@ export default function CreateProfile() {
                 value={profileStore.profile.name}
               /> 
             </View>
+            <View className="w-full mt-6">
+              <Input 
+                label='반려견 생년월일'
+                placeholder='생년월일' 
+                editable={false} 
+                value={profileStore.profile.birthday}
+                onPress={() => timePicker.current?.show()}
+                />
+            </View>
+          </View>
+
+        </ScrollView>
+        <DateTimeSheet ref={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
+      </SafeAreaView>
+    </GestureHandlerRootView>
+  );
+}
           </View>
 
         </ScrollView>

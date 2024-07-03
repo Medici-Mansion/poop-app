@@ -9,6 +9,7 @@ import { Input } from '@/components/profile/create/input';
 import GalleryButton from '@/components/profile/create/gallery-button';
 
 export default function CreateProfile() {
+
   const profileStore = useProfileStore();
 
   return (
@@ -21,7 +22,6 @@ export default function CreateProfile() {
               image={profileStore.profile.avatar}
               onPress={() => router.push('select-photo')} 
             /> 
-
             <View className="w-full mt-6">
               <Input 
                 label='반려견 이름'

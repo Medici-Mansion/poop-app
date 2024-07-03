@@ -10,6 +10,8 @@ import { useProfileStore } from '@/store/profile';
 
 import { Input } from '@/components/profile/create/input';
 import RadioGroup from '@/components/profile/create/radio-group';
+import { View } from 'react-native';
+
 import GalleryButton from '@/components/profile/create/gallery-button';
 import DateTimeSheet from '@/components/profile/create/date-time-sheet';
 import BreedSelectSheet from '@/components/profile/create/breed-select-sheet';
@@ -17,7 +19,6 @@ import BreedSelectSheet from '@/components/profile/create/breed-select-sheet';
 export default function CreateProfile() {
   const timePicker = useRef(null);
   const breedRef = useRef(null);
-
   const profileStore = useProfileStore();
 
   return (
@@ -72,9 +73,8 @@ export default function CreateProfile() {
               />
             </View>
           </View>
-
         </ScrollView>
-        <DateTimeSheet dateTimeRef={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
+        <DateTimeSheet ref={timePicker} date={profileStore.profile.birthday} onConfirm={profileStore.setBirthday} />
         <BreedSelectSheet value={profileStore.profile.breed?.id} onSelect={profileStore.setBreed} breedRef={breedRef} />
       </SafeAreaView>
     </GestureHandlerRootView>

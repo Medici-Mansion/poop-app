@@ -25,6 +25,7 @@ const HeaderRightButton = () => {
 
 
   const handlePress = () => {
+    // TODO: event 핸들러 방식 수정하기
     navigation.navigate('create', { event: Event['PROFILE:CREATE'] });
   };
   

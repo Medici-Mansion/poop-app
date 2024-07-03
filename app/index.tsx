@@ -7,8 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const index = () => {
   const { isLogin } = useUserStore();
-  // TODO: redirect를 sign-in으로 변경
-  if (!isLogin) return <Redirect href="/profile/create" />;
+  if (!isLogin) return <Redirect href="/sign-in" />;
   return (
     <SafeAreaView className="bg-background h-full">
       <StatusBar backgroundColor="#161622" style="light" />

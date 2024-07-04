@@ -10,7 +10,6 @@ import { useProfileStore } from '@/store/profile';
 
 import { Input } from '@/components/profile/create/input';
 import RadioGroup from '@/components/profile/create/radio-group';
-import { View } from 'react-native';
 
 import GalleryButton from '@/components/profile/create/gallery-button';
 import DateTimeSheet from '@/components/profile/create/date-time-sheet';

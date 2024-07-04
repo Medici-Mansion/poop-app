@@ -1,5 +1,6 @@
-import { mergeRefs } from '@/utils';
-import { cn } from '@/utils';
+// TODO: 기존 input의 onPress 영역을 수정한 컴포넌트 - 기존 ui/input.tsx과 합쳐야함
+
+import { mergeRefs, cn } from '@/utils';
 import { theme } from '@/theme';
 import { RefObject, forwardRef, useRef } from 'react';
 import {
@@ -22,11 +23,12 @@ interface InputProps extends TextInputProps {
   error?: string;
   hint?: string;
   disabled?: boolean;
+  inputClass?: string
   onOuterPressIn?: (event: GestureResponderEvent) => void;
 }
 
 export const Input = forwardRef<TextInput, InputProps>(
-  ({ label, error, hint, disabled, onOuterPressIn, ...props }, ref) => {
+  ({ inputClass = '', label, error, hint, disabled, onOuterPressIn, ...props }, ref) => {
     const bgColor = error ? theme.colors.system.red : 'transparent';
     const animatedStyles = useAnimatedProps(() => {
       return {
@@ -45,20 +47,19 @@ export const Input = forwardRef<TextInput, InputProps>(
           (ref as RefObject<TextInput>)?.current?.focus();
         }}>
         {label && <Text className="text-body-b12 text-gray-200">{label}</Text>}
-        <Animated.View
-          style={[animatedStyles]}
-          className={cn(
-            'rounded-xl bg-gray-500 border px-6',
-            Platform.OS === 'ios' && 'py-4',
-          )}>
+        <Animated.View style={[animatedStyles]}>
           <TextInput
             ref={mergeRefs(innerRef, ref)}
             placeholderTextColor={theme.colors.gray[300]}
-            {...props}
             autoCorrect={false}
             spellCheck={false}
             clearButtonMode="while-editing"
-            className="text-body-m14 text-white"
+            className={cn(
+              'text-body-m14 text-white px-6 rounded-xl bg-gray-500',
+              Platform.OS === 'ios' && 'py-4',
+              inputClass,
+            )}
+            {...props}
           />
         </Animated.View>
         {hint ? (

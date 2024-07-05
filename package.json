@@ -3,13 +3,16 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
+    "prebuild": "expo prebuild --clean",
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "build": "eas build -p ios",
+    "build:test-ios": "eas build --profile testflight -p ios"
   },
   "jest": {
     "preset": "jest-expo"
@@ -28,13 +31,16 @@
     "expo": "~51.0.14",
     "expo-constants": "~16.0.2",
     "expo-font": "~12.0.7",
+    "expo-gl": "^14.0.2",
     "expo-image-editor": "^1.7.1",
+    "expo-image-manipulator": "^12.0.5",
     "expo-linking": "~6.3.1",
     "expo-media-library": "^16.0.3",
     "expo-router": "~3.5.16",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.6",
+    "expo-updates": "~0.25.18",
     "expo-web-browser": "~13.0.3",
     "nativewind": "^2.0.11",
     "react": "18.2.0",

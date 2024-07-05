@@ -1,13 +1,13 @@
-import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { router } from "expo-router";
+import React, { useState } from "react";
+import { View, FlatList } from "react-native";
 import { ImageEditor } from "expo-image-editor";
 
-import { useGallery } from '@/hooks/use-gallery';
-import { useProfileStore } from '@/store/profile';
+import { useGallery } from "@/hooks/use-gallery";
+import { useProfileStore } from "@/store/profile";
 
-import PhotoBox from '@/components/select-photo/photo-box';
-import BottomLoader from '@/components/select-photo/bottom-loader';
+import PhotoBox from "@/components/select-photo/photo-box";
+import BottomLoader from "@/components/select-photo/bottom-loader";
 
 const COLUMN = 3;
 
@@ -27,13 +27,13 @@ const SelectPhotoScreen = () => {
 
   const handleEndReached = () => {
     if (hasNextPage) loadNextPagePictures();
-  }
+  };
 
   const handleEditComplete = (result) => {
     setPhoto(result);
     profileStore.setAvatar(result.uri);
     setTimeout(() => {
-      router.back(); 
+      router.back();
       // TODO: 라이브러리 이슈로 300ms 후에 뒤로가기
       // TODO: 라이브러리 대신 자체 구축 형태로 변경하기
     }, 300);
@@ -44,7 +44,7 @@ const SelectPhotoScreen = () => {
   );
 
   return (
-    <View className='flex-1 bg-black h-full'>
+    <View className="flex-1 bg-black h-full">
       <View style={{ flex: COLUMN * COLUMN }}>
         <FlatList
           data={photos}
@@ -61,7 +61,7 @@ const SelectPhotoScreen = () => {
       <ImageEditor
         visible={editorVisible}
         onCloseEditor={() => setEditorVisible(false)}
-        imageUri={photo?.uri || ''}
+        imageUri={photo?.uri || ""}
         fixedCropAspectRatio={1 / 1}
         lockAspectRatio={true}
         mode="crop-only"

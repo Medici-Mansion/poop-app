@@ -1,5 +1,13 @@
 import { AxiosError } from "axios";
 
+
+export interface Peeds {
+  id: number;
+  title: string;
+  role: string;
+  nickname: string;
+}
+
 // Parameters for Login
 export interface LoginParam {
   id: string;
@@ -7,6 +15,33 @@ export interface LoginParam {
 }
 
 // Enumeration for Verification Types
+export interface SuccessCreateProfileRes {
+  data: boolean;
+  error: ApiError;
+}
+export interface SignupStepInfo {
+  id: number;
+  name: string;
+  password: string;
+  birth: string;
+  gender: Gender;
+  phone: string;
+  verify: Verify;
+}
+
+export interface SignupForm {
+  id: number;
+  placeholder: string;
+  name: string;
+  title: string;
+}
+
+export enum Gender {
+  MALE = "MALE",
+  FEMALE = "FEMALE",
+  NONE = "NONE",
+}
+
 export enum Verify {
   EMAIL = "email",
   PHONE = "phone",
@@ -37,6 +72,12 @@ export interface VerifyCheckParam {
 }
 
 // Successful Signup Response
+export interface SuccessGetVerifyCodeRes {
+  id: string;
+  accountId: string;
+  birthday: string;
+}
+
 export interface SuccessSignupRes {
   data: boolean;
   error: ApiError;
@@ -65,6 +106,7 @@ export interface ApiResponse {
 }
 
 // API Error Structure
+
 export interface ApiError {
   statusCode: number;
   timestamp: string;
@@ -80,6 +122,22 @@ export interface Consonants {
 }
 
 // Sign-In Error Types
+export interface Breed {
+  id: string;
+  name: string;
+  nameEN: string;
+  avatar: string;
+}
+
+export interface BreedsGroupedByConsonant {
+  [consonant: string]: Breed[];
+}
+
+export interface BreedData {
+  data: BreedsGroupedByConsonant;
+  error: AxiosError;
+}
+
 export interface SignInErrorType {
   fieldErrors?: {
     id?: string[];

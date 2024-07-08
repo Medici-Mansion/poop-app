@@ -103,3 +103,9 @@ export const consonantsList: Consonants[] = [
   { id: 13, value: "ㅍ" },
   { id: 14, value: "ㅎ" },
 ];
+
+export const gender = [
+  { label: '암컷', value: 'FEMALE' },
+  { label: '수컷', value: 'MALE' },
+  { label: '선택안함', value: 'NONE' },
+] as const;

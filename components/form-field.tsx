@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { Keyboard, Text, TextInput, View } from "react-native";
+import { Keyboard, Text, View } from "react-native";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import Animated, {
   CurvedTransition,
@@ -7,6 +7,7 @@ import Animated, {
   FadeOut,
 } from "react-native-reanimated";
 import { UseFormSetValue } from "react-hook-form";
+import { Input } from "@/components/profile/create/input";
 
 interface FormField {
   errors?: string[];
@@ -82,39 +83,32 @@ export default function FormField({
               }
             }}
           />
-          <View className="w-full px-4 h-16 bg-gray-500 rounded-2xl flex flex-row items-center border focus:border-1 focus:border-gray-300">
-            <TextInput
-              value={value}
-              onChangeText={(text) => {
-                setValue(isEmail ? "email" : "phone", text);
-                onChangeText(text);
-              }}
-              className="text-white"
-              placeholderTextColor="#FFFFFF"
-              placeholder={isEmail ? "이메일" : "휴대폰"}
-              {...rest}
-            />
-          </View>
-        </View>
-      ) : (
-        <View className="w-full h-16 px-4 bg-gray-500 rounded-2xl flex flex-row items-center border focus:border-1 focus:border-gray-300">
-          <TextInput
+
+          <Input
             value={value}
-            onChangeText={onChangeText}
-            className="text-white"
-            placeholderTextColor="#FFFFFF"
-            placeholder={placeholder}
-            secureTextEntry={name === "password"}
-            editable={name !== "birthday"}
-            onPressIn={() => {
-              if (setPicker && name === "birthday") {
-                setPicker(true);
-                Keyboard.dismiss();
-              }
+            onChangeText={(text) => {
+              setValue(isEmail ? "email" : "phone", text);
+              onChangeText(text);
             }}
+            placeholder={isEmail ? "이메일" : "휴대폰"}
             {...rest}
           />
         </View>
+      ) : (
+        <Input
+          value={value}
+          onChangeText={onChangeText}
+          placeholder={placeholder}
+          secureTextEntry={name === "password"}
+          editable={name !== "birthday"}
+          onPressIn={() => {
+            if (setPicker && name === "birthday") {
+              setPicker(true);
+              Keyboard.dismiss();
+            }
+          }}
+          {...rest}
+        />
       )}
       {errors &&
         errors.map((error, idx) => {

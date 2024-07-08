@@ -20,4 +20,7 @@ expo-env.d.ts
 .env
 # @end expo-cli
 
-# IOS
+
+ios/
+android/
+

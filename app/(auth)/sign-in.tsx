@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { View, Image } from "react-native";
 import { useForm } from "react-hook-form";
 
-import { GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  GestureHandlerRootView,
+  ScrollView,
+} from "react-native-gesture-handler";
 
 import Images from "@/constants/Images";
 import { signinFormSchema } from "@/schema";
@@ -17,22 +20,29 @@ import useLogin from "@/hooks/user/use-login";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getMyProfileList, injectInterceptor } from "@/apis";
+import { AxiosError } from "axios";
+import { Response } from "@/types/server";
 
 const SignIn = () => {
-  const { mutateAsync } = useLogin({
+  const [error, setError] = useState<SignInErrorType>({});
+
+  const { mutateAsync, isPending } = useLogin({
     onSuccess: async (data) => {
-      const { accessToken } = data.body || {};
+      const { accessToken } = data || {};
       await Promise.allSettled([AsyncStorage.setItem(Token.ACT, accessToken)]);
       injectInterceptor({ accessToken });
 
       const response = await getMyProfileList();
-      if (!response.result.length) {
+      if (!response.body.length) {
         return router.replace("/create-profile");
       }
     },
-    onError: (err) => console.log(err),
+    onError: (err: AxiosError<Response<null>>) => {
+      setError({
+        fieldErrors: { id: [err.response?.data?.result?.resultMessage || ""] },
+      });
+    },
   });
-  const [error, setError] = useState<SignInErrorType>({});
   const { control, handleSubmit, getValues } = useForm({
     defaultValues: {
       id: "",
@@ -46,7 +56,7 @@ const SignIn = () => {
       setError(result.error.flatten());
       return;
     } else {
-      const convertLowerCase = { ...fields, id: getValues("id").toLowerCase() };
+      const convertLowerCase = fields;
       mutateAsync(convertLowerCase);
     }
 
@@ -54,31 +64,29 @@ const SignIn = () => {
   };
 
   return (
-    <GestureHandlerRootView className="bg-gray-600 h-full">
-      <View className="px-10 flex flex-col py-20 items-center h-full justify-between">
-        <View className="w-full flex items-center pt-5">
-          <Image
-            source={Images.logo}
-            resizeMode="contain"
-            style={{ width: 150, height: 140 }}
-          />
-          <View className="w-full pt-12">
-            {SigninFormField.map((field) => (
-              <FormController
-                key={field.id}
-                control={control}
-                name={field.name || ""}
-                placeholder={field.name === "id" ? "아이디" : "비밀번호"}
-                errors={error?.fieldErrors?.[field.name] || []}
-              />
-            ))}
-            <View className="py-2">
-              <ConfirmButton title="로그인" onPress={handleSubmit(onSubmit)} />
-            </View>
-          </View>
+    <GestureHandlerRootView className="bg-gray-600 h-screen w-full flex items-center pt-5 px-4">
+      <Image
+        className="flex-1"
+        source={Images.logo}
+        resizeMode="contain"
+        style={{ width: 150, height: 140 }}
+      />
+      <View className="w-full flex-1 justify-between">
+        <View className="space-y-3">
+          {SigninFormField.map((field) => (
+            <FormController
+              disabled={isPending}
+              key={field.id}
+              control={control}
+              name={field.name || ""}
+              placeholder={field.name === "id" ? "아이디" : "비밀번호"}
+              errors={error?.fieldErrors?.[field.name] || []}
+            />
+          ))}
+          <ConfirmButton title="로그인" onPress={handleSubmit(onSubmit)} />
         </View>
-        <TermsSheet />
       </View>
+      <TermsSheet className="flex-1 justify-end pb-4" />
     </GestureHandlerRootView>
   );
 };

@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import { Keyboard, Text, View } from "react-native";
+import { Keyboard, Text, View, ViewProps } from "react-native";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import Animated, {
   CurvedTransition,
@@ -9,7 +9,7 @@ import Animated, {
 import { UseFormSetValue } from "react-hook-form";
 import { Input } from "@/components/profile/create/input";
 
-interface FormField {
+interface FormField extends ViewProps {
   errors?: string[];
   value: string;
   onChangeText: (text: string) => void;
@@ -18,6 +18,7 @@ interface FormField {
   placeholder: string;
   name?: string;
   isEmail?: boolean;
+  disabled?: boolean;
   setIsEmail?: React.Dispatch<SetStateAction<boolean>>;
   setPicker?: React.Dispatch<SetStateAction<boolean>>;
   setValue: UseFormSetValue<{
@@ -35,6 +36,7 @@ interface FormField {
 export default function FormField({
   errors = [],
   value,
+  disabled,
   onChangeText,
   onBlur,
   label,
@@ -47,7 +49,7 @@ export default function FormField({
   ...rest
 }: FormField) {
   return (
-    <View className="py-1.5 space-y-3">
+    <View {...rest}>
       {label && <Text>{label}</Text>}
       {name === "gender" ? (
         <View className="py-4">
@@ -91,11 +93,11 @@ export default function FormField({
               onChangeText(text);
             }}
             placeholder={isEmail ? "이메일" : "휴대폰"}
-            {...rest}
           />
         </View>
       ) : (
         <Input
+          disabled={disabled}
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
@@ -118,7 +120,7 @@ export default function FormField({
               exiting={FadeOut.duration(100).springify().mass(0.3)}
               layout={CurvedTransition.duration(100).delay(120)}
               key={idx}
-              className="text-system-red"
+              className="text-system-red mt-2"
             >
               {error}
             </Animated.Text>

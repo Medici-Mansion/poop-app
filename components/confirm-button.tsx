@@ -11,11 +11,11 @@ interface ConfirmButtonProps {
 
 const CornfirmButton = ({ title, onPress, disabled }: ConfirmButtonProps) => {
   return (
-    <View className="w-full p-4 bg-white rounded-xl">
-      <Pressable onPress={onPress} disabled={disabled}>
+    <Pressable onPress={onPress} disabled={disabled} className="pt-8">
+      <View className="w-full p-4 bg-white rounded-xl">
         <Text className={cn("text-center")}>{title}</Text>
-      </Pressable>
-    </View>
+      </View>
+    </Pressable>
   );
 };
 

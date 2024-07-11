@@ -1,18 +1,20 @@
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
-import { ApiResponse, LoginParam } from "../../types";
+import { LoginParam } from "../../types";
 import { AxiosError } from "axios";
 import { login } from "@/apis";
+import { Response } from "@/types/server";
+import { LoginSuccess } from "@/types/server/auth/login";
 
 const useLogin = (
   options?: UseMutationOptions<
-    ApiResponse,
-    AxiosError<{ data: null; error: { message: string } }>,
+    LoginSuccess,
+    AxiosError<Response<null>>,
     LoginParam
   >
 ) => {
   const mutation = useMutation<
-    ApiResponse,
-    AxiosError<{ data: null; error: { message: string } }>,
+    LoginSuccess,
+    AxiosError<Response<null>>,
     LoginParam
   >({
     mutationKey: ["login"],

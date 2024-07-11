@@ -2,13 +2,15 @@ import React, { SetStateAction } from "react";
 
 import { Controller, UseFormSetValue } from "react-hook-form";
 import FormField from "@/components/form-field";
+import { ViewProps } from "react-native";
 
-interface FormControllerProps {
+interface FormControllerProps extends ViewProps {
   control: any;
   name: string;
   placeholder?: string;
   errors: string[];
   isEmail?: boolean;
+  disabled?: boolean;
   setIsEmail?: React.Dispatch<SetStateAction<boolean>>;
   setPicker?: React.Dispatch<SetStateAction<boolean>>;
   setValue?: UseFormSetValue<{
@@ -28,16 +30,20 @@ const FormController = ({
   name,
   placeholder,
   errors,
+  disabled,
   setPicker,
   setValue,
   isEmail,
   setIsEmail,
+  ...viewProps
 }: FormControllerProps) => {
   return (
     <Controller
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
         <FormField
+          {...viewProps}
+          disabled={disabled}
           placeholder={placeholder || ""}
           value={value}
           onChangeText={onChange}

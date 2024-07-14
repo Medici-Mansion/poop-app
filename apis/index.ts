@@ -92,6 +92,15 @@ export const refresh = async () => {
   return data;
 };
 
+export const checkNicknameDuplicated = async (nickname: string) => {
+  const { data } = await PoopApi.get("/v1/users/nickname", {
+    params: {
+      nickname,
+    },
+  });
+  return data;
+};
+
 const setAccessToken = async ({
   accessToken,
   shouldRefresh,

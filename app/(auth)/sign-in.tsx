@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import { View, Image } from "react-native";
 import { useForm } from "react-hook-form";
 
-import {
-  GestureHandlerRootView,
-  ScrollView,
-} from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Images from "@/constants/Images";
 import { signinFormSchema } from "@/schema";
@@ -43,7 +40,7 @@ const SignIn = () => {
       });
     },
   });
-  const { control, handleSubmit, getValues } = useForm({
+  const { control, handleSubmit } = useForm({
     defaultValues: {
       id: "",
       password: "",
@@ -64,12 +61,12 @@ const SignIn = () => {
   };
 
   return (
-    <GestureHandlerRootView className="bg-gray-600 h-screen w-full flex items-center pt-5 px-4">
+    <GestureHandlerRootView className="bg-gray-600 h-screen w-full flex items-center py-5 px-4">
       <Image
         className="flex-1"
         source={Images.logo}
         resizeMode="contain"
-        style={{ width: 150, height: 140 }}
+        style={{ width: 100, height: 50 }}
       />
       <View className="w-full flex-1 justify-between">
         <View className="space-y-3">
@@ -83,10 +80,15 @@ const SignIn = () => {
               errors={error?.fieldErrors?.[field.name] || []}
             />
           ))}
-          <ConfirmButton title="로그인" onPress={handleSubmit(onSubmit)} />
+          <ConfirmButton
+            disabled={isPending}
+            title="로그인"
+            onPress={handleSubmit(onSubmit)}
+            className="mt-8"
+          />
         </View>
       </View>
-      <TermsSheet className="flex-1 justify-end pb-4" />
+      <TermsSheet className="flex-1 justify-end pb-4 w-full" />
     </GestureHandlerRootView>
   );
 };

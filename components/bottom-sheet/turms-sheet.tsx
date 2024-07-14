@@ -4,9 +4,9 @@ import { View, Text, Pressable, ViewProps } from "react-native";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
 import { TERMS } from "@/constants";
-import { AnimatedPressable } from "@/components/ui/animate-pressable";
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
 import { Portal } from "react-native-portalize";
+import { Button } from "../ui";
 
 interface TermsSheetProps extends ViewProps {}
 
@@ -15,13 +15,8 @@ const TermsSheet = ({ ...viewProps }: TermsSheetProps) => {
     useBottomSheet("50%");
   return (
     <View {...viewProps}>
-      <AnimatedPressable onPress={showBottomSheet} className="w-full">
-        <View className="flex flex-row justify-center border border-gray-300 rounded-2xl mb-5">
-          <Text className="text-white font-bold py-4 w-full text-center">
-            회원가입
-          </Text>
-        </View>
-      </AnimatedPressable>
+      <Button variant="outlined" label="회원가입" onPress={showBottomSheet} />
+
       <Portal>
         <BottomSheet
           ref={ref}
@@ -56,17 +51,13 @@ const TermsSheet = ({ ...viewProps }: TermsSheetProps) => {
                 })}
               </View>
               <View className="pb-3">
-                <Pressable
-                  className="bg-white py-3 rounded-2xl flex items-center justify-center"
+                <Button
+                  label="동의하고 계속"
                   onPress={() => {
                     router.push("/sign-up");
                     hideBottomSheet();
                   }}
-                >
-                  <Text className="text-black font-bold text-center">
-                    동의하고 계속
-                  </Text>
-                </Pressable>
+                />
               </View>
             </View>
           </BottomSheetView>

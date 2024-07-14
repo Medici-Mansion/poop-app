@@ -1,6 +1,5 @@
 import { AxiosError } from "axios";
 
-
 export interface Peeds {
   id: number;
   title: string;
@@ -24,7 +23,6 @@ export interface SignupStepInfo {
   name: string;
   password: string;
   birth: string;
-  gender: Gender;
   phone: string;
   verify: Verify;
 }
@@ -36,14 +34,7 @@ export interface SignupForm {
   title: string;
 }
 
-export enum Gender {
-  MALE = "MALE",
-  FEMALE = "FEMALE",
-  NONE = "NONE",
-}
-
 export enum Verify {
-  EMAIL = "email",
   PHONE = "phone",
 }
 

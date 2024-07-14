@@ -1,28 +1,17 @@
-import React, { SetStateAction } from "react";
+import React, { ReactNode, SetStateAction } from "react";
 
 import { Controller, UseFormSetValue } from "react-hook-form";
 import FormField from "@/components/form-field";
-import { ViewProps } from "react-native";
+import { TextInputProps, View, ViewProps } from "react-native";
 
 interface FormControllerProps extends ViewProps {
   control: any;
   name: string;
   placeholder?: string;
   errors: string[];
-  isEmail?: boolean;
   disabled?: boolean;
-  setIsEmail?: React.Dispatch<SetStateAction<boolean>>;
   setPicker?: React.Dispatch<SetStateAction<boolean>>;
-  setValue?: UseFormSetValue<{
-    id: string;
-    nickname: string;
-    password: string;
-    birthday: string;
-    phone: string;
-    email: string;
-    gender: string;
-    code: string;
-  }>;
+  textInputProps?: TextInputProps & { accessoryView?: () => JSX.Element };
 }
 
 const FormController = ({
@@ -32,32 +21,30 @@ const FormController = ({
   errors,
   disabled,
   setPicker,
-  setValue,
-  isEmail,
-  setIsEmail,
+  textInputProps,
   ...viewProps
 }: FormControllerProps) => {
   return (
-    <Controller
-      control={control}
-      render={({ field: { onChange, onBlur, value } }) => (
-        <FormField
-          {...viewProps}
-          disabled={disabled}
-          placeholder={placeholder || ""}
-          value={value}
-          onChangeText={onChange}
-          onBlur={onBlur}
-          errors={errors}
-          name={name}
-          setPicker={setPicker}
-          setValue={setValue ? setValue : () => {}}
-          isEmail={isEmail}
-          setIsEmail={setIsEmail}
-        />
-      )}
-      name={name}
-    />
+    <View {...viewProps}>
+      <Controller
+        control={control}
+        name={name}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <FormField
+            {...textInputProps}
+            className={"text-body-b14"}
+            disabled={disabled}
+            placeholder={placeholder || ""}
+            value={value}
+            onChangeText={onChange}
+            onBlur={onBlur}
+            errors={errors}
+            name={name}
+            setPicker={setPicker}
+          />
+        )}
+      />
+    </View>
   );
 };
 

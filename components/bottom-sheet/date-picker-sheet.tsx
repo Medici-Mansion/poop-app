@@ -24,7 +24,7 @@ const DatePickerSheet = ({
   setStep,
 }: {
   setPicker: React.Dispatch<SetStateAction<boolean>>;
-  setValue: UseFormSetValue<FormValues>;
+  setValue: (date: string) => void;
   setStep: React.Dispatch<SetStateAction<number>>;
 }) => {
   const { ref, snapPoints, hideBottomSheet } = useBottomSheet("50%");
@@ -39,7 +39,7 @@ const DatePickerSheet = ({
 
   const setBirthDay = () => {
     const formattedDate = dayjs(date).format("YYYY-MM-DD");
-    setValue("birthday", formattedDate);
+    setValue(formattedDate);
     hideBottomSheet();
     setPicker(false);
     setStep((prev) => prev + 1);

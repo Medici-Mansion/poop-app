@@ -1,12 +1,12 @@
-import React, { PropsWithChildren } from 'react';
-import { Pressable, PressableProps } from 'react-native';
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
+import React, { PropsWithChildren } from "react";
+import { Pressable, PressableProps } from "react-native";
+import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
 const AnimatedPressableWrapper = Animated.createAnimatedComponent(Pressable);
 
 interface AnimatedPressableProps extends PressableProps {}
 
 export const AnimatedPressable = (
-  props: PropsWithChildren<AnimatedPressableProps>,
+  props: PropsWithChildren<AnimatedPressableProps>
 ) => {
   const opacity = useSharedValue(1);
   const scale = useSharedValue(1);
@@ -27,14 +27,15 @@ export const AnimatedPressable = (
     <AnimatedPressableWrapper
       onPress={props.onPress}
       style={[{ opacity, transform: [{ scale }] }, props.style]}
-      onPressIn={event => {
+      onPressIn={(event) => {
         handlePressIn();
         props.onPressIn && props.onPressIn(event);
       }}
-      onPressOut={event => {
+      onPressOut={(event) => {
         handlePressOut();
         props.onPressOut && props.onPressOut(event);
-      }}>
+      }}
+    >
       {props.children}
     </AnimatedPressableWrapper>
   );

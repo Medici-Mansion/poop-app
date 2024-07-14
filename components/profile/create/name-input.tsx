@@ -5,29 +5,32 @@ import { Input } from '@/components/profile/create/input';
 
 const MIN_LENGTH = 2;
 
+interface NameInputHandle {
+  checkError: () => boolean;
+}
+
 /**
  * NameInput
  * 반려견 이름 입력 컴포넌트
  * 이름이 2자 이상인지 유효성 검사
  * */
-const NameInput = forwardRef((ref: React.Ref<any>) => {
+const NameInput = forwardRef<NameInputHandle>((props, ref) => {
   const [error, setError] = useState<null | string>(null);
   const profileStore = useProfileStore();
 
   const checkError = () => {
     if (profileStore.profile.name.length < MIN_LENGTH) {
       setError(`이름은 ${MIN_LENGTH}자 이상 입력해주세요.`);
+      return false;
     } else {
       setError(null);
+      return true;
     }
-    router.setParams({ event: null });
-
-    return !error;
   };
 
   useImperativeHandle(ref, () => ({
     checkError,
-  }))
+  }));
 
   const handleChangeName = (name: string) => {
     profileStore.setName(name);
@@ -44,5 +47,7 @@ const NameInput = forwardRef((ref: React.Ref<any>) => {
     />
   );
 });
+
+NameInput.displayName = 'NameInput';
 
 export default NameInput;

@@ -1,8 +1,8 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import CreateHeader from "@/components/profile/create/header";
-import MyProfileHeader from "@/components/profile/my-profile/header";
+import CreateHeader from "@/components/my-profile/create/header";
+import MyProfileHeader from "@/components/my-profile/main/header";
 
 const ProfileLayout = () => {
   return (
@@ -16,7 +16,7 @@ const ProfileLayout = () => {
             headerStyle: { backgroundColor: "#161622" },
           }} 
         />
-        <Stack.Screen name="my-profile" 
+        <Stack.Screen name="main" 
           options={{
             title: "",
             headerLeft: () => <MyProfileHeader.LeftButton />,

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { Breed, BreedsGroupedByConsonant } from '@/types';
-import BreedItem from '@/components/profile/create/breed-list-item'
+import BreedItem from '@/components/my-profile/create/breed-list-item'
 
 interface SearchBreedsProps {
   breeds: BreedsGroupedByConsonant;

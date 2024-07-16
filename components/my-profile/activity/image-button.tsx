@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactNaive, { View, Text, Image } from 'react-native';
+import ReactNaive, { View, Text, Image, StyleSheet } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 
 import Images from "@/constants/Images";
@@ -26,18 +26,21 @@ export default function ImageButton(props: ImageButtonProps) {
       <View className="flex flex-row items-center">
         {
           image ? 
-            <Image
-              className='w-9 h-9 rounded-full bg-gray-700'
-              source={{ uri: image }}
-              resizeMode="contain"
-            />
-          : 
-          <View className='flex items-center justify-center w-9 h-9 rounded-full bg-gray-700'>
-            <Image
-              source={Images.poopIcon}
-              className='w-5 h-5'
-            />
-          </View>
+            <View className='flex items-center justify-center w-9 h-9 rounded-full bg-gray-700'>
+              <Image
+                className='w-5 h-5'
+                source={{ uri: image }}
+                style={styles.imageBox}
+                resizeMode="contain"
+              />
+            </View>
+            : 
+            <View style={styles.imageBox} className='flex items-center justify-center'>
+              <Image
+                source={Images.poopIcon}
+                style={styles.defaultImage}
+              />
+            </View>
         }
         <Text className="ml-4 text-base font-bold text-white">{text}</Text>
       </View>
@@ -49,3 +52,22 @@ export default function ImageButton(props: ImageButtonProps) {
     </View>
   );
 };
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  imageBox: {
+    width: 36,
+    height: 36,
+    borderRadius: 50,
+    backgroundColor: '#353434',
+  },
+  defaultImage: {
+    width: 20,
+    height: 20,
+  }
+});

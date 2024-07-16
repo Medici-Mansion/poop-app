@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pressable, Text } from 'react-native';
+import { router } from 'expo-router';
 
 import Feather from '@expo/vector-icons/Feather';
 
@@ -9,7 +10,7 @@ import Feather from '@expo/vector-icons/Feather';
  * */ 
 const HeaderRightButton = () => {
   return (
-    <Pressable>
+    <Pressable onPress={() => router.push('my-profile/activity')}>
       <Feather name="menu" size={24} color="white" />
     </Pressable>
   );

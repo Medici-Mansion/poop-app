@@ -8,6 +8,7 @@ import { View } from "react-native";
 interface PasswordConfirmInputProps extends ViewProps {
   step: number;
   disabled?: boolean;
+  onSubmitEditing?: () => void;
 }
 
 export const PasswordConfirmInput = memo(

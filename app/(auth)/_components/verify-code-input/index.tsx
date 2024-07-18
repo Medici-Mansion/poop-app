@@ -16,6 +16,7 @@ interface VerifyCodeInputProps extends ViewProps {
   disabled?: boolean;
   isError?: boolean;
   formHandler: Ref<any>;
+  onSubmitEditing?: () => void;
   onSuccess?: (state: boolean) => void;
 }
 
@@ -26,6 +27,7 @@ export const VerifyCodeInput = memo(
     isError,
     onSuccess,
     formHandler,
+    onSubmitEditing,
     ...viewProps
   }: VerifyCodeInputProps) => {
     const { getValues } = useFormContext();
@@ -41,10 +43,6 @@ export const VerifyCodeInput = memo(
 
     useImperativeHandle(formHandler, () => form);
 
-    console.log(
-      form?.getFieldState("code").isDirty,
-      form?.formState?.errors?.code
-    );
     return (
       <FormProvider {...form}>
         {step !== 5 ? null : (
@@ -73,6 +71,7 @@ export const VerifyCodeInput = memo(
                       ) : null
                     }
                     maxLength={6}
+                    onSubmitEditing={onSubmitEditing}
                     keyboardType="numeric"
                     label={"인증 번호"}
                     placeholder="인증 번호"

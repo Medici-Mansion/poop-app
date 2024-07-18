@@ -10,6 +10,7 @@ interface PasswordInputProps extends ViewProps {
   onSuccess?: () => void;
   validateFn?: () => void;
   disabled?: boolean;
+  onSubmitEditing?: () => void;
 }
 
 export const PasswordInput = memo(

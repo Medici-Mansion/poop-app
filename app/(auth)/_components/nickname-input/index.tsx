@@ -8,6 +8,7 @@ interface NicknameInputProps extends ViewProps {
   disabled?: boolean;
   isSuccess?: boolean;
   validateFn?: () => void;
+  onSubmitEditing?: () => void;
 }
 
 export const NicknameInput = ({

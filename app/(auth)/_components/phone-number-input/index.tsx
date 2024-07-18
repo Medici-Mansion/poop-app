@@ -8,6 +8,7 @@ import { View } from "react-native";
 interface PhoneNumberInputProps extends ViewProps {
   step: number;
   disabled?: boolean;
+  onSubmitEditing?: () => void;
 }
 
 export const PhoneNumberInput = memo(

@@ -1,22 +1,23 @@
-import { Fragment, SetStateAction } from "react";
-import { Keyboard, Text, TextInputProps } from "react-native";
+import { Fragment, ReactNode, SetStateAction, memo } from "react";
+import { Text, TextInputProps } from "react-native";
 
 import { Input } from "@/components/profile/create/input";
 
 interface FormField extends TextInputProps {
   errors?: string[];
   value: string;
-  onChangeText: (text: string) => void;
+  onChangeText?: (text: string) => void;
   onBlur: () => void;
   label?: string;
   placeholder?: string;
   name?: string;
   disabled?: boolean;
   hint?: string;
+  suffix?: ReactNode;
   setPicker?: React.Dispatch<SetStateAction<boolean>>;
 }
 
-export default function FormField({
+function FormField({
   errors = [],
   value,
   disabled,
@@ -43,16 +44,9 @@ export default function FormField({
         error={errors?.[0]}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        secureTextEntry={name === "password"}
-        editable={name !== "birthday"}
         autoCapitalize={"none"}
-        onPressIn={() => {
-          if (setPicker && name === "birthday") {
-            setPicker(true);
-            Keyboard.dismiss();
-          }
-        }}
       />
     </Fragment>
   );
 }
+export default memo(FormField);

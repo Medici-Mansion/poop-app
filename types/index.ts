@@ -41,12 +41,9 @@ export enum Verify {
 // Parameters for Signup
 export interface SignupParam {
   nickname: string;
-  id: string;
   password: string;
   birthday: string;
-  gender: string;
-  email?: string;
-  phone?: string;
+  phone: string;
 }
 
 // Parameters for Verification

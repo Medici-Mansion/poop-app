@@ -37,12 +37,18 @@ export const SignupFormList: (SignupFormField & {
   },
   {
     id: 4,
-    placeholder: "휴대폰 번호",
-    name: "phone" as const,
-    title: "휴대폰 번호 또는 이메일을\n입력해주세요",
+    placeholder: "생년월일",
+    name: "birthday" as const,
+    title: "생년월일을 입력해주세요",
   },
   {
     id: 5,
+    placeholder: "휴대폰 번호",
+    name: "phone" as const,
+    title: "휴대폰 번호를 입력해주세요",
+  },
+  {
+    id: 6,
     placeholder: "인증 번호",
     name: "code" as const,
     title: "인증 번호를 입력해주세요",

@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { View, Image } from "react-native";
+import {
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Keyboard,
+  Pressable,
+} from "react-native";
 import { useForm } from "react-hook-form";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -11,7 +17,6 @@ import { SignInErrorType, Token } from "@/types";
 import ConfirmButton from "@/components/confirm-button";
 import FormController from "@/components/form-controller";
 import TermsSheet from "@/components/bottom-sheet/turms-sheet";
-import { SigninFormField } from "@/constants/form-filed";
 import { z } from "zod";
 import useLogin from "@/hooks/user/use-login";
 import { router } from "expo-router";
@@ -61,34 +66,49 @@ const SignIn = () => {
   };
 
   return (
-    <GestureHandlerRootView className="bg-gray-600 h-screen w-full flex items-center py-5 px-4">
-      <Image
-        className="flex-1"
-        source={Images.logo}
-        resizeMode="contain"
-        style={{ width: 100, height: 50 }}
-      />
-      <View className="w-full flex-1 justify-between">
-        <View className="space-y-3">
-          {SigninFormField.map((field) => (
-            <FormController
-              disabled={isPending}
-              key={field.id}
-              control={control}
-              name={field.name || ""}
-              placeholder={field.name === "id" ? "아이디" : "비밀번호"}
-              errors={error?.fieldErrors?.[field.name] || []}
-            />
-          ))}
-          <ConfirmButton
-            disabled={isPending}
-            title="로그인"
-            onPress={handleSubmit(onSubmit)}
-            className="mt-8"
+    <GestureHandlerRootView className="bg-gray-600">
+      <Pressable
+        onPress={(e) => {
+          Keyboard.dismiss();
+        }}
+      >
+        <KeyboardAvoidingView className="h-screen items-center w-full flex py-5 px-4">
+          <Image
+            className="flex-1"
+            source={Images.logo}
+            resizeMode="contain"
+            style={{ width: 100, height: 50 }}
           />
-        </View>
-      </View>
-      <TermsSheet className="flex-1 justify-end pb-4 w-full" />
+          <View className="w-full flex-1 justify-between">
+            <View className="space-y-3">
+              <FormController
+                disabled={isPending}
+                control={control}
+                name={"id"}
+                placeholder={"아이디"}
+                errors={error?.fieldErrors?.id || []}
+              />
+              <FormController
+                disabled={isPending}
+                control={control}
+                name={"password"}
+                placeholder={"비밀번호"}
+                errors={error?.fieldErrors?.password || []}
+                textInputProps={{
+                  secureTextEntry: true,
+                }}
+              />
+              <ConfirmButton
+                disabled={isPending}
+                title="로그인"
+                onPress={handleSubmit(onSubmit)}
+                className="mt-8"
+              />
+            </View>
+          </View>
+          <TermsSheet className="flex-1 justify-end pb-4 w-full" />
+        </KeyboardAvoidingView>
+      </Pressable>
     </GestureHandlerRootView>
   );
 };

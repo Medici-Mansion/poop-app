@@ -1,4 +1,3 @@
-import { DatePickerSheet } from "@/components/bottom-sheet/date-picker-sheet";
 import { SignupFormList } from "@/constants/form-filed";
 import useCheckVerify from "@/hooks/user/use-check-verify";
 import useGetVerifyCode from "@/hooks/user/use-get-verify-code";
@@ -27,10 +26,10 @@ import {
 } from "./_components";
 import FormField from "@/components/form-field";
 import { PhoneNumberInput } from "./_components/phone-number-input";
-import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { VerifyCodeInput } from "./_components/verify-code-input";
 import { useMutation } from "@tanstack/react-query";
 import { checkNicknameDuplicated } from "@/apis";
+import CustomDateTimeSheet from "@/components/my-profile/create/date-time-sheet";
 
 const signupFormFieldList = [
   "nickname",
@@ -56,6 +55,12 @@ const Signup = () => {
     undefined
   > | null>();
 
+  /**
+   * 생년월일, 휴대폰 번호 사라지는 현상으로 인해,
+   * submit 직전 복사용 ref
+   */
+  const compSignupParam = useRef<SignupParam | null>(null);
+
   const form = useForm<{ [key in SignupFormFields]: string }>({
     defaultValues: {
       nickname: "",
@@ -65,17 +70,18 @@ const Signup = () => {
       phone: "",
     },
     mode: "onChange",
+    shouldUnregister: false,
   });
 
-  const { mutateAsync: getVerifyCode } = useGetVerifyCode({
+  const { mutate: getVerifyCode } = useGetVerifyCode({
     onError: (err) => console.log(err),
   });
 
   const { mutate: signupMutate } = useSignup({
-    onSuccess: (data) => {
+    onSuccess: (data, vars) => {
       const getVerifyParam: VerifyParam = {
         type: Verify.PHONE,
-        vid: form.getValues("phone"),
+        vid: vars.phone,
       };
       getVerifyCode(getVerifyParam);
       setStep((prev) => 5);
@@ -84,6 +90,8 @@ const Signup = () => {
   });
 
   const onSubmit = (values: SignupParam) => {
+    compSignupParam.current = { ...values };
+
     signupMutate(values);
   };
 
@@ -92,6 +100,10 @@ const Signup = () => {
       /**
        * 인증 완료
        */
+      router.replace("my-profile");
+    },
+    onError(error, variables, context) {
+      console.log(error, variables, context);
     },
   });
 
@@ -151,11 +163,11 @@ const Signup = () => {
   };
 
   return (
-    <BottomSheetModalProvider>
+    <FormProvider {...form}>
       <Pressable
         className="flex-1"
         onPress={() => {
-          bottomSheetRef.current?.close();
+          bottomSheetRef.current?.hide?.();
         }}
       >
         <GestureHandlerRootView
@@ -183,65 +195,83 @@ const Signup = () => {
             className="flex-grow p-4"
             extraScrollHeight={-200}
           >
-            <FormProvider {...form}>
-              <Text className="text-white font-bold text-2xl pb-10 flex flex-col justify-between">
-                {SignupFormList[step]?.title}
-              </Text>
-              <View style={{ flex: 1 }}>
-                <VerifyCodeInput
-                  formHandler={formHandler}
-                  isError={isError}
+            <Text className="text-white font-bold text-2xl pb-10 flex flex-col justify-between">
+              {SignupFormList[step]?.title}
+            </Text>
+            <View style={{ flex: 1 }}>
+              <VerifyCodeInput
+                onSubmitEditing={onValidateKeyboardTopButtonClick}
+                formHandler={formHandler}
+                isError={isError}
+                step={step}
+              />
+              <View
+                className="space-y-16"
+                style={{
+                  marginTop: step === 5 ? 64 : 0,
+                }}
+              >
+                {step >= 4 ? (
+                  <PhoneNumberInput
+                    onSubmitEditing={onValidateKeyboardTopButtonClick}
+                    step={step}
+                    disabled={step >= 5}
+                  />
+                ) : null}
+                {step >= 3 ? (
+                  <View>
+                    <FormField
+                      disabled={step >= 5}
+                      key="signup-birthday-input"
+                      onPress={() => {
+                        bottomSheetRef.current?.show();
+                      }}
+                      value={form.watch().birthday}
+                      onBlur={() => {}}
+                      showSoftInputOnFocus={false}
+                      setPicker={() => {}}
+                      placeholder="생년월일"
+                      label={step > 3 ? "생년월일" : ""}
+                      returnKeyType="next"
+                      className={"text-body-b14 font-bold"}
+                    />
+                  </View>
+                ) : null}
+                {step >= 2 ? (
+                  <PasswordConfirmInput
+                    onSubmitEditing={onValidateKeyboardTopButtonClick}
+                    step={step}
+                  />
+                ) : null}
+                {step >= 1 ? (
+                  <PasswordInput
+                    onSubmitEditing={onValidateKeyboardTopButtonClick}
+                    step={step}
+                  />
+                ) : null}
+                <NicknameInput
+                  onSubmitEditing={onValidateKeyboardTopButtonClick}
+                  isSuccess={nicknameSuccess}
                   step={step}
                 />
-                <View
-                  className="space-y-16"
-                  style={{
-                    marginTop: step === 5 ? 64 : 0,
-                  }}
-                >
-                  {step >= 4 ? (
-                    <PhoneNumberInput step={step} disabled={step >= 5} />
-                  ) : null}
-                  {step >= 3 ? (
-                    <View>
-                      <FormField
-                        disabled={step >= 5}
-                        key="signup-birthday-input"
-                        onPress={() => {
-                          bottomSheetRef.current?.show();
-                        }}
-                        value={form.watch().birthday}
-                        onBlur={() => {}}
-                        showSoftInputOnFocus={false}
-                        setPicker={() => {}}
-                        placeholder="생년월일"
-                        label={step > 3 ? "생년월일" : ""}
-                        returnKeyType="next"
-                        className={"text-body-b14 font-bold"}
-                      />
-                    </View>
-                  ) : null}
-                  {step >= 2 ? <PasswordConfirmInput step={step} /> : null}
-                  {step >= 1 ? <PasswordInput step={step} /> : null}
-                  <NicknameInput isSuccess={nicknameSuccess} step={step} />
-                </View>
               </View>
-              <Controller
-                control={form.control}
-                name={"birthday"}
-                disabled={step >= 5}
-                render={({ field }) => (
-                  <DatePickerSheet
-                    sheetRef={bottomSheetRef}
-                    setValue={(selectedDate) => {
-                      field.onChange(selectedDate);
-                      step === 3 && onValidateKeyboardTopButtonClick();
-                    }}
-                  />
-                )}
-              />
-            </FormProvider>
+            </View>
           </KeyboardAwareScrollView>
+          <Controller
+            control={form.control}
+            name={"birthday"}
+            disabled={step >= 5}
+            render={({ field }) => (
+              <CustomDateTimeSheet
+                ref={bottomSheetRef}
+                date={field.value}
+                onConfirm={(selectedDate) => {
+                  field.onChange(selectedDate);
+                  step === 3 && onValidateKeyboardTopButtonClick();
+                }}
+              />
+            )}
+          />
         </GestureHandlerRootView>
         {step !== 5 ? (
           <KeyboardAccessoryView avoidKeyboard hideBorder>
@@ -259,21 +289,20 @@ const Signup = () => {
           <KeyboardAccessoryView avoidKeyboard hideBorder>
             <Button
               size={"lg"}
-              disabled={
-                !formHandler.current?.getFieldState("code").isDirty ||
-                !!formHandler.current?.formState?.errors?.code
-              }
               label={"확인"}
               onPress={() =>
                 formHandler.current?.handleSubmit((value) =>
-                  checkVerifyCode(value)
+                  checkVerifyCode({
+                    ...value,
+                    vid: compSignupParam.current.phone,
+                  })
                 )()
               }
             />
           </KeyboardAccessoryView>
         )}
       </Pressable>
-    </BottomSheetModalProvider>
+    </FormProvider>
   );
 };
 

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { Host } from 'react-native-portalize';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Host } from "react-native-portalize";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import * as SplashScreen from "expo-splash-screen";
 import "react-native-reanimated";
@@ -17,7 +17,9 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 3000);
     }
   }, [loaded]);
 
@@ -28,14 +30,17 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView>
       <Host>
-      <QueryProvider>
-        <Stack>
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="profile" options={{ headerShown: false }} />
-          <Stack.Screen name="select-photo" options={{ headerShown: false }} />
-        </Stack>
-      </QueryProvider>
+        <QueryProvider>
+          <Stack>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="profile" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="select-photo"
+              options={{ headerShown: false }}
+            />
+          </Stack>
+        </QueryProvider>
       </Host>
     </GestureHandlerRootView>
   );

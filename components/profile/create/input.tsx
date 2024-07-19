@@ -9,7 +9,6 @@ import {
   Text,
   TextInput,
   TextInputProps,
-  Platform,
 } from 'react-native';
 import Animated, {
   CurvedTransition,
@@ -55,8 +54,7 @@ export const Input = forwardRef<TextInput, InputProps>(
             spellCheck={false}
             clearButtonMode="while-editing"
             className={cn(
-              'text-body-m14 text-white px-6 rounded-xl bg-gray-500',
-              Platform.OS === 'ios' && 'py-4',
+              'text-body-m14 text-white p-6 rounded-2xl bg-gray-500 mt-2',
               inputClass,
             )}
             {...props}

@@ -11,11 +11,19 @@ const ProfileLayout = () => {
             title: "",
             headerLeft: () => <Header.LeftButton />,
             headerRight: () => <Header.RightButton />,
-            headerStyle: { backgroundColor: "#161622" },
+            headerStyle: { backgroundColor: "#121212" },
+            headerShadowVisible: false,
+          }} 
+        />
+        <Stack.Screen name="main" 
+          options={{
+            title: "안녕! 난 메인, 작업중이야!",
+            // headerStyle: { backgroundColor: "#121212" },
+            headerShadowVisible: false,
           }} 
         />
       </Stack>
-      <StatusBar backgroundColor="#161622" style="dark" />
+      <StatusBar backgroundColor="#121212" style="dark" />
     </>
   );
 };

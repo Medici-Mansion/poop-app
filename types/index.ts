@@ -100,7 +100,7 @@ export interface Consonants {
 
 export interface Breed {
   id: string;
-  name: string;
+  nameKR: string;
   nameEN: string;
   avatar: string;
 }

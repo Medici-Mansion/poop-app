@@ -60,7 +60,7 @@ export default function CreateProfile() {
       <ScrollView className="w-full h-full flex-1 bg-gray-600">
         <View className="px-4 flex flex-col py-10 items-center w-full h-ful">
           <GalleryButton
-            image={profileStore.profile.avatar}
+            image={profileStore.profile.avatar?.uri}
             onPress={() => router.push('select-photo')}
           />
 

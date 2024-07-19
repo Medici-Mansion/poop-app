@@ -29,6 +29,7 @@ const SelectPhotoScreen = () => {
     if (hasNextPage) loadNextPagePictures();
   };
 
+  // TODO: select-photo가 profileStore에 의존하고 있음 -> 네이티브로 변경시에는 의존성 없도록 하기
   const handleEditComplete = (result) => {
     setPhoto(result);
     profileStore.setAvatar({

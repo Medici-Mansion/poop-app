@@ -11,11 +11,12 @@ const ProfileLayout = () => {
             title: "",
             headerLeft: () => <Header.LeftButton />,
             headerRight: () => <Header.RightButton />,
-            headerStyle: { backgroundColor: "#161622" },
+            headerStyle: { backgroundColor: "#121212" },
+            headerShadowVisible: false,
           }} 
         />
       </Stack>
-      <StatusBar backgroundColor="#161622" style="dark" />
+      <StatusBar backgroundColor="#121212" style="dark" />
     </>
   );
 };

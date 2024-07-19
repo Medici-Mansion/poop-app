@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Pressable, Text } from 'react-native';
 
-import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import Event from '@/constants/RouteEvent';
 import { useProfileStore } from '@/store/profile';
@@ -30,7 +30,7 @@ const HeaderRightButton = () => {
   
   return (
     <Pressable onPress={handlePress} disabled={!isValid}>
-      <Text className={`font-bold ${isValid ? 'text-white' : 'text-gray-300'}`}>등록</Text>
+      <Text className={`font-bold ${isValid ? 'text-white' : 'text-gray-300'}`}>만들기</Text>
     </Pressable>
   );
 };
@@ -45,7 +45,7 @@ const HeaderLeftButton = () => {
 
   return (
     <Pressable onPress={() => navigation.goBack()}>
-      <AntDesign name="close" size={24} color="white" />
+      <MaterialIcons name="keyboard-arrow-left" size={24} color='white' />
     </Pressable>
   );
 };

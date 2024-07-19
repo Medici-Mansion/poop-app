@@ -15,6 +15,13 @@ const ProfileLayout = () => {
             headerShadowVisible: false,
           }} 
         />
+        <Stack.Screen name="main" 
+          options={{
+            title: "안녕! 난 메인, 작업중이야!",
+            // headerStyle: { backgroundColor: "#121212" },
+            headerShadowVisible: false,
+          }} 
+        />
       </Stack>
       <StatusBar backgroundColor="#121212" style="dark" />
     </>

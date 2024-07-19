@@ -27,7 +27,7 @@ export default function CreateProfile() {
   const breedRef = useRef(null);
 
   const onSuccess = () => {
-    router.push('profile');
+    router.push('profile/main');
   }
   const { mutate: createProfileMutate, isPending: createPending } = useCreateProfile({ onSuccess });
 

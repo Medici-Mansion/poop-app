@@ -6,7 +6,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import { ImageButton } from '@/components/my-profile/activity';
 import { MenuGroupList } from '@/components/my-profile/common';
 
-
 // TODO: 가상 데이터를 실제 데이터로 교체하기
 const profileMockData = { id: 1, name: '돌돌이' };
 

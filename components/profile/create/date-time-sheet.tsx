@@ -18,10 +18,10 @@ interface HandleProps {
   handleConfirm: () => void;
 }
 
-/** 
+/**
  * renderHandle
  * bottom의 핸들이자 확인 버튼
- * */ 
+ * */
 const renderHandle = (props: HandleProps) => {
   const { isPending, handleConfirm } = props;
   return (
@@ -34,27 +34,27 @@ const renderHandle = (props: HandleProps) => {
   );
 }
 
-/** 
+/**
  * renderBackdrop
  * bottom의 배경이자 bottom의 clickOutside를 위한 컴포넌트
- * */ 
+ * */
 const renderBackdrop = ((props: any) => {
   const { onPress, ...rest } = props;
     return (
-      <BottomSheetBackdrop 
+      <BottomSheetBackdrop
       disappearsOnIndex={-1}
       appearsOnIndex={0}
       opacity={0}
       onPress={onPress}
-      {...rest} 
+      {...rest}
       />
     )
 });
 
-/** 
+/**
  * CustomDateTimeSheet
  * 날짜 선택을 위한 커스텀 DateTimeSheet
- * */ 
+ * */
 const CustomDateTimeSheet = forwardRef((props: DateTimeSheetProps, ref) => {
   const { date = '', onConfirm, isPending = false, ...rest } = props;
   const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
@@ -125,5 +125,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
 });
+
+CustomDateTimeSheet.displayName = 'CustomDateTimeSheet';
 
 export default CustomDateTimeSheet;

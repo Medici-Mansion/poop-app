@@ -7,17 +7,22 @@ import type { Breed } from '@/types';
 
 type Gender = typeof gender[number]['value'];
 
+export interface Avatar {
+  uri: string;
+  filename: string;
+};
+
 interface ProfileStore {
   profile: Profile;
   setName: (name: string) => void;
-  setAvatar: (avatar: string) => void;
+  setAvatar: (avatar: Avatar) => void;
   setBirthday: (birthday: string) => void;
   setGender: (gender: Gender) => void;
   setBreed: (breed: Breed) => void;
 }
 
 interface Profile {
-  avatar: string;
+  avatar: Avatar | null;
   name: string;
   birthday: string;
   gender: Gender;
@@ -25,7 +30,7 @@ interface Profile {
 }
 
 const initProfile: Profile = {
-  avatar: "",
+  avatar: null,
   name: "",
   birthday: "",
   gender: "FEMALE",

@@ -6,17 +6,15 @@ import { getVerifyCode } from "@/apis";
 const useGetVerifyCode = (
   options?: UseMutationOptions<ApiResponse, AxiosError, VerifyParam>
 ) => {
-  const { mutateAsync, data, isSuccess, isPending, error } = useMutation<
-    ApiResponse,
-    AxiosError,
-    VerifyParam
-  >({
-    mutationKey: ["get-verify"],
-    mutationFn: getVerifyCode,
-    ...(options ?? {}),
-  });
+  const { mutate, mutateAsync, data, isSuccess, isPending, error } =
+    useMutation<ApiResponse, AxiosError, VerifyParam>({
+      mutationKey: ["get-verify"],
+      mutationFn: getVerifyCode,
+      ...(options ?? {}),
+    });
 
   return {
+    mutate,
     mutateAsync,
     data,
     isSuccess,

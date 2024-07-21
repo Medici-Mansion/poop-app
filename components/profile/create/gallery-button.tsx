@@ -16,12 +16,12 @@ export default function GalleryButton(props: GalleryButtonProps) {
   return (
     <Pressable 
       onPress={onPress}
-      className="flex relative items-center justify-center w-20 h-20 bg-gray-500 rounded-full"
+      className="flex relative items-center justify-center w-24 h-24 bg-gray-500 rounded-full"
     >
       {image && (
         <Image
           source={{ uri: image }}
-          className="object-cover -z-10 w-20 h-20 rounded-full"
+          className="object-cover -z-10 w-24 h-24 rounded-full"
         />
       )}
     <View className='absolute'>

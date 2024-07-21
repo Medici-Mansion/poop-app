@@ -29,9 +29,13 @@ const SelectPhotoScreen = () => {
     if (hasNextPage) loadNextPagePictures();
   };
 
+  // TODO: select-photo가 profileStore에 의존하고 있음 -> 네이티브로 변경시에는 의존성 없도록 하기
   const handleEditComplete = (result) => {
     setPhoto(result);
-    profileStore.setAvatar(result.uri);
+    profileStore.setAvatar({
+      uri: result.uri,
+      filename: result.uri.split('/').pop(),
+    });
     setTimeout(() => {
       router.back();
       // TODO: 라이브러리 이슈로 300ms 후에 뒤로가기

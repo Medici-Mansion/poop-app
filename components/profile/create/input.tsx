@@ -31,6 +31,7 @@ interface InputProps extends TextInputProps {
   disabled?: boolean;
   inputClass?: string;
   suffix?: ReactNode;
+  containerClassName?: string;
   onOuterPressIn?: (event: GestureResponderEvent) => void;
 }
 
@@ -43,6 +44,7 @@ export const Input = memo(
         error,
         hint,
         disabled,
+        containerClassName,
         onOuterPressIn,
         suffix,
         ...props
@@ -77,9 +79,10 @@ export const Input = memo(
             <Text className="text-body-b12 text-gray-200">{label}</Text>
           )}
           <Animated.View
-            className={
-              "border-2 rounded-[20px] bg-gray-500 flex-row items-center justify-between pr-6"
-            }
+            className={cn(
+              "border-2 rounded-[20px] bg-gray-500 flex-row items-center justify-between pr-6",
+              containerClassName
+            )}
             style={[animatedStyles]}
           >
             <TextInput

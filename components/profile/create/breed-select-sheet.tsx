@@ -74,7 +74,7 @@ export default function breedSelectSheet(props: BreedSelectProps) {
               placeholderTextColor={'#5D5D5D'}
               onChangeText={setSearchInput}
             />
-            <View className='absolute top-3 left-6'>
+            <View className='absolute top-7 left-6'>
               <MaterialIcons name="search" size={24} color="#5D5D5D" />
             </View>
           </View>

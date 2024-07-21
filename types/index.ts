@@ -112,7 +112,7 @@ export interface Consonants {
 // Sign-In Error Types
 export interface Breed {
   id: string;
-  name: string;
+  nameKR: string;
   nameEN: string;
   avatar: string;
 }

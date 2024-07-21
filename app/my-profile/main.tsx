@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View } from 'react-native';
-import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 
 import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
 import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
 import { ControlButtons } from '@/components/my-profile/main';
+import MenuTabs, { Tab } from '@/components/my-profile/main/menu-tabs';
+import Content from '@/components/my-profile/main/content';
 
 // TODO: 데스트 데이터
 const userInfo = {
@@ -20,17 +21,19 @@ const userInfo = {
 }
 
 export default function MyProfile() {
+  const [currentTab, setCurrentTab] = useState<Tab>('toon');
   return (
-    <SafeAreaView className="w-full h-full bg-gray-600">
-        <ScrollView className="w-full h-full flex-1">
-          <View className="px-4 flex flex-col py-10 items-center w-full h-full">
-            <ProfileImageBox uri={userInfo.avatarUrl} name={userInfo.name} />
-            <UserActivitySummary />
-            <ControlButtons />
-          </View>
+    <ScrollView className="w-full h-full bg-gray-600 pt-8">
+      {/* 내 프로필 정보 - 요약 영역 */}
+      <View className="px-4 h-80 flex flex-col py-8 items-center w-full">
+        <ProfileImageBox uri={userInfo.avatarUrl} name={userInfo.name} />
+        <UserActivitySummary />
+        <ControlButtons />
+      </View>
 
-          {/* TODO: 툰/ 챌린지 영역 */}
-        </ScrollView>
-    </SafeAreaView>
+      {/* 내 프로필 정보 - 툰, 챌린지 영역 */}
+      <MenuTabs tab={currentTab} onTabPress={setCurrentTab} />
+      <Content tab={currentTab} />
+    </ScrollView>
   )
 };

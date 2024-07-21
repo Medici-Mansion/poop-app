@@ -21,10 +21,10 @@ const ProfileImageBox = (props: ProfileImageProps) => {
         {
           uri ? 
           <Image
-          source={Images.poopIcon}
-          style={styles.imageBox}
-          resizeMode="contain"
-        />
+            source={uri}
+            style={styles.imageBox}
+            resizeMode="contain"
+          />
         : 
         <View style={styles.imageBox} className='flex items-center justify-center'>
           <Image
@@ -34,7 +34,9 @@ const ProfileImageBox = (props: ProfileImageProps) => {
         </View>
         }
       </View>
-      <Text className="text-white text-2xl mt-4">{name}</Text>
+      <View className='mt-10'>
+        <Text className="text-white head-sb21 font-bold">{name}</Text>
+      </View>
     </>
   );
 };

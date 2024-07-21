@@ -36,7 +36,7 @@ const SignIn = () => {
 
       const response = await getMyProfileList();
       if (!response.body.length) {
-        return router.replace("/create-profile");
+        return router.replace("/profile/main");
       }
     },
     onError: (err: AxiosError<Response<null>>) => {

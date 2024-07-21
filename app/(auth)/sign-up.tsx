@@ -100,7 +100,7 @@ const Signup = () => {
       /**
        * 인증 완료
        */
-      router.replace("my-profile");
+      router.replace("profile/main");
     },
     onError(error, variables, context) {
       console.log(error, variables, context);

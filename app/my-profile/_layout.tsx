@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { Header as CreateHeader } from "@/components/my-profile/create";
 import { Header as MainHeader } from "@/components/my-profile/main";
 import { Header as ActivityHeader } from "@/components/my-profile/activity";
+import SettingsHeader from "@/components/my-profile/settings/header";
 
 const ProfileLayout = () => {
   return (
@@ -30,6 +31,14 @@ const ProfileLayout = () => {
             title: "활동",
             headerLeft: () => <ActivityHeader.LeftButton />,
             headerRight: () => <ActivityHeader.RightButton />,
+            headerStyle: { backgroundColor: "#161622" },
+            headerTitleStyle: { color: "white" },
+          }} 
+        />
+        <Stack.Screen name="settings" 
+          options={{
+            title: "설정",
+            headerLeft: () => <SettingsHeader.LeftButton />,
             headerStyle: { backgroundColor: "#161622" },
             headerTitleStyle: { color: "white" },
           }} 

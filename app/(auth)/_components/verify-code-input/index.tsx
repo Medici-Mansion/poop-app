@@ -58,6 +58,7 @@ export const VerifyCodeInput = memo(
                 return (
                   <FormField
                     {...field}
+                    inputRef={field.ref}
                     key="signup-verify-code-input"
                     errors={[isError ? "인증 번호를 다시 입력해주세요." : ""]}
                     onChangeText={(phoneNumber) => {

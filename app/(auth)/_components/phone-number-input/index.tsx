@@ -46,6 +46,7 @@ export const PhoneNumberInput = memo(
             return (
               <FormField
                 {...field}
+                inputRef={field.ref}
                 value={formatPhoneNumber(field.value)}
                 key="signup-phone-number-input"
                 errors={[(errors.phone?.message as string) ?? ""]}

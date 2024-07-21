@@ -48,6 +48,7 @@ export const PasswordInput = memo(
             return (
               <FormField
                 {...field}
+                inputRef={field.ref}
                 key="signup-password-input"
                 errors={[(errors.password?.message as string) ?? ""]}
                 onChangeText={(newPassword) => {

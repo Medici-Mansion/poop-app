@@ -2,6 +2,7 @@ import { Fragment, ReactNode, SetStateAction, memo } from "react";
 import { Text, TextInputProps } from "react-native";
 
 import { Input } from "@/components/profile/create/input";
+import { RefCallBack } from "react-hook-form";
 
 interface FormField extends TextInputProps {
   errors?: string[];
@@ -15,6 +16,7 @@ interface FormField extends TextInputProps {
   hint?: string;
   suffix?: ReactNode;
   setPicker?: React.Dispatch<SetStateAction<boolean>>;
+  inputRef?: RefCallBack;
 }
 
 function FormField({
@@ -29,7 +31,7 @@ function FormField({
   setPicker,
   ...rest
 }: FormField) {
-  const { ...inputProps } = rest;
+  const { inputRef, ...inputProps } = rest;
   return (
     <Fragment>
       {label && (
@@ -39,6 +41,7 @@ function FormField({
       )}
       <Input
         {...inputProps}
+        ref={inputRef}
         disabled={disabled}
         value={value}
         error={errors?.[0]}

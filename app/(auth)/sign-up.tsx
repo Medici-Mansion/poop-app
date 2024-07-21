@@ -42,7 +42,7 @@ const signupFormFieldList = [
 type SignupFormFields = (typeof signupFormFieldList)[number];
 
 const Signup = () => {
-  const bottomSheetRef = useRef<{ show: () => void; close: () => void }>(null);
+  const bottomSheetRef = useRef<{ show: () => void; hide: () => void }>(null);
   const insets = useSafeAreaInsets();
   const [step, setStep] = useState(0);
   const formHandler = useRef<UseFormReturn<
@@ -73,20 +73,27 @@ const Signup = () => {
     shouldUnregister: false,
   });
 
+  /**
+   * 인증번호 재요청하기
+   */
   const { mutate: getVerifyCode } = useGetVerifyCode({
     onError: (err) => console.log(err),
   });
+  // const getVerifyParam: VerifyParam = {
+  //   type: Verify.PHONE,
+  //   vid: compSignupParam.current?.phone || "",
+  // };
 
   const { mutate: signupMutate } = useSignup({
     onSuccess: (data, vars) => {
-      const getVerifyParam: VerifyParam = {
-        type: Verify.PHONE,
-        vid: vars.phone,
-      };
-      getVerifyCode(getVerifyParam);
       setStep((prev) => 5);
     },
-    onError: (err) => console.log(err, "<<<<< signupMutate errpr"),
+    onError: (err) => {
+      form.setError("phone", {
+        type: "validate",
+        message: "이미 사용중인 휴대폰 번호에요.",
+      });
+    },
   });
 
   const onSubmit = (values: SignupParam) => {
@@ -107,16 +114,30 @@ const Signup = () => {
     },
   });
 
-  const { mutateAsync: checkDuplicateNickname, isSuccess: nicknameSuccess } =
+  const { mutate: checkDuplicateNickname, isSuccess: nicknameSuccess } =
     useMutation({
       mutationKey: ["search", "nickname"],
       mutationFn: (newNickname: string) => checkNicknameDuplicated(newNickname),
       gcTime: Infinity,
-      onSuccess() {},
-      onError() {
+      onSuccess(response) {
+        const { body } = response;
+        if (body) {
+          setStep(1);
+          form.setFocus(signupFormFieldList[1]);
+          return;
+        }
+      },
+      onError(error: any) {
+        if (error.response.status === 419) {
+          form.setError("nickname", {
+            type: "validate",
+            message: "중복되는 닉네임이에요. 다시 입력해주세요.",
+          });
+          return;
+        }
         form.setError("nickname", {
           type: "validate",
-          message: "중복되는 닉네임이에요. 다시 입력해주세요.",
+          message: "서버에 문제가 생겼어요.",
         });
       },
     });
@@ -129,9 +150,7 @@ const Signup = () => {
         switch (step) {
           case 0:
             if (step === 0) {
-              await checkDuplicateNickname(form.getValues("nickname"));
-              setStep(1);
-              form.setFocus(signupFormFieldList[1]);
+              checkDuplicateNickname(form.getValues("nickname"));
             }
             break;
           case 1:
@@ -294,7 +313,7 @@ const Signup = () => {
                 formHandler.current?.handleSubmit((value) =>
                   checkVerifyCode({
                     ...value,
-                    vid: compSignupParam.current.phone,
+                    vid: compSignupParam.current?.phone || "",
                   })
                 )()
               }

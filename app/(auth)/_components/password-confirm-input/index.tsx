@@ -40,6 +40,7 @@ export const PasswordConfirmInput = memo(
             return (
               <FormField
                 {...field}
+                inputRef={field.ref}
                 key="signup-password-confirm-input"
                 errors={[(errors.passwordConfirm?.message as string) ?? ""]}
                 onChangeText={(newPassword) => {

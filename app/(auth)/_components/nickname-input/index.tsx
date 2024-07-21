@@ -2,6 +2,7 @@ import FormField from "@/components/form-field";
 import { Controller, useFormContext } from "react-hook-form";
 import { View, ViewProps } from "react-native";
 import { InputCheckbutton, InputDeleteButton } from "@/assets/icons";
+import { mergeRefs } from "@/lib/utils";
 
 interface NicknameInputProps extends ViewProps {
   step: number;
@@ -18,13 +19,14 @@ export const NicknameInput = ({
   validateFn,
   ...viewProps
 }: NicknameInputProps) => {
+  const { ...rest } = viewProps;
   const {
     control,
     formState: { errors },
   } = useFormContext();
 
   return (
-    <View {...viewProps}>
+    <View {...rest}>
       <Controller
         rules={{
           required: "닉네임을 입력해주세요.",
@@ -43,6 +45,7 @@ export const NicknameInput = ({
         render={({ field }) => (
           <FormField
             {...field}
+            inputRef={field.ref}
             errors={[(errors.nickname?.message as string) ?? ""]}
             disabled={disabled}
             onChangeText={(newText) => {

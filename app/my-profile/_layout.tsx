@@ -4,7 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { Header as CreateHeader } from "@/components/my-profile/create";
 import { Header as MainHeader } from "@/components/my-profile/main";
 import { Header as ActivityHeader } from "@/components/my-profile/activity";
-import SettingsHeader from "@/components/my-profile/settings/header";
+import { Header as SettingsHeader } from "@/components/my-profile/settings";
 
 const ProfileLayout = () => {
   return (

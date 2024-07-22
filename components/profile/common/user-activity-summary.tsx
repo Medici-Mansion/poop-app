@@ -36,11 +36,4 @@ const UserActivitySummary = () => {
   );
 };
 
-const styles = {
-  verticalLine: {
-    borderRightWidth: 1,
-    borderRightColor: '#9CA3AF',
-  },
-};
-
 export default UserActivitySummary;

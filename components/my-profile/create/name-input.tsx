@@ -1,5 +1,4 @@
 import React, { useImperativeHandle, useState, forwardRef } from 'react';
-import { router } from 'expo-router';
 import { useProfileStore } from '@/store/profile';
 import { Input } from '@/components/my-profile/create/input';
 

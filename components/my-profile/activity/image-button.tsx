@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactNaive, { View, Text, Image, StyleSheet } from 'react-native';
+import ReactNaive, { View, Text, Image } from 'react-native';
 import Feather from '@expo/vector-icons/Feather';
 
 import Images from "@/constants/Images";

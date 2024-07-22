@@ -3,7 +3,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 
-import MenuGroupList from '@/components/my-profile/common/menu-group-list';
+import { MenuGroupList } from '@/components/my-profile/common';
 
 // TODO: 가상 데이터를 실제 데이터로 교체하기
 const menuList = [

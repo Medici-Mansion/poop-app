@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import CreateHeader from "@/components/my-profile/create/header";
+import { Header as CreateHeader } from "@/components/my-profile/create";
 import { Header as MainHeader } from "@/components/my-profile/main";
 import { Header as ActivityHeader } from "@/components/my-profile/activity";
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 
 import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
 import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
-import ControlButtons from '@/components/my-profile/main/control-buttons';
+import { ControlButtons } from '@/components/my-profile/main';
 
 // TODO: 데스트 데이터
 const userInfo = {

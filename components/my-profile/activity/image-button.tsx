@@ -27,15 +27,15 @@ export default function ImageButton(props: ImageButtonProps) {
         {
           image ? 
             <Image
-              source={Images.poopIcon}
-              style={styles.imageBox}
+              className='w-9 h-9 rounded-full bg-gray-700'
+              source={{ uri: image }}
               resizeMode="contain"
             />
           : 
-          <View style={styles.imageBox} className='flex items-center justify-center'>
+          <View className='flex items-center justify-center w-9 h-9 rounded-full bg-gray-700'>
             <Image
               source={Images.poopIcon}
-              style={styles.defaultImage}
+              className='w-5 h-5'
             />
           </View>
         }
@@ -49,22 +49,3 @@ export default function ImageButton(props: ImageButtonProps) {
     </View>
   );
 };
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imageBox: {
-    width: 36,
-    height: 36,
-    borderRadius: 50,
-    backgroundColor: '#353434',
-  },
-  defaultImage: {
-    width: 20,
-    height: 20,
-  }
-});

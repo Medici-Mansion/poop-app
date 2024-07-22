@@ -4,9 +4,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
 import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
-import { ControlButtons } from '@/components/my-profile/main';
-import MenuTabs, { Tab } from '@/components/my-profile/main/menu-tabs';
-import Content from '@/components/my-profile/main/content';
+import { ControlButtons, Content, MenuTabs, MenuTabType } from '@/components/my-profile/main';
 
 // TODO: 데스트 데이터
 const userInfo = {
@@ -21,7 +19,7 @@ const userInfo = {
 }
 
 export default function MyProfile() {
-  const [currentTab, setCurrentTab] = useState<Tab>('toon');
+  const [currentTab, setCurrentTab] = useState<MenuTabType>('toon');
   return (
     <KeyboardAvoidingView className="w-full h-full bg-gray-600">
       <ScrollView>

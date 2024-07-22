@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import CreateHeader from "@/components/my-profile/create/header";
 import MainHeader from "@/components/my-profile/main/header";
-import ActivityHeader from "@/components/my-profile/activity/header";
+import { Header as ActivityHeader } from "@/components/my-profile/activity";
 
 const ProfileLayout = () => {
   return (

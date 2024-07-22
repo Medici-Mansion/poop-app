@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { View, KeyboardAvoidingView } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 
-import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
-import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
+import { ProfileImageBox, UserActivitySummary } from '@/components/my-profile/common';
 import { ControlButtons, Content, MenuTabs, MenuTabType } from '@/components/my-profile/main';
 
 // TODO: 데스트 데이터

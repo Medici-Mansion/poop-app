@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
+import { View, KeyboardAvoidingView } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
 
 import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
@@ -23,17 +23,19 @@ const userInfo = {
 export default function MyProfile() {
   const [currentTab, setCurrentTab] = useState<Tab>('toon');
   return (
-    <ScrollView className="w-full h-full bg-gray-600 pt-8">
-      {/* 내 프로필 정보 - 요약 영역 */}
-      <View className="px-4 h-80 flex flex-col py-8 items-center w-full">
-        <ProfileImageBox uri={userInfo.avatarUrl} name={userInfo.name} />
-        <UserActivitySummary />
-        <ControlButtons />
-      </View>
+    <KeyboardAvoidingView className="w-full h-full bg-gray-600">
+      <ScrollView>
+        {/* 내 프로필 정보 - 요약 영역 */}
+        <View className="px-4 h-80 flex flex-col py-8 items-center w-full mt-8">
+          <ProfileImageBox uri={userInfo.avatarUrl} name={userInfo.name} />
+          <UserActivitySummary />
+          <ControlButtons />
+        </View>
 
-      {/* 내 프로필 정보 - 툰, 챌린지 영역 */}
-      <MenuTabs tab={currentTab} onTabPress={setCurrentTab} />
-      <Content tab={currentTab} />
-    </ScrollView>
+        {/* 내 프로필 정보 - 툰, 챌린지 영역 */}
+        <MenuTabs tab={currentTab} onTabPress={setCurrentTab} />
+        <Content tab={currentTab} />
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 };

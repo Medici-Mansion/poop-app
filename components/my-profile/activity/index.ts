@@ -1,10 +1,3 @@
-import Header from "./header";
-import ImageButton from "./image-button";
-import MenuGroupList from "./menu-group-list";
-
-
-export {
-  Header,
-  ImageButton,
-  MenuGroupList,
-}
+export { default as Header } from "./header";
+export { default as ImageButton } from "./image-button";
+export { default as MenuGroupList } from "./menu-group-list";

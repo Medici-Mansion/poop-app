@@ -1,7 +1,2 @@
-import ControlButtons from "./control-buttons";
-import Header from "./header";
-
-export {
-  ControlButtons,
-  Header,
-}
+export { default as ControlButtons } from "./control-buttons";
+export { default as Header } from "./header";

@@ -24,7 +24,7 @@ const menuList = [
 
 export default function Settings() {
   return (
-    <ScrollView className="w-full h-full flex-1 bg-gray-600 pt-12">
+    <ScrollView className="w-full h-full flex-1 bg-gray-600">
       <View className="px-4 flex flex-col items-center w-full h-full">
         <MenuGroupList menuList={menuList} />
       </View>

@@ -4,8 +4,13 @@ import { ScrollView } from "react-native-gesture-handler";
 import { useViewContext } from '@/providers/view-context-provider';
 
 import { ProfileImageBox, UserActivitySummary } from '@/components/my-profile/common';
-import { ControlButtons, Content, MenuTabs, MenuTabType } from '@/components/my-profile/main';
-import ProfileSelectSheet from '@/components/my-profile/main/profile-select-sheet';
+import { 
+  ControlButtons, 
+  Content, 
+  MenuTabs, 
+  MenuTabType, 
+  ProfileSelectSheet 
+} from '@/components/my-profile/main';
 
 // TODO: 데스트 데이터
 const userInfo = {

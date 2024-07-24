@@ -1,11 +1,34 @@
-import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { useBottomSheet } from "@/hooks/use-bottom-sheet";
-import { forwardRef, useImperativeHandle } from "react";
+import { View, Pressable, Text } from "react-native";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
-import { Text } from "react-native";
+import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import ProfileItem from '@/components/my-profile/main/profile-item';
+import { useBottomSheet } from "@/hooks/use-bottom-sheet";
+import { Entypo } from '@expo/vector-icons';
+import { router } from "expo-router";
+
+
+// TODO: 가상 데이터
+const userProfile = [
+  { name: '까망이', id: 'aaaaa', uri: '' },
+  { name: '재롱이', id: 'bbbbb', uri: '' },
+];
 
 const ProfileSelectSheet = forwardRef((props, ref) => {
-  const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet("50%");
+  const snapPoint = `${50 + userProfile.length * 5}%`;
+  const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet(snapPoint);
+  const [selectedProfile, setSelectedProfile] = useState('');
+
+  const handleCheck = (id: string) => {
+    setSelectedProfile(id);
+    hideBottomSheet();
+  };
+
+  const handleNewProfile = () => {
+    router.push('my-profile/create');
+    hideBottomSheet();
+  }
+
 
   useImperativeHandle(ref, () => (
     { 
@@ -21,10 +44,41 @@ const ProfileSelectSheet = forwardRef((props, ref) => {
           index={-1}
           snapPoints={snapPoints}
           enablePanDownToClose={true}
+          backgroundStyle={{ backgroundColor: 'rgba(12, 12, 12, 0.8)' }}
+          handleIndicatorStyle={{ backgroundColor: '#595959', width: 32 }}
           backdropComponent={(props) => renderBackdrop({ ...props, onPress: hideBottomSheet })}
         >
           <BottomSheetView>
-            <Text>1</Text>
+            <View className="pt-8 pl-3 pr-3">
+              { 
+                userProfile.map((profile, index) => (
+                  <ProfileItem
+                    key={index}
+                    className="mb-8"
+                    name={profile.name}
+                    id={profile.id}
+                    uri={profile.uri}
+                    isSelected={selectedProfile === profile.id}
+                    handleCheck={handleCheck}
+                  />
+                ))
+              }
+  
+              {/* 새 프로필 생성 버튼 */}
+              <Pressable 
+                className='flex flex-row items-center w-full h-10' 
+                onPress={handleNewProfile}
+              >
+                <View className='flex flex-row items-center w-full'>
+                  <View className='w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center'>
+                    <Entypo name="plus" size={18} color="white" />
+                  </View>
+                  <View className='ml-4'>
+                    <Text className='text-white body-b16 font-bold leading-4'>새 프로필 생성</Text>
+                  </View>
+                </View>
+              </Pressable>
+            </View>
           </BottomSheetView>
         </BottomSheet>
     </BottomSheetModalProvider>
@@ -41,9 +95,8 @@ const renderBackdrop = ((props: any) => {
       <BottomSheetBackdrop
         disappearsOnIndex={-1}
         appearsOnIndex={0}
-        opacity={0.8}
+        opacity={0.5}
         onPress={onPress}
-        style={{ backgroundColor: 'red' }}
         {...rest}
       />
     )

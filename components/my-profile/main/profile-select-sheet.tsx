@@ -1,5 +1,5 @@
 import { View, Pressable, Text } from "react-native";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 
 import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import ProfileItem from '@/components/my-profile/main/profile-item';
@@ -15,7 +15,7 @@ const userProfile = [
 ];
 
 const ProfileSelectSheet = forwardRef((props, ref) => {
-  const snapPoint = `${50 + userProfile.length * 5}%`;
+  const snapPoint = useMemo(() => `${50 + userProfile.length * 5}%`, [userProfile]);
   const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet(snapPoint);
   const [selectedProfile, setSelectedProfile] = useState('');
 
@@ -91,11 +91,12 @@ const ProfileSelectSheet = forwardRef((props, ref) => {
  * */
 const renderBackdrop = ((props: any) => {
   const { onPress, ...rest } = props;
+
     return (
       <BottomSheetBackdrop
         disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.5}
+        appearsOnIndex={2}
+        opacity={0.8}
         onPress={onPress}
         {...rest}
       />

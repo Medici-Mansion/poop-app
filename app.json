@@ -2,10 +2,10 @@
   "expo": {
     "name": "poop",
     "slug": "poop",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "poop",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/poop.png",
@@ -15,7 +15,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.medici-mansion.poop",
-      "buildNumber": "18"
+      "buildNumber": "24"
     },
     "android": {
       "adaptiveIcon": {
@@ -43,7 +43,7 @@
         "projectId": "2142de7b-061a-48bd-90a5-3501c2f0999d"
       }
     },
-    "runtimeVersion": "1.0.0",
+    "runtimeVersion": "1.0.1",
     "updates": {
       "url": "https://u.expo.dev/2142de7b-061a-48bd-90a5-3501c2f0999d"
     }

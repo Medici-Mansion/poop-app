@@ -10,30 +10,34 @@ const useGetBreeds = (searchKey: string, searchInput: string) => {
     isFetching,
     error,
   } = useQuery<BreedData, AxiosError, BreedsGroupedByConsonant>({
-    queryKey: ["breeds", searchKey, searchInput],
+    queryKey: ["breeds"],
     queryFn: getBreeds,
     staleTime: Infinity,
     gcTime: Infinity,
-    select: (breeds) => {
+    select: (data) => {
+      const { data: breeds } = data || {};
       if (!breeds) return {};
 
       const filteredBreeds: BreedsGroupedByConsonant = {};
 
+      if (searchKey !== "") {
+        if (breeds[searchKey]) {
+          filteredBreeds[searchKey] = breeds[searchKey];
+        }
+        return filteredBreeds;
+      }
+
       if (searchInput !== "") {
         Object.keys(breeds).forEach((key) => {
           breeds[key].forEach((breed) => {
-            if (breed.name.trim().includes(searchInput.trim())) {
+            if (
+              breed.nameEN.toLowerCase().includes(searchInput.toLowerCase())
+            ) {
               if (!filteredBreeds[key]) filteredBreeds[key] = [];
               filteredBreeds[key].push(breed);
             }
           });
         });
-
-        return filteredBreeds;
-      }
-      if (searchKey !== "") {
-        if (breeds[searchKey])  filteredBreeds[searchKey] = breeds[searchKey];
-
         return filteredBreeds;
       }
 

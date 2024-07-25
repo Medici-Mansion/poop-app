@@ -1,35 +1,50 @@
 import React, { useState } from "react";
-import { View, Image } from "react-native";
+import {
+  View,
+  Image,
+  KeyboardAvoidingView,
+  Keyboard,
+  Pressable,
+} from "react-native";
 import { useForm } from "react-hook-form";
 
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import Images from "@/constants/Images";
-import { loginFormSchema } from "@/schema";
-import { SignInErrorType } from "@/types";
+import { signinFormSchema } from "@/schema";
+import { SignInErrorType, Token } from "@/types";
 
 import ConfirmButton from "@/components/confirm-button";
 import FormController from "@/components/form-controller";
 import TermsSheet from "@/components/bottom-sheet/turms-sheet";
-
-interface SignInFields {
-  id: number;
-  name: "id" | "password";
-}
-
-const formValues: SignInFields[] = [
-  {
-    id: 1,
-    name: "id",
-  },
-  {
-    id: 2,
-    name: "password",
-  },
-];
+import { z } from "zod";
+import useLogin from "@/hooks/user/use-login";
+import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getMyProfileList, injectInterceptor } from "@/apis";
+import { AxiosError } from "axios";
+import { Response } from "@/types/server";
 
 const SignIn = () => {
   const [error, setError] = useState<SignInErrorType>({});
+
+  const { mutateAsync, isPending } = useLogin({
+    onSuccess: async (data) => {
+      const { accessToken } = data || {};
+      await Promise.allSettled([AsyncStorage.setItem(Token.ACT, accessToken)]);
+      injectInterceptor({ accessToken });
+
+      const response = await getMyProfileList();
+      if (!response.body.length) {
+        return router.replace("/profile/main");
+      }
+    },
+    onError: (err: AxiosError<Response<null>>) => {
+      setError({
+        fieldErrors: { id: [err.response?.data?.result?.resultMessage || ""] },
+      });
+    },
+  });
   const { control, handleSubmit } = useForm({
     defaultValues: {
       id: "",
@@ -37,42 +52,62 @@ const SignIn = () => {
     },
   });
 
-  const onSubmit = async (data: { id: string; password: string }) => {
-    const result = await loginFormSchema.spa(data);
+  const onSubmit = async (fields: z.infer<typeof signinFormSchema>) => {
+    const result = await signinFormSchema.spa(fields);
     if (!result.success) {
       setError(result.error.flatten());
       return;
+    } else {
+      const convertLowerCase = fields;
+      mutateAsync(convertLowerCase);
     }
 
     setError({});
   };
 
   return (
-    <GestureHandlerRootView className="bg-background h-full">
-      <View className="px-10 flex flex-col py-20 items-center h-full justify-between">
-        <View className="w-full flex items-center pt-5">
+    <GestureHandlerRootView className="bg-gray-600">
+      <Pressable
+        onPress={(e) => {
+          Keyboard.dismiss();
+        }}
+      >
+        <KeyboardAvoidingView className="h-screen items-center w-full flex py-5 px-4">
           <Image
+            className="flex-1 w-[100px] h-[50px]"
             source={Images.logo}
             resizeMode="contain"
-            style={{ width: 150, height: 140 }}
           />
-          <View className="w-full pt-12">
-            {formValues.map((field) => (
+          <View className="w-full flex-1 justify-between">
+            <View className="space-y-3">
               <FormController
-                key={field.id}
+                disabled={isPending}
                 control={control}
-                name={field.name || ""}
-                placeholder={field.name === "id" ? "아이디" : "비밀번호"}
-                errors={error?.fieldErrors?.[field.name] || []}
+                name={"id"}
+                placeholder={"아이디"}
+                errors={error?.fieldErrors?.id || []}
               />
-            ))}
-            <View className="py-2">
-              <ConfirmButton title="확인" onPress={handleSubmit(onSubmit)} />
+              <FormController
+                disabled={isPending}
+                control={control}
+                name={"password"}
+                placeholder={"비밀번호"}
+                errors={error?.fieldErrors?.password || []}
+                textInputProps={{
+                  secureTextEntry: true,
+                }}
+              />
+              <ConfirmButton
+                disabled={isPending}
+                title="로그인"
+                onPress={handleSubmit(onSubmit)}
+                className="mt-8"
+              />
             </View>
           </View>
-        </View>
-        <TermsSheet />
-      </View>
+          <TermsSheet className="flex-1 justify-end pb-4 w-full" />
+        </KeyboardAvoidingView>
+      </Pressable>
     </GestureHandlerRootView>
   );
 };

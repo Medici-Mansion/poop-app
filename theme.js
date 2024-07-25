@@ -11,9 +11,26 @@ const theme = {
     "head-sb12": 12,
     // // BODY
     "body-b16": 16,
-    "body-b14": 14,
+    "body-b12": [
+      12,
+      {
+        fontWeight: 700,
+      },
+    ],
+    "body-b14": [
+      14,
+      {
+        fontWeight: 700,
+      },
+    ],
     "body-m14": [
       14,
+      {
+        fontWeight: 500,
+      },
+    ],
+    "body-m12": [
+      12,
       {
         fontWeight: 500,
       },
@@ -40,6 +57,7 @@ const theme = {
     transparent: {
       80: "rgba(18,18,18,0.8)",
       60: "rgba(0,0,0,0.6)",
+      0: "rgba(0,0,0,0)",
     },
     black: "#000000",
   },

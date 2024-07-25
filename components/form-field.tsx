@@ -1,55 +1,55 @@
-import { Text, TextInput, View } from "react-native";
+import { Fragment, ReactNode, SetStateAction, memo } from "react";
+import { Text, TextInputProps } from "react-native";
 
-import Animated, {
-  CurvedTransition,
-  FadeIn,
-  FadeOut,
-  useAnimatedProps,
-} from "react-native-reanimated";
+import { Input } from "@/components/profile/create/input";
+import { RefCallBack } from "react-hook-form";
 
-interface FormField {
+interface FormField extends TextInputProps {
   errors?: string[];
   value: string;
-  onChangeText: () => void;
+  onChangeText?: (text: string) => void;
   onBlur: () => void;
   label?: string;
-  placeholder: string;
+  placeholder?: string;
+  name?: string;
+  disabled?: boolean;
+  hint?: string;
+  suffix?: ReactNode;
+  setPicker?: React.Dispatch<SetStateAction<boolean>>;
+  inputRef?: RefCallBack;
 }
 
-export default function FormField({
+function FormField({
   errors = [],
   value,
+  disabled,
   onChangeText,
   onBlur,
   label,
   placeholder,
+  name,
+  setPicker,
   ...rest
 }: FormField) {
+  const { inputRef, ...inputProps } = rest;
   return (
-    <View className="py-1.5 space-y-2">
-      {label && <Text>{label}</Text>}
-      <View className="w-full h-16 px-4 bg-gray-400 rounded-2xl border-none  focus:border-gray-300 flex flex-row items-center">
-        <TextInput
-          value={value}
-          onChangeText={onChangeText}
-          className="text-white"
-          placeholderTextColor="#FFFFFF"
-          placeholder={placeholder}
-          {...rest}
-        />
-      </View>
-      {errors &&
-        errors.map((error, idx) => (
-          <Animated.Text
-            entering={FadeIn.duration(100).springify().mass(0.3)}
-            exiting={FadeOut.duration(100).springify().mass(0.3)}
-            layout={CurvedTransition.duration(100).delay(120)}
-            key={idx}
-            className="text-system-red"
-          >
-            {error}
-          </Animated.Text>
-        ))}
-    </View>
+    <Fragment>
+      {label && (
+        <Text className="mb-4 text-gray-200 text-body-b12 font-bold">
+          {label}
+        </Text>
+      )}
+      <Input
+        {...inputProps}
+        ref={inputRef}
+        disabled={disabled}
+        value={value}
+        error={errors?.[0]}
+        onChangeText={onChangeText}
+        placeholder={placeholder}
+        autoCapitalize={"none"}
+      />
+    </Fragment>
   );
 }
+export default memo(FormField);

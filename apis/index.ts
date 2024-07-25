@@ -82,13 +82,22 @@ export const login = async (body: LoginParam) => {
     "/v1/auth/login",
     body
   );
-  return data.data;
+  return data.body;
 };
 
 export const refresh = async () => {
   const { data } = await PoopApi.post<Response<LoginSuccess>>(
     "/v1/auth/refresh"
   );
+  return data;
+};
+
+export const checkNicknameDuplicated = async (nickname: string) => {
+  const { data } = await PoopApi.get("/v1/users/nickname", {
+    params: {
+      nickname,
+    },
+  });
   return data;
 };
 
@@ -103,8 +112,8 @@ const setAccessToken = async ({
   if (shouldRefresh) {
     const response = await refresh();
     const data = response as unknown as Response<LoginSuccess>;
-    await AsyncStorage.setItem(Token.ACT, data.data.accessToken);
-    PoopApi.defaults.headers.common[XCI] = data.data.accessToken;
+    await AsyncStorage.setItem(Token.ACT, data.body.accessToken);
+    PoopApi.defaults.headers.common[XCI] = data.body.accessToken;
   }
 };
 

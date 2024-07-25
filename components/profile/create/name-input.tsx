@@ -1,7 +1,7 @@
-import React, { useImperativeHandle, useState, forwardRef } from 'react';
-import { router } from 'expo-router';
-import { useProfileStore } from '@/store/profile';
-import { Input } from '@/components/profile/create/input';
+import React, { useImperativeHandle, useState, forwardRef } from "react";
+import { router } from "expo-router";
+import { useProfileStore } from "@/store/profile";
+import { Input } from "@/components/profile/create/input";
 
 const MIN_LENGTH = 2;
 
@@ -39,15 +39,15 @@ const NameInput = forwardRef<NameInputHandle>((props, ref) => {
 
   return (
     <Input
-      label='반려견 이름'
-      placeholder='이름'
-      error={error || ''}
+      label="반려견 이름"
+      placeholder="이름"
+      error={error || ""}
       onChangeText={handleChangeName}
       value={profileStore.profile.name}
     />
   );
 });
 
-NameInput.displayName = 'NameInput';
+NameInput.displayName = "NameInput";
 
 export default NameInput;

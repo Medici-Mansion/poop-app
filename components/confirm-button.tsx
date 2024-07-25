@@ -1,18 +1,21 @@
-import { View, Text, Pressable } from "react-native";
 import React from "react";
+import { Button } from "./ui";
+import { PressableProps } from "react-native";
 
-interface ConfirmButtonProps {
+interface ConfirmButtonProps extends PressableProps {
   title: string;
   onPress: () => void;
+  disabled?: boolean;
 }
 
-const CornfirmButton = ({ title, onPress }: ConfirmButtonProps) => {
+const CornfirmButton = ({
+  title,
+  onPress,
+  disabled,
+  ...rest
+}: ConfirmButtonProps) => {
   return (
-    <View className="w-full p-4 bg-white rounded-xl">
-      <Pressable onPress={onPress}>
-        <Text className="text-center pr-3">{title}</Text>
-      </Pressable>
-    </View>
+    <Button label={title} onPress={onPress} disabled={disabled} {...rest} />
   );
 };
 

@@ -1,9 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
-import { createProfile } from '@/apis';
+import { useMutation } from "@tanstack/react-query";
+import { createProfile } from "@/apis";
 
 const useCreateProfile = ({ onSuccess = () => {} }) => {
   const { mutate, data, isSuccess, isPending, error } = useMutation({
-    mutationKey: ['create-profile'],
+    mutationKey: ["create-profile"],
     mutationFn: createProfile,
     onSuccess,
   });

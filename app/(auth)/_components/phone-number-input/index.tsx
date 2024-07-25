@@ -1,5 +1,6 @@
 import { InputDeleteButton } from "@/assets/icons";
 import FormField from "@/components/form-field";
+import { PhoneNumberValidation } from "@/schema/validations";
 import React, { memo, useCallback } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ViewProps } from "react-native";
@@ -20,8 +21,7 @@ export const PhoneNumberInput = memo(
     } = useFormContext();
 
     const formatPhoneNumber = useCallback((number: string) => {
-      const cleaned = ("" + number).replace(/[^0-9]/g, "");
-      const match = cleaned.match(/^(010)(\d{3,4})(\d{4})$/);
+      const match = PhoneNumberValidation.parse(number);
       if (match) {
         return `${match[1]}-${match[2]}-${match[3]}`;
       }

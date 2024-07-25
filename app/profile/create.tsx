@@ -63,6 +63,16 @@ export default function CreateProfile() {
     createProfile();
   }, [route.params?.event]);
 
+  useEffect(() => {
+    // TODO: 테스트를 위한 하드코딩
+    profileStore.setBreed({
+      id: "04285b44-efe3-4238-ad8a-572b98977d5e",
+      nameEN: "Coc",
+      nameKR: "코카스파니엘",
+      avatar: "",
+    });
+  }, []);
+
   return (
     <GestureHandlerRootView>
       <ScrollView className="w-full h-full flex-1 bg-gray-600">

@@ -74,10 +74,9 @@ const SignIn = () => {
       >
         <KeyboardAvoidingView className="h-screen items-center w-full flex py-5 px-4">
           <Image
-            className="flex-1"
+            className="flex-1 w-[100px] h-[50px]"
             source={Images.logo}
             resizeMode="contain"
-            style={{ width: 100, height: 50 }}
           />
           <View className="w-full flex-1 justify-between">
             <View className="space-y-3">

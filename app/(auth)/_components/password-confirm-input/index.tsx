@@ -1,7 +1,7 @@
 import { InputEyeOff, InputEyeOn } from "@/assets/icons";
 import FormField from "@/components/form-field";
 import { PasswordValidation } from "@/schema/validations";
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Pressable, ViewProps } from "react-native";
 import { View } from "react-native";
@@ -20,6 +20,14 @@ export const PasswordConfirmInput = memo(
       formState: { errors },
     } = useFormContext();
 
+    const onChangePassword = useCallback(
+      (callback: (newPassword: string) => void) => (newInput: string) => {
+        const trimmedInput = PasswordValidation.parse(newInput);
+        callback(trimmedInput);
+      },
+      []
+    );
+
     return (
       <View {...viewProps}>
         <Controller
@@ -34,10 +42,7 @@ export const PasswordConfirmInput = memo(
                 inputRef={field.ref}
                 key="signup-password-confirm-input"
                 errors={[(errors.passwordConfirm?.message as string) ?? ""]}
-                onChangeText={(newPassword) => {
-                  const trimmedInput = PasswordValidation.parse(newPassword);
-                  field.onChange(trimmedInput);
-                }}
+                onChangeText={onChangePassword(field.onChange)}
                 suffix={
                   !field.value ? null : (
                     <Pressable onPress={() => setIsEyeOn((prev) => !prev)}>

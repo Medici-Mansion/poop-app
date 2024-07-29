@@ -4,9 +4,11 @@ const theme = {
   },
   fontSize: {
     // HEAD
+    "head1-sb48": 48,
     "head-sb24": 24,
     "head-sb21": 21,
     "head-sb16": 16,
+    "head5-sb16": 16,
     "head-sb14": 14,
     "head-sb12": 12,
     // // BODY

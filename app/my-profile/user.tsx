@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { View, KeyboardAvoidingView } from 'react-native';
 import { ScrollView } from "react-native-gesture-handler";
+import { View, KeyboardAvoidingView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { useViewContext } from '@/providers/view-context-provider';
 
 import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
 import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
@@ -20,6 +21,18 @@ const userInfo = {
 
 export default function MainPage() {
   const [currentTab, setCurrentTab] = useState<MenuTabType>('toon');
+  const { action, setAction } = useViewContext();
+  const profileSheetSheet = useRef(null);
+
+  useEffect(() => {
+    // header에서 발생한 action 처리
+    if (action === 'PROFILE_SELECT_SHEET') {
+      profileSheetSheet.current?.show();
+      setAction('');
+    }
+  }, [action]);
+
+
   return (
     <KeyboardAvoidingView className="w-full h-full bg-gray-600">
       <ScrollView>

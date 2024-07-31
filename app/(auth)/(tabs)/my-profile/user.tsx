@@ -5,7 +5,8 @@ import { useViewContext } from '@/providers/view-context-provider';
 
 import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
 import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
-import { ControlButtons, Content, MenuTabs, MenuTabType } from '@/components/my-profile/user';
+import { ControlButtons, Content, MenuTabs, MenuTabType, ProfileSelectSheet } from '@/components/my-profile/user';
+
 
 // TODO: 데스트 데이터
 const userInfo = {
@@ -47,6 +48,7 @@ export default function MainPage() {
         <MenuTabs tab={currentTab} onTabPress={setCurrentTab} />
         <Content tab={currentTab} />
       </ScrollView>
+      <ProfileSelectSheet ref={profileSheetSheet} />
     </KeyboardAvoidingView>
   )
 };

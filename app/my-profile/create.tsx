@@ -14,12 +14,14 @@ import Event from "@/constants/RouteEvent";
 import { useProfileStore } from "@/store/profile";
 import useCreateProfile from "@/hooks/use-create-profile";
 
-import { Input } from '@/components/my-profile/create/input';
-import NameInput from '@/components/my-profile/create/name-input';
-import RadioGroup from '@/components/my-profile/create/radio-group';
-import GalleryButton from '@/components/my-profile/create/gallery-button';
-import DateTimeSheet from '@/components/my-profile/create/date-time-sheet';
-import BreedSelectSheet from '@/components/my-profile/create/breed-select-sheet';
+import { 
+  Input, 
+  NameInput, 
+  RadioGroup, 
+  GalleryButton, 
+  DateTimeSheet, 
+  BreedSelectSheet 
+} from '@/components/my-profile/create';
 
 export default function CreateProfile() {
   const route = useRoute();

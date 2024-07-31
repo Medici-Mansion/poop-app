@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { consonantsList } from '@/constants';
 
 import CarouselWrapper from '@/components/carousel-wrapper';
-import ConsonantItem from '@/components/profile/create/consonant-item';
+import ConsonantItem from '@/components/my-profile/create/consonant-item';
 
 interface ConsonantCarouselProps {
   value: string;

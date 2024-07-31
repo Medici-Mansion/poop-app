@@ -1,7 +1,8 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import Header from "@/components/profile/create/header";
+import CreateHeader from "@/components/my-profile/create/header";
+import UserHeader from "@/components/my-profile/user/header";
 
 const ProfileLayout = () => {
   return (
@@ -11,8 +12,8 @@ const ProfileLayout = () => {
           name="create"
           options={{
             title: "",
-            headerLeft: () => <Header.LeftButton />,
-            headerRight: () => <Header.RightButton />,
+            headerLeft: () => <CreateHeader.LeftButton />,
+            headerRight: () => <CreateHeader.RightButton />,
             headerStyle: { backgroundColor: "#121212" },
             headerShadowVisible: false,
           }}
@@ -20,6 +21,17 @@ const ProfileLayout = () => {
         <Stack.Screen
           name="main"
           options={{
+            headerShadowVisible: false,
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="user"
+          options={{
+            title: "",
+            headerLeft: () => <UserHeader.LeftButton />,
+            headerRight: () => <UserHeader.RightButton />,
+            headerStyle: { backgroundColor: "#121212" },
             headerShadowVisible: false,
             headerShown: false,
           }}

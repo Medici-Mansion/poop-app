@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ScrollView } from "react-native-gesture-handler";
 
-import ProfileImageBox from '@/components/profile/common/profile-image-box';
-import UserActivitySummary from '@/components/profile/common/user-activity-summary';
-import ControlButtons from '@/components/profile/my-profile/control-buttons';
+import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
+import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
+import ControlButtons from '@/components/my-profile/user/control-buttons';
 
 // TODO: 데스트 데이터
 const userInfo = {
@@ -19,7 +19,7 @@ const userInfo = {
   birthday: '2021-08-01',
 }
 
-export default function MyProfile() {
+export default function UserProfile() {
   return (
     <SafeAreaView className="w-full h-full bg-gray-600">
         <ScrollView className="w-full h-full flex-1">

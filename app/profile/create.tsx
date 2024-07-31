@@ -1,7 +1,6 @@
 import { useRef, useEffect, useCallback } from "react";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { Text, View } from "react-native";
-import { useRoute } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
   GestureHandlerRootView,
@@ -22,7 +21,7 @@ import DateTimeSheet from "@/components/profile/create/date-time-sheet";
 import BreedSelectSheet from "@/components/profile/create/breed-select-sheet";
 
 export default function CreateProfile() {
-  const route = useRoute();
+  const route = useRouter();
   const profileStore = useProfileStore();
 
   const nameInputRef = useRef<{ checkError: () => void }>(null);
@@ -50,7 +49,7 @@ export default function CreateProfile() {
   }, []);
 
   const onSuccess = () => {
-    router.push("profile/main");
+    router.push("/profile");
   };
   const { mutate: createProfileMutate, isPending: createPending } =
     useCreateProfile({ onSuccess });
@@ -79,7 +78,7 @@ export default function CreateProfile() {
         <View className="px-4 flex flex-col py-10 items-center w-full h-ful">
           <GalleryButton
             image={profileStore.profile.avatar?.uri}
-            onPress={() => router.push("select-photo")}
+            onPress={() => router.push("/select-photo")}
           />
 
           <View className="w-full mt-16">

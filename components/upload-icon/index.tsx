@@ -2,7 +2,7 @@ import Icon from "@/components/icons";
 import { AnimatedPressable } from "@/components/ui/animate-pressable";
 import { usePhotoLibraryPermission } from "@/hooks/use-permission";
 import { openPicker } from "@/lib/utils/media/picker.shared";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { Dimensions, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -11,7 +11,6 @@ import { Mode } from "react-native-popover-view/dist/Types";
 import { Image as ExpoImage } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { compressIfNeeded } from "@/lib/utils/media/image.shared";
-import { CommonActions, useNavigation } from "@react-navigation/native";
 import { Challenge, Plus, PlusActive, Write } from "@/assets/icons";
 
 interface UploadModalButtonProps {
@@ -22,7 +21,7 @@ interface UploadModalButtonProps {
 
 const width = Dimensions.get("screen").width / 5;
 export const UploadButton = (_: UploadModalButtonProps) => {
-  const navigation = useNavigation();
+  const router = useRouter();
   const ref = useRef<TouchableOpacity>(null);
   const [open, setOpen] = useState(false);
   const { requestPhotoAccessIfNeeded } = usePhotoLibraryPermission();
@@ -46,14 +45,6 @@ export const UploadButton = (_: UploadModalButtonProps) => {
     );
 
     setOpen(false);
-    navigation.dispatch(
-      CommonActions.navigate({
-        name: "create-toon",
-        params: {
-          images: compressedImages,
-        },
-      })
-    );
   }, []);
 
   return (

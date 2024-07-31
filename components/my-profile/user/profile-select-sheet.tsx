@@ -15,7 +15,7 @@ const userProfile = [
 ];
 
 const ProfileSelectSheet = forwardRef((props, ref) => {
-  const snapPoint = useMemo(() => `${50 + userProfile.length * 5}%`, [userProfile]);
+  const snapPoint = useMemo(() => `${30 + userProfile.length * 5}%`, [userProfile]);
   const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet(snapPoint);
   const [selectedProfile, setSelectedProfile] = useState('');
 

@@ -35,10 +35,6 @@ export default function RootLayout() {
             <Stack.Screen name="(auth)" options={{ headerShown: false }} />
             <Stack.Screen name="index" options={{ headerShown: false }} />
             <Stack.Screen name="my-profile" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="select-photo"
-              options={{ headerShown: false }}
-            />
           </Stack>
         </QueryProvider>
       </Host>

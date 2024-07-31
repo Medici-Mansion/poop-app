@@ -39,6 +39,7 @@ export default function RootLayout() {
               name="select-photo"
               options={{ headerShown: false }}
             />
+            <Stack.Screen name="other-profile" options={{ headerShown: false }} />
           </Stack>
         </QueryProvider>
       </Host>

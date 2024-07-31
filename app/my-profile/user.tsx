@@ -3,9 +3,10 @@ import { View, KeyboardAvoidingView } from 'react-native';
 import React, { useState, useRef, useEffect } from 'react';
 import { useViewContext } from '@/providers/view-context-provider';
 
-import ProfileImageBox from '@/components/my-profile/common/profile-image-box';
-import UserActivitySummary from '@/components/my-profile/common/user-activity-summary';
-import { ControlButtons, Content, MenuTabs, MenuTabType, ProfileSelectSheet } from '@/components/my-profile/user';
+import ProfileImageBox from '@/components/common/profile/profile-image-box';
+import UserActivitySummary from '@/components/common/profile/user-activity-summary';
+import { ControlButtons, ProfileSelectSheet } from '@/components/my-profile/user';
+import { Content, MenuTabs, MenuTabType } from '@/components/common/profile';
 
 
 // TODO: 데스트 데이터

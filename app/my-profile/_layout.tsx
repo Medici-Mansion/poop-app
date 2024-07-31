@@ -34,8 +34,6 @@ const ProfileLayout = () => {
               headerLeft: () => <UserHeader.LeftButton />,
               headerRight: () => <UserHeader.RightButton />,
               headerStyle: { backgroundColor: "#121212" },
-              headerShadowVisible: false,
-              headerShown: false,
             }}
           />
           <Stack.Screen name="activity" 

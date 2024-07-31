@@ -1,7 +1,7 @@
 import { Fragment, ReactNode, SetStateAction, memo } from "react";
 import { Text, TextInputProps } from "react-native";
 
-import { Input } from "@/components/profile/create/input";
+import { Input } from "@/components/my-profile/create/input";
 import { RefCallBack } from "react-hook-form";
 
 interface FormField extends TextInputProps {

@@ -30,7 +30,7 @@ const MainPage = () => {
           <Button
             label="반려견 프로필 만들기"
             className="bg-white py-4 flex items-center justify-center rounded-2xl"
-            onPress={() => router.push("/profile/create")}
+            onPress={() => router.push("/my-profile/create")}
           />
 
           <Pressable>

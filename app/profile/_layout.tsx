@@ -2,7 +2,7 @@ import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Header from "@/components/profile/create/header";
-import { View } from "react-native";
+
 const ProfileLayout = () => {
   return (
     <>

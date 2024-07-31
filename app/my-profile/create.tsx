@@ -61,7 +61,7 @@ export default function CreateProfile() {
   }
 
   const onSuccess = () => {
-    router.push("profile/user");
+    router.push("my-profile/user");
   };
   const { mutate: createProfileMutate, isPending: createPending } =
     useCreateProfile({ onSuccess });

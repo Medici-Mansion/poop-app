@@ -13,6 +13,7 @@ import { gender } from "@/constants";
 import Event from "@/constants/RouteEvent";
 import { useProfileStore } from "@/store/profile";
 import useCreateProfile from "@/hooks/use-create-profile";
+import usePhotoPicker from "@/hooks/use-photo-picker";
 
 import { 
   Input, 
@@ -26,6 +27,7 @@ import {
 export default function CreateProfile() {
   const route = useRoute();
   const profileStore = useProfileStore();
+  const { pickImage } = usePhotoPicker({ onPick: handlePickImage });
 
   const nameInputRef = useRef<{ checkError: () => void }>(null);
   const timePicker = useRef(null);
@@ -51,8 +53,15 @@ export default function CreateProfile() {
     createProfileMutate(formData);
   }, []);
 
+  function handlePickImage(image) {
+    profileStore.setAvatar({
+      uri: image.uri,
+      filename: image.fileName,
+    });
+  }
+
   const onSuccess = () => {
-    router.push("profile/main");
+    router.push("profile/user");
   };
   const { mutate: createProfileMutate, isPending: createPending } =
     useCreateProfile({ onSuccess });
@@ -81,7 +90,7 @@ export default function CreateProfile() {
         <View className="px-4 flex flex-col py-10 items-center w-full h-ful">
           <GalleryButton
             image={profileStore.profile.avatar?.uri}
-            onPress={() => router.push("select-photo")}
+            onPress={pickImage}
           />
 
           <View className="w-full mt-16">

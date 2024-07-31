@@ -7,10 +7,10 @@ import useDebounce from '@/hooks/use-debounce';
 import useGetBreeds from '@/hooks/use-get-breeds';
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
 
-import { Input } from '@/components/profile/create/input';
+import { Input } from '@/components/my-profile/create/input';
 import { MaterialIcons } from '@expo/vector-icons';
-import BreedListView from '@/components/profile/create/breed-list-view';
-import ConsonantCarousel from '@/components/profile/create/consonant-carousel';
+import BreedListView from '@/components/my-profile/create/breed-list-view';
+import ConsonantCarousel from '@/components/my-profile/create/consonant-carousel';
 
 import type { Breed } from '@/types';
 

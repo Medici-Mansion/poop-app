@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import Button from '@/components/profile/common/button';
+import Button from '@/components/my-profile/common/button';
 
 /** 
  * ControlButtons

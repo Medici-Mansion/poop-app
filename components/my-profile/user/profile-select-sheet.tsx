@@ -2,7 +2,7 @@ import { View, Pressable, Text } from "react-native";
 import { forwardRef, useImperativeHandle, useMemo, useState } from "react";
 
 import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import ProfileItem from '@/components/my-profile/main/profile-item';
+import ProfileItem from '@/components/my-profile/user/profile-item';
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
 import { Entypo } from '@expo/vector-icons';
 import { router } from "expo-router";

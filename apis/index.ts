@@ -13,7 +13,7 @@ import { GetMeResponse } from "@/types/server/user/me";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const PoopApi = axios.create({
+export const PoopApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
 
@@ -32,7 +32,7 @@ export const getMe = async () => {
 // Profile
 export const getLatestProfile = async () => {
   const { data } = await PoopApi.get<Response<GetMyProfiles>>(
-    "/v1/profiles/latest"
+    "/v1/profiles/latest",
   );
   return data;
 };
@@ -62,9 +62,20 @@ export const getMyProfileList = async () => {
 export const signUp = async (body: SignupParam) => {
   const { data } = await PoopApi.put<Response<SuccessSignupRes>>(
     "/v1/auth/signup",
-    body
+    body,
   );
   return data;
+};
+
+export const socialSignup = async (body: {
+  token: string;
+  provider: "APPLE" | "GOOGLE";
+}) => {
+  const { data } = await PoopApi.post<Response<LoginSuccess>>(
+    "/v1/auth/social",
+    body,
+  );
+  return data.body;
 };
 
 export const verify = async (body: VerifyParam) => {
@@ -80,15 +91,14 @@ export const getVerifyCode = async (params: VerifyParam) => {
 export const login = async (body: LoginParam) => {
   const { data } = await PoopApi.post<Response<LoginSuccess>>(
     "/v1/auth/login",
-    body
+    body,
   );
   return data.body;
 };
 
 export const refresh = async () => {
-  const { data } = await PoopApi.post<Response<LoginSuccess>>(
-    "/v1/auth/refresh"
-  );
+  const { data } =
+    await PoopApi.post<Response<LoginSuccess>>("/v1/auth/refresh");
   return data;
 };
 
@@ -101,7 +111,7 @@ export const checkNicknameDuplicated = async (nickname: string) => {
   return data;
 };
 
-const setAccessToken = async ({
+export const setAccessToken = async ({
   accessToken,
   shouldRefresh,
 }: {
@@ -132,6 +142,6 @@ export const injectInterceptor = async (InjectOptions: {
         return Promise.reject(error);
       }
       return Promise.reject(error);
-    }
+    },
   );
 };

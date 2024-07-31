@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native-gesture-handler";
 
-import { getFormData } from "@/utils";
+import { getFormData } from "@/lib/utils";
 import { gender } from "@/constants";
 import Event from "@/constants/RouteEvent";
 import { useProfileStore } from "@/store/profile";

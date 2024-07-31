@@ -12,6 +12,7 @@ const CornfirmButton = ({
   title,
   onPress,
   disabled,
+  style,
   ...rest
 }: ConfirmButtonProps) => {
   return (

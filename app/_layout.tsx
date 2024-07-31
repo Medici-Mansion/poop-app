@@ -1,47 +1,69 @@
-import { useEffect } from "react";
-import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
-import { Host } from "react-native-portalize";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-
-import * as SplashScreen from "expo-splash-screen";
-import "react-native-reanimated";
 import QueryProvider from "@/providers/query-provider";
+import { Slot, SplashScreen, Stack } from "expo-router";
+import { useFonts } from "expo-font";
+import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Host } from "react-native-portalize";
+import {
+  initialWindowMetrics,
+  SafeAreaProvider,
+} from "react-native-safe-area-context";
+import { ThemeProvider } from "@/providers/theme-provider";
+import { View } from "react-native";
+
+export { ErrorBoundary } from "expo-router";
+
+export const unstable_settings = {
+  initialRouteName: "sign-in",
+};
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+  const [loaded, error] = useFonts({
+    SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
   });
 
   useEffect(() => {
+    if (error) throw error;
+  }, [error]);
+
+  useEffect(() => {
     if (loaded) {
-      setTimeout(() => {
-        SplashScreen.hideAsync();
-      }, 3000);
+      SplashScreen.hideAsync();
     }
   }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
+  return <RootLayoutNav />;
+}
 
+function RootLayoutNav() {
   return (
-    <GestureHandlerRootView>
-      <Host>
-        <QueryProvider>
-          <Stack>
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="index" options={{ headerShown: false }} />
-            <Stack.Screen name="profile" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="select-photo"
-              options={{ headerShown: false }}
-            />
-          </Stack>
-        </QueryProvider>
-      </Host>
-    </GestureHandlerRootView>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <ThemeProvider>
+        <GestureHandlerRootView>
+          <QueryProvider>
+            <Host>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  animation: "fade_from_bottom",
+                  contentStyle: {
+                    backgroundColor: "#121212",
+                  },
+                }}
+                initialRouteName="sign-in"
+              >
+                <Stack.Screen name="sign-in" />
+                <Stack.Screen name="sign-up" />
+                <Stack.Screen name="(auth)" />
+                <Stack.Screen name="profile" />
+                <Stack.Screen name="select-photo" />
+              </Stack>
+            </Host>
+          </QueryProvider>
+        </GestureHandlerRootView>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }

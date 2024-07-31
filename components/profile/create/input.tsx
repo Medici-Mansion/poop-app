@@ -1,6 +1,6 @@
 // TODO: 기존 input의 onPress 영역을 수정한 컴포넌트 - 기존 ui/input.tsx과 합쳐야함
 
-import { mergeRefs, cn } from "@/utils";
+import { mergeRefs, cn } from "@/lib/utils";
 import { theme } from "@/theme";
 import {
   ReactNode,
@@ -96,11 +96,12 @@ export const Input = memo(
               }}
               autoCorrect={false}
               spellCheck={false}
+              {...props}
               className={cn(
-                "text-body-m14 text-white flex-1 p-6 pr-0",
+                "text-body4-m16 text-white flex-1 p-6 py-[21px] pr-0",
                 inputClass
               )}
-              {...props}
+              style={{ fontSize: 16 }}
               editable={!disabled}
               selectTextOnFocus={!disabled}
             />

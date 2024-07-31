@@ -40,10 +40,10 @@ export enum Verify {
 
 // Parameters for Signup
 export interface SignupParam {
-  nickname: string;
+  userId: string;
   password: string;
-  birthday: string;
-  phone: string;
+  birthday?: string;
+  phone?: string;
 }
 
 // Parameters for Verification
@@ -151,4 +151,14 @@ export interface SignupFormField {
   placeholder: string;
   name: string;
   title: string;
+}
+
+/** Images */
+
+export interface PickedImage {
+  height: number;
+  mime: string;
+  path: string;
+  size: number;
+  width: number;
 }

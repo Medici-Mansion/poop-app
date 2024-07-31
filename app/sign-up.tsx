@@ -4,7 +4,7 @@ import useGetVerifyCode from "@/hooks/user/use-get-verify-code";
 import useSignup from "@/hooks/user/use-signup";
 import { router } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { SignupParam, Verify, VerifyParam } from "@/types";
+import { SignupParam, Verify } from "@/types";
 import React, { useRef, useState } from "react";
 import {
   Controller,
@@ -19,17 +19,15 @@ import { AnimatedPressable } from "@/components/ui/animate-pressable";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button } from "@/components/ui";
 import { KeyboardAccessoryView } from "react-native-keyboard-accessory";
-import {
-  NicknameInput,
-  PasswordInput,
-  PasswordConfirmInput,
-} from "./_components";
 import FormField from "@/components/form-field";
-import { PhoneNumberInput } from "./_components/phone-number-input";
-import { VerifyCodeInput } from "./_components/verify-code-input";
+import { PhoneNumberInput } from "@/components/phone-number-input";
+import { VerifyCodeInput } from "@/components/verify-code-input";
 import { useMutation } from "@tanstack/react-query";
 import { checkNicknameDuplicated } from "@/apis";
 import CustomDateTimeSheet from "@/components/my-profile/create/date-time-sheet";
+import { PasswordConfirmInput } from "@/components/password-confirm-input";
+import { PasswordInput } from "@/components/password-input";
+import { NicknameInput } from "@/components/nickname-input";
 
 const signupFormFieldList = [
   "nickname",
@@ -292,32 +290,46 @@ const Signup = () => {
             )}
           />
         </GestureHandlerRootView>
+
         {step !== 5 ? (
-          <KeyboardAccessoryView avoidKeyboard hideBorder>
-            <Button
-              size={"lg"}
-              disabled={
-                !form?.getFieldState(signupFormFieldList[step]).isDirty ||
-                !!form?.formState?.errors?.[signupFormFieldList[step]]
-              }
-              label={step === 4 ? "인증 번호 보내기" : "확인"}
-              onPress={onValidateKeyboardTopButtonClick}
-            />
+          <KeyboardAccessoryView hideBorder androidAdjustResize>
+            {({ isKeyboardVisible }) => (
+              <View>
+                {isKeyboardVisible && (
+                  <Button
+                    size={"lg"}
+                    className="w-full"
+                    disabled={
+                      !form?.getFieldState(signupFormFieldList[step]).isDirty ||
+                      !!form?.formState?.errors?.[signupFormFieldList[step]]
+                    }
+                    label={step === 4 ? "인증 번호 보내기" : "확인"}
+                    onPress={onValidateKeyboardTopButtonClick}
+                  />
+                )}
+              </View>
+            )}
           </KeyboardAccessoryView>
         ) : (
-          <KeyboardAccessoryView avoidKeyboard hideBorder>
-            <Button
-              size={"lg"}
-              label={"확인"}
-              onPress={() =>
-                formHandler.current?.handleSubmit((value) =>
-                  checkVerifyCode({
-                    ...value,
-                    vid: compSignupParam.current?.phone || "",
-                  })
-                )()
-              }
-            />
+          <KeyboardAccessoryView hideBorder androidAdjustResize>
+            {({ isKeyboardVisible }) => (
+              <View>
+                {isKeyboardVisible && (
+                  <Button
+                    size={"lg"}
+                    label={"확인"}
+                    onPress={() =>
+                      formHandler.current?.handleSubmit((value) =>
+                        checkVerifyCode({
+                          ...value,
+                          vid: compSignupParam.current?.phone || "",
+                        })
+                      )()
+                    }
+                  />
+                )}
+              </View>
+            )}
           </KeyboardAccessoryView>
         )}
       </Pressable>

@@ -40,6 +40,7 @@ export default function RootLayout() {
               options={{ headerShown: false }}
             />
             <Stack.Screen name="other-profile" options={{ headerShown: false }} />
+            <Stack.Screen name="follow-list" options={{ headerShown: false }} />
           </Stack>
         </QueryProvider>
       </Host>

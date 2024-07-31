@@ -19,6 +19,7 @@ const ProfileLayout = () => {
               headerLeft: () => <CreateHeader.LeftButton />,
               headerRight: () => <CreateHeader.RightButton />,
               headerStyle: { backgroundColor: "#161622" },
+              headerShadowVisible: false,
             }} 
           />
           <Stack.Screen name="main" 
@@ -35,7 +36,6 @@ const ProfileLayout = () => {
               headerRight: () => <UserHeader.RightButton />,
               headerStyle: { backgroundColor: "#121212" },
               headerShadowVisible: false,
-              headerShown: false,
             }}
           />
           <Stack.Screen name="activity" 
@@ -45,6 +45,7 @@ const ProfileLayout = () => {
               headerRight: () => <ActivityHeader.RightButton />,
               headerStyle: { backgroundColor: "#161622" },
               headerTitleStyle: { color: "white" },
+              headerShadowVisible: false,
             }} 
           />
           <Stack.Screen name="settings" 
@@ -53,6 +54,7 @@ const ProfileLayout = () => {
               headerLeft: () => <SettingsHeader.LeftButton />,
               headerStyle: { backgroundColor: "#161622" },
               headerTitleStyle: { color: "white" },
+              headerShadowVisible: false,
             }} 
           />
         </Stack>

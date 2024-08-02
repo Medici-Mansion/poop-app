@@ -1,5 +1,5 @@
+import { Community, HomeActive, Profile, Search } from "@/assets/icons";
 import { UploadButton } from "@/components/upload-icon";
-import { Community, Home, HomeActive, Profile, Search } from "@/assets/icons";
 import { Tabs } from "expo-router";
 
 export default function TabLayout() {
@@ -71,5 +71,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const Noop = () => null;

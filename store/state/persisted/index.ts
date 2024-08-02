@@ -5,14 +5,14 @@ import { logger } from "@/lib/logger";
 import * as store from "@/store/state/persisted/store";
 import { Schema } from "./schema";
 
-const broadcast = new BroadcastChannel("BSKY_BROADCAST_CHANNEL");
-const UPDATE_EVENT = "BSKY_UPDATE";
+const broadcast = new BroadcastChannel("POOP_BROADCAST_CHANNEL");
+const UPDATE_EVENT = "POOP_UPDATE";
 
 const defaults: Schema = {
   session: {
-    user: {},
-    profile: {},
-    token: "",
+    user: null,
+    profile: null,
+    token: null,
   },
 };
 
@@ -47,7 +47,7 @@ export function get<K extends keyof Schema>(key: K): Schema[K] {
 
 export async function write<K extends keyof Schema>(
   key: K,
-  value: Schema[K],
+  value: Schema[K]
 ): Promise<void> {
   try {
     _state[key] = value;
@@ -81,7 +81,7 @@ async function onBroadcastMessage({ data }: MessageEvent) {
         _emitter.emit("update");
       } else {
         logger.error(
-          `persisted state: handled update update from broadcast channel, but found no data`,
+          `persisted state: handled update update from broadcast channel, but found no data`
         );
       }
     } catch (e) {
@@ -89,7 +89,7 @@ async function onBroadcastMessage({ data }: MessageEvent) {
         `persisted state: failed handling update from broadcast channel`,
         {
           message: e,
-        },
+        }
       );
     }
   }

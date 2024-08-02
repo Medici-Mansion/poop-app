@@ -1,17 +1,21 @@
+import { StickerProvider } from "@/components/skia/StickerContext";
+import { ToonProvider } from "@/providers/toon-provider";
 import { Stack } from "expo-router";
 
-import React from "react";
-
-export default function AuthLayout() {
+export default function TabLayout() {
   return (
-    <Stack
-      initialRouteName="(service)"
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="(service)" />
-      <Stack.Screen name="profile-select" />
-    </Stack>
+    <StickerProvider>
+      <ToonProvider>
+        <Stack
+          initialRouteName="(tabs)"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="make-toon" />
+        </Stack>
+      </ToonProvider>
+    </StickerProvider>
   );
 }

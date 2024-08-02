@@ -1,10 +1,8 @@
 export interface GetMeResponse {
-  birthday: string;
-  email: string;
-  gender: string;
+  birthday?: string;
+  userId: string;
   id: string;
-  nickname: string;
-  phone: string;
+  phone?: string;
   verified: string;
   latestProfileId?: string;
 }

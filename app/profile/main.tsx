@@ -34,7 +34,7 @@ const MainPage = () => {
             onPress={() => router.push("/profile/create")}
           />
 
-          <Link asChild href="(auth)">
+          <Link asChild href="/(auth)/(tabs)/home">
             <AnimatedPressable>
               <Text className="text-[#959595] text-center">나중에</Text>
             </AnimatedPressable>

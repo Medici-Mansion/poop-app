@@ -26,7 +26,7 @@ type Transport = (
   level: LogLevel,
   message: string | Error,
   metadata: Metadata,
-  timestamp: number,
+  timestamp: number
 ) => void;
 
 /**
@@ -115,7 +115,7 @@ export const consoleTransport: Transport = (
   level,
   message,
   metadata,
-  timestamp,
+  timestamp
 ) => {
   const extra = Object.keys(metadata).length
     ? " " + JSON.stringify(prepareMetadata(metadata), null, "  ")
@@ -130,7 +130,7 @@ export const consoleTransport: Transport = (
 
   if (message instanceof Error) {
     console.info(
-      `${dayjs(timestamp, "HH:mm:ss")} ${message.toString()}${extra}`,
+      `${dayjs(timestamp, "HH:mm:ss")} ${message.toString()}${extra}`
     );
     log(message);
   } else {
@@ -153,15 +153,15 @@ export class Logger {
 
   constructor({
     enabled = env.IS_DEV,
-    level = env.LOG_LEVEL as LogLevel,
-    debug = env.LOG_DEBUG || "",
+    level = LogLevel.Info,
+    debug = "info" || "",
   }: {
     enabled?: boolean;
     level?: LogLevel;
     debug?: string;
   } = {}) {
     this.enabled = enabled !== false;
-    this.level = debug ? LogLevel.Debug : (level ?? LogLevel.Info); // default to info
+    this.level = debug ? LogLevel.Debug : level ?? LogLevel.Info; // default to info
     this.debugContextRegexes = (debug || "").split(",").map((context) => {
       return new RegExp(context.replace(/[^\w:*]/, "").replace(/\*/g, ".*"));
     });
@@ -208,7 +208,7 @@ export class Logger {
   protected transport(
     level: LogLevel,
     message: string | Error,
-    metadata: Metadata = {},
+    metadata: Metadata = {}
   ) {
     if (!this.enabled) return;
 

@@ -20,7 +20,7 @@ export const SignupFormList: (SignupFormField & {
     id: 1,
     placeholder: "닉네임",
     name: "id" as const,
-    title: "닉네임을 입력해주세요",
+    title: "아이디를 입력해주세요",
   },
   {
     id: 2,

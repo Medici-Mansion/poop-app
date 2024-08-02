@@ -23,14 +23,14 @@ import FormField from "@/components/form-field";
 import { PhoneNumberInput } from "@/components/phone-number-input";
 import { VerifyCodeInput } from "@/components/verify-code-input";
 import { useMutation } from "@tanstack/react-query";
-import { checkNicknameDuplicated } from "@/apis";
+import { checkUserIdDuplicated } from "@/apis";
 import CustomDateTimeSheet from "@/components/my-profile/create/date-time-sheet";
 import { PasswordConfirmInput } from "@/components/password-confirm-input";
 import { PasswordInput } from "@/components/password-input";
-import { NicknameInput } from "@/components/nickname-input";
+import { UserIdInput } from "@/components/user-id-input";
 
 const signupFormFieldList = [
-  "nickname",
+  "userId",
   "password",
   "passwordConfirm",
   "birthday",
@@ -61,7 +61,7 @@ const Signup = () => {
 
   const form = useForm<{ [key in SignupFormFields]: string }>({
     defaultValues: {
-      nickname: "",
+      userId: "",
       password: "",
       passwordConfirm: "",
       birthday: "",
@@ -96,7 +96,6 @@ const Signup = () => {
 
   const onSubmit = (values: SignupParam) => {
     compSignupParam.current = { ...values };
-
     signupMutate(values);
   };
 
@@ -105,17 +104,17 @@ const Signup = () => {
       /**
        * 인증 완료
        */
-      router.replace("profile/main");
+      router.replace("/profile/main");
     },
     onError(error, variables, context) {
       console.log(error, variables, context);
     },
   });
 
-  const { mutate: checkDuplicateNickname, isSuccess: nicknameSuccess } =
+  const { mutate: checkDuplicateUserId, isSuccess: nicknameSuccess } =
     useMutation({
       mutationKey: ["search", "nickname"],
-      mutationFn: (newNickname: string) => checkNicknameDuplicated(newNickname),
+      mutationFn: (newNickname: string) => checkUserIdDuplicated(newNickname),
       gcTime: Infinity,
       onSuccess(response) {
         const { body } = response;
@@ -127,13 +126,13 @@ const Signup = () => {
       },
       onError(error: any) {
         if (error.response.status === 419) {
-          form.setError("nickname", {
+          form.setError("userId", {
             type: "validate",
-            message: "중복되는 닉네임이에요. 다시 입력해주세요.",
+            message: "사용중인 아이디에요. 다시 입력해주세요.",
           });
           return;
         }
-        form.setError("nickname", {
+        form.setError("userId", {
           type: "validate",
           message: "서버에 문제가 생겼어요.",
         });
@@ -142,13 +141,13 @@ const Signup = () => {
 
   const onValidateKeyboardTopButtonClick = async () => {
     form
-      .trigger(["birthday", "nickname", "password", "passwordConfirm", "phone"])
+      .trigger(["birthday", "userId", "password", "passwordConfirm", "phone"])
       .then(async (value) => {
         if (!value) return;
         switch (step) {
           case 0:
             if (step === 0) {
-              checkDuplicateNickname(form.getValues("nickname"));
+              checkDuplicateUserId(form.getValues("userId"));
             }
             break;
           case 1:
@@ -266,7 +265,7 @@ const Signup = () => {
                     step={step}
                   />
                 ) : null}
-                <NicknameInput
+                <UserIdInput
                   onSubmitEditing={onValidateKeyboardTopButtonClick}
                   isSuccess={nicknameSuccess}
                   step={step}
@@ -317,15 +316,16 @@ const Signup = () => {
                 {isKeyboardVisible && (
                   <Button
                     size={"lg"}
+                    className="w-full"
                     label={"확인"}
-                    onPress={() =>
+                    onPress={() => {
                       formHandler.current?.handleSubmit((value) =>
                         checkVerifyCode({
                           ...value,
                           vid: compSignupParam.current?.phone || "",
                         })
-                      )()
-                    }
+                      )();
+                    }}
                   />
                 )}
               </View>

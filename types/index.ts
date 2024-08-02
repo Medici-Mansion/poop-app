@@ -162,3 +162,7 @@ export interface PickedImage {
   size: number;
   width: number;
 }
+
+// SOCIAL PROVIDER
+
+export type SocialProvider = "APPLE" | "GOOGLE";

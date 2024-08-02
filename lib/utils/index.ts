@@ -77,3 +77,36 @@ export const formatTime = (seconds: number): string => {
 
   return formattedTimeString.includes("NaN") ? "" : formattedTimeString;
 };
+
+export function isEmpty(value: unknown): boolean {
+  // Null or Undefined
+  if (value == null) return true;
+
+  // Boolean
+  if (typeof value === "boolean") return !value;
+
+  // Number
+  if (typeof value === "number") return isNaN(value);
+
+  // String
+  if (typeof value === "string") return value.trim().length === 0;
+
+  // Array
+  if (Array.isArray(value)) return value.length === 0;
+
+  // Object
+  if (typeof value === "object") {
+    // Check if it's an instance of a date and if it's invalid
+    if (value instanceof Date) return isNaN(value.getTime());
+
+    // Check if it's an empty object
+
+    return Object.keys(value).length === 0;
+  }
+
+  // Set and Map
+  if (value instanceof Set || value instanceof Map) return value.size === 0;
+
+  // If none of the above conditions are met, return false
+  return false;
+}

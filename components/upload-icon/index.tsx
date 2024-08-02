@@ -1,8 +1,7 @@
-import Icon from "@/components/icons";
 import { AnimatedPressable } from "@/components/ui/animate-pressable";
 import { usePhotoLibraryPermission } from "@/hooks/use-permission";
 import { openPicker } from "@/lib/utils/media/picker.shared";
-import { router, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { Dimensions, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -12,6 +11,7 @@ import { Image as ExpoImage } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { compressIfNeeded } from "@/lib/utils/media/image.shared";
 import { Challenge, Plus, PlusActive, Write } from "@/assets/icons";
+import { useToonImage } from "@/app/(auth)/_layout";
 
 interface UploadModalButtonProps {
   focused: boolean;
@@ -25,6 +25,7 @@ export const UploadButton = (_: UploadModalButtonProps) => {
   const ref = useRef<TouchableOpacity>(null);
   const [open, setOpen] = useState(false);
   const { requestPhotoAccessIfNeeded } = usePhotoLibraryPermission();
+  const { setImages } = useToonImage();
 
   const handleSelectImage = useCallback(async () => {
     if (!(await requestPhotoAccessIfNeeded())) {
@@ -34,8 +35,15 @@ export const UploadButton = (_: UploadModalButtonProps) => {
     let result = await openPicker({
       allowsMultipleSelection: true,
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0.8,
+      orderedSelection: true,
+      presentationStyle:
+        ImagePicker.UIImagePickerPresentationStyle.OVER_FULL_SCREEN,
     });
 
+    if (!result?.length) {
+      return;
+    }
     const compressedImages = await Promise.all(
       result.map((image) => compressIfNeeded(image))
     );
@@ -45,6 +53,8 @@ export const UploadButton = (_: UploadModalButtonProps) => {
     );
 
     setOpen(false);
+    setImages(compressedImages);
+    router.push("/(auth)/make-toon");
   }, []);
 
   return (
@@ -99,7 +109,7 @@ export const UploadButton = (_: UploadModalButtonProps) => {
             className="p-6 flex space-x-4 flex-row"
             onPress={() => {
               setOpen(false);
-              router.push("create-post");
+              router.push("/create");
             }}
           >
             <Challenge />

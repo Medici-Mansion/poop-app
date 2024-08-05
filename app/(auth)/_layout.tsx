@@ -1,27 +1,21 @@
-import React from "react";
+import { StickerProvider } from "@/components/skia/StickerContext";
+import { ToonProvider } from "@/providers/toon-provider";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 
-const AuthLayout = () => {
+export default function TabLayout() {
   return (
-    <>
-      <Stack>
-        <Stack.Screen
-          name="sign-in"
-          options={{
+    <StickerProvider>
+      <ToonProvider>
+        <Stack
+          initialRouteName="(tabs)"
+          screenOptions={{
             headerShown: false,
           }}
-        />
-        <Stack.Screen
-          name="sign-up"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
-      <StatusBar backgroundColor="#161622" style="light" />
-    </>
+        >
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="make-toon" />
+        </Stack>
+      </ToonProvider>
+    </StickerProvider>
   );
-};
-
-export default AuthLayout;
+}

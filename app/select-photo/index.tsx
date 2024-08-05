@@ -16,25 +16,24 @@ const SelectPhotoScreen = () => {
   const [photo, setPhoto] = useState(null);
 
   const profileStore = useProfileStore();
-  const { loadNextPagePictures, photos, hasNextPage, isLoading } = useGallery({
-    pageSize: 20,
-  });
+  // const { loadNextPagePictures, photos, hasNextPage, isLoading } = useGallery({
+  //   pageSize: 20,
+  // });
 
   const handleSelectImage = (item) => async () => {
     setPhoto(item);
     setEditorVisible(true);
   };
 
-  const handleEndReached = () => {
-    if (hasNextPage) loadNextPagePictures();
-  };
+  // const handleEndReached = () => {
+  //   if (hasNextPage) loadNextPagePictures();
+  // };
 
-  // TODO: select-photo가 profileStore에 의존하고 있음 -> 네이티브로 변경시에는 의존성 없도록 하기
   const handleEditComplete = (result) => {
     setPhoto(result);
     profileStore.setAvatar({
       uri: result.uri,
-      filename: result.uri.split('/').pop(),
+      filename: result.uri.split("/").pop(),
     });
     setTimeout(() => {
       router.back();
@@ -50,7 +49,7 @@ const SelectPhotoScreen = () => {
   return (
     <View className="flex-1 bg-black h-full">
       <View style={{ flex: COLUMN * COLUMN }}>
-        <FlatList
+        {/* <FlatList
           data={photos}
           renderItem={renderItem}
           keyExtractor={(_, index) => `${index}`}
@@ -58,7 +57,7 @@ const SelectPhotoScreen = () => {
           onEndReached={handleEndReached}
           onEndReachedThreshold={0.5}
           ListFooterComponent={BottomLoader(isLoading)}
-        />
+        /> */}
       </View>
 
       {/* TODO: 이미지 크롭 - 커스텀 용으로 따로 생성할 것 */}

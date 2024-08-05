@@ -13,13 +13,47 @@ import { GetMeResponse } from "@/types/server/user/me";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
-const PoopApi = axios.create({
+export const PoopApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
+
+export enum GraphicType {
+  Lottie = "Lottie",
+  GIF = "GIF",
+}
+export enum GraphicOrderKey {
+  CREATED_AT = "createdAt",
+  UPDATED_AT = "updatedAt",
+  NAME = "name",
+}
+
+export enum Direction {
+  ASC = "asc",
+  DESC = "desc",
+}
 
 // Common
 export const getBreeds = async () => {
   const { data } = await PoopApi.get<BreedData>("/v1/common/breeds");
+  return data;
+};
+
+export const getGraphics = async (params: {
+  page: number;
+  pageSize: number;
+  graphicType?: "GIF" | "LOTTIE";
+  orderKey?: GraphicOrderKey;
+  direction?: Direction;
+}) => {
+  const { data } = await PoopApi.get<
+    Response<{
+      page: number;
+      total: number;
+      totalPage: number;
+      list: { category: string; id: string; type: string; url: string }[];
+    }>
+  >("/v1/graphics", { params });
+
   return data;
 };
 
@@ -67,6 +101,17 @@ export const signUp = async (body: SignupParam) => {
   return data;
 };
 
+export const socialSignup = async (body: {
+  token: string;
+  provider: "APPLE" | "GOOGLE";
+}) => {
+  const { data } = await PoopApi.post<Response<LoginSuccess>>(
+    "/v1/auth/social",
+    body
+  );
+  return data.body;
+};
+
 export const verify = async (body: VerifyParam) => {
   const { data } = await PoopApi.post("/v1/auth/verify", body);
   return data;
@@ -92,7 +137,7 @@ export const refresh = async () => {
   return data;
 };
 
-export const checkNicknameDuplicated = async (nickname: string) => {
+export const checkUserIdDuplicated = async (nickname: string) => {
   const { data } = await PoopApi.get("/v1/users/nickname", {
     params: {
       nickname,
@@ -101,21 +146,25 @@ export const checkNicknameDuplicated = async (nickname: string) => {
   return data;
 };
 
-const setAccessToken = async ({
+export const setAccessToken = async ({
   accessToken,
   shouldRefresh,
 }: {
   accessToken: string;
   shouldRefresh?: boolean;
 }) => {
-  PoopApi.defaults.headers.common[XCI] = accessToken;
+  let _accessToken = accessToken;
+  PoopApi.defaults.headers.common[XCI] = _accessToken;
   if (shouldRefresh) {
     const response = await refresh();
     const data = response as unknown as Response<LoginSuccess>;
-    await AsyncStorage.setItem(Token.ACT, data.body.accessToken);
-    PoopApi.defaults.headers.common[XCI] = data.body.accessToken;
+    _accessToken = data.body.accessToken;
   }
+  await AsyncStorage.setItem(Token.ACT, _accessToken);
+  PoopApi.defaults.headers.common[XCI] = _accessToken;
 };
+
+export const getToken = async () => await AsyncStorage.getItem(Token.ACT);
 
 export const injectInterceptor = async (InjectOptions: {
   accessToken: string;

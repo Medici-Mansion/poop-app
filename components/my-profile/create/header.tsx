@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, Text } from "react-native";
 
-import { useNavigation } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import Event from "@/constants/RouteEvent";
 import { useProfileStore } from "@/store/profile";
+import { useNavigation } from "expo-router";
 
 /**
  * HeaderRightButton

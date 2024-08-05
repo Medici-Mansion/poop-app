@@ -1,11 +1,14 @@
-import dayjs from 'dayjs';
-import React, { useImperativeHandle, useState, forwardRef } from 'react';
-import { StyleSheet, Pressable, Text, Keyboard } from 'react-native';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import dayjs from "dayjs";
+import React, { useImperativeHandle, useState, forwardRef } from "react";
+import { StyleSheet, Pressable, Text, Keyboard } from "react-native";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
-import BottomSheet, { BottomSheetView, BottomSheetModalProvider, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetView,
+  BottomSheetModalProvider,
+  BottomSheetBackdrop,
+} from "@gorhom/bottom-sheet";
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
-
 
 interface DateTimeSheetProps {
   isPending?: boolean;
@@ -27,41 +30,51 @@ const renderHandle = (props: HandleProps) => {
   return (
     <Pressable
       disabled={isPending}
-      className='h-12 bg-white w-full items-center justify-center'
-      onPress={handleConfirm}>
-      <Text className="bg-white text-black text-center py-3 font-bold">확인</Text>
+      className="h-12 bg-white w-full items-center justify-center"
+      onPress={handleConfirm}
+    >
+      <Text className="bg-white text-black text-center py-3 font-bold">
+        확인
+      </Text>
     </Pressable>
   );
-}
+};
 
 /**
  * renderBackdrop
  * bottom의 배경이자 bottom의 clickOutside를 위한 컴포넌트
  * */
-const renderBackdrop = ((props: any) => {
+const renderBackdrop = (props: any) => {
   const { onPress, ...rest } = props;
-    return (
-      <BottomSheetBackdrop
+  return (
+    <BottomSheetBackdrop
       disappearsOnIndex={-1}
       appearsOnIndex={0}
       opacity={0}
       onPress={onPress}
       {...rest}
-      />
-    )
-});
+    />
+  );
+};
 
 /**
  * CustomDateTimeSheet
  * 날짜 선택을 위한 커스텀 DateTimeSheet
  * */
 const CustomDateTimeSheet = forwardRef((props: DateTimeSheetProps, ref) => {
-  const { date = '', onConfirm, isPending = false, ...rest } = props;
-  const [value, setValue] = useState<string>(date || dayjs().format('YYYY-MM-DD'));
-  const { hideBottomSheet, ref: bottomSheetRef, showBottomSheet, snapPoints } = useBottomSheet("50%");
+  const { date = "", onConfirm, isPending = false, ...rest } = props;
+  const [value, setValue] = useState<string>(
+    date || dayjs().format("YYYY-MM-DD")
+  );
+  const {
+    hideBottomSheet,
+    ref: bottomSheetRef,
+    showBottomSheet,
+    snapPoints,
+  } = useBottomSheet("50%");
 
   React.useEffect(() => {
-    setValue(date || dayjs().format('YYYY-MM-DD'));
+    setValue(date || dayjs().format("YYYY-MM-DD"));
   }, [date]);
 
   const handleConfirm = () => {
@@ -70,7 +83,7 @@ const CustomDateTimeSheet = forwardRef((props: DateTimeSheetProps, ref) => {
   };
 
   const handleDateChange = (event: any, newDate?: Date) => {
-    if (event.type === 'dismissed') {
+    if (event.type === "dismissed") {
       hideBottomSheet();
       return;
     }
@@ -78,17 +91,15 @@ const CustomDateTimeSheet = forwardRef((props: DateTimeSheetProps, ref) => {
   };
 
   const updateValue = (newDate: Date) => {
-    setValue(dayjs(newDate).format('YYYY-MM-DD'));
+    setValue(dayjs(newDate).format("YYYY-MM-DD"));
   };
 
   const show = async () => {
     await Keyboard.dismiss();
     showBottomSheet();
-  }
+  };
 
-  useImperativeHandle(ref, () => (
-    { show, hide: hideBottomSheet }
-  ));
+  useImperativeHandle(ref, () => ({ show, hide: hideBottomSheet }));
 
   return (
     <BottomSheetModalProvider>
@@ -98,7 +109,9 @@ const CustomDateTimeSheet = forwardRef((props: DateTimeSheetProps, ref) => {
         snapPoints={snapPoints}
         enablePanDownToClose={true}
         handleComponent={() => renderHandle({ isPending, handleConfirm })}
-        backdropComponent={(props) => renderBackdrop({ ...props, onPress: hideBottomSheet })}
+        backdropComponent={(props) =>
+          renderBackdrop({ ...props, onPress: hideBottomSheet })
+        }
       >
         <BottomSheetView>
           <RNDateTimePicker
@@ -117,15 +130,14 @@ const CustomDateTimeSheet = forwardRef((props: DateTimeSheetProps, ref) => {
   );
 });
 
-
 const styles = StyleSheet.create({
   dateTimePicker: {
-    backgroundColor: 'rgb(229 231 235)', // bg-gray-200
+    backgroundColor: "rgb(229 231 235)", // bg-gray-200
     height: 350,
-    width: '100%',
+    width: "100%",
   },
 });
 
-CustomDateTimeSheet.displayName = 'CustomDateTimeSheet';
+CustomDateTimeSheet.displayName = "CustomDateTimeSheet";
 
 export default CustomDateTimeSheet;

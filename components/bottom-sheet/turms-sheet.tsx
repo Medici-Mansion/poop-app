@@ -7,6 +7,7 @@ import { TERMS } from "@/constants";
 import { useBottomSheet } from "@/hooks/use-bottom-sheet";
 import { Portal } from "react-native-portalize";
 import { Button } from "../ui";
+import { AnimatedPressable } from "../ui/animate-pressable";
 
 interface TermsSheetProps extends ViewProps {}
 
@@ -15,7 +16,9 @@ const TermsSheet = ({ ...viewProps }: TermsSheetProps) => {
     useBottomSheet("50%");
   return (
     <View {...viewProps}>
-      <Button variant="outlined" label="회원가입" onPress={showBottomSheet} />
+      <AnimatedPressable onPress={showBottomSheet}>
+        <Text className="text-body-b14 font-bold text-gray-200">회원가입</Text>
+      </AnimatedPressable>
 
       <Portal>
         <BottomSheet

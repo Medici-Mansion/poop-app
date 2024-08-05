@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui";
-import { router } from "expo-router";
+import { AnimatedPressable } from "@/components/ui/animate-pressable";
+import { Link, router } from "expo-router";
 import { Pressable, View } from "react-native";
 import { Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -33,9 +34,11 @@ const MainPage = () => {
             onPress={() => router.push("/my-profile/create")}
           />
 
-          <Pressable>
-            <Text className="text-[#959595] text-center">나중에</Text>
-          </Pressable>
+          <Link asChild href="/(auth)/(tabs)/home">
+            <AnimatedPressable>
+              <Text className="text-[#959595] text-center">나중에</Text>
+            </AnimatedPressable>
+          </Link>
         </View>
       </View>
     </View>

@@ -1,6 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
-import * as MediaLibrary from 'expo-media-library';
-import { getImageUri } from '@/utils/image';
+import {
+  CameraRoll,
+  PhotoIdentifier,
+  cameraRollEventEmitter,
+} from "@react-native-camera-roll/camera-roll";
+
+import { useCallback, useEffect, useState } from "react";
+
+import { AppState, EmitterSubscription, Platform } from "react-native";
 
 interface GalleryOptions {
   pageSize?: number;
@@ -8,70 +14,126 @@ interface GalleryOptions {
 }
 
 interface GalleryLogic {
-  photos?: MediaLibrary.Asset[];
+  photos?: PhotoIdentifier[];
   loadNextPagePictures: () => void;
   isLoading: boolean;
   isLoadingNextPage: boolean;
+  isReloading: boolean;
   hasNextPage: boolean;
 }
 
 export const useGallery = ({ pageSize = 30 }: GalleryOptions): GalleryLogic => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isReloading, setIsReloading] = useState(false);
   const [isLoadingNextPage, setIsLoadingNextPage] = useState(false);
   const [hasNextPage, setHasNextPage] = useState(false);
   const [nextCursor, setNextCursor] = useState<string>();
-  const [photos, setPhotos] = useState<MediaLibrary.Asset[]>();
+  const [photos, setPhotos] = useState<PhotoIdentifier[]>();
+  const isAboveIOS14 =
+    Platform.OS === "ios" && parseInt(Platform.Version, 10) >= 14;
 
   const loadNextPagePictures = useCallback(async () => {
     if (isLoading || isLoadingNextPage) return;
     try {
       nextCursor ? setIsLoadingNextPage(true) : setIsLoading(true);
-
-      const media = await MediaLibrary.getAssetsAsync({
+      const { edges, page_info } = await CameraRoll.getPhotos({
         first: pageSize,
         after: nextCursor,
-        mediaType: ['photo'],
-        sortBy: [[MediaLibrary.SortBy.creationTime, false]],
+        assetType: "All",
+        include: [
+          "fileExtension",
+          "sourceType",
+          "playableDuration",
+          ...(Platform.OS === "android"
+            ? (["fileSize", "filename"] as const)
+            : []),
+        ],
       });
 
-      const formattedAssets = await Promise.all(
-        media.assets.map(async asset => {
-          const uri = await getImageUri(asset.uri);
-          return { ...asset, uri };
-        }),
-      );
-      setPhotos(prev => [...(prev ?? []), ...formattedAssets]);
-      setNextCursor(media.endCursor);
-      setHasNextPage(media.hasNextPage);
+      setPhotos((prev) => [...(prev ?? []), ...edges]);
+
+      setNextCursor(page_info.end_cursor);
+      setHasNextPage(page_info.has_next_page);
     } catch (error) {
-      console.error('useGallery getPhotos error:', error);
+      console.error("useGallery getPhotos error:", error);
     } finally {
       setIsLoading(false);
       setIsLoadingNextPage(false);
     }
   }, [isLoading, isLoadingNextPage, nextCursor, pageSize]);
 
-  const getPermissions = async () => {
-    const {
-        status,
-        canAskAgain,
-    } = await MediaLibrary.getPermissionsAsync();
+  const getUnloadedPictures = useCallback(async () => {
+    try {
+      setIsReloading(true);
+      const { edges, page_info } = await CameraRoll.getPhotos({
+        first: !photos || photos.length < pageSize ? pageSize : photos.length,
+        assetType: "All",
+        include: [
+          "fileExtension",
+          "sourceType",
+          "playableDuration",
+          ...(Platform.OS === "android"
+            ? (["fileSize", "filename"] as const)
+            : []),
+        ],
+      });
 
-    if (status === "undetermined" && canAskAgain) {
-        const { status } = await MediaLibrary.requestPermissionsAsync();
-        if (status !== "undetermined") loadNextPagePictures();
-    } else if (status !== "undetermined") loadNextPagePictures();
-};
+      setPhotos(edges);
+
+      setNextCursor(page_info.end_cursor);
+      setHasNextPage(page_info.has_next_page);
+    } catch (error) {
+      console.error("useGallery getNewPhotos error:", error);
+    } finally {
+      setIsReloading(false);
+    }
+  }, [pageSize, photos]);
 
   useEffect(() => {
-    getPermissions();
-  }, []);
+    if (!photos) {
+      loadNextPagePictures();
+    }
+  }, [loadNextPagePictures]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener(
+      "change",
+      async (nextAppState) => {
+        if (nextAppState === "active") {
+          getUnloadedPictures();
+        }
+      }
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [getUnloadedPictures]);
+
+  useEffect(() => {
+    let subscription: EmitterSubscription;
+    if (isAboveIOS14) {
+      subscription = cameraRollEventEmitter.addListener(
+        "onLibrarySelectionChange",
+        (_event) => {
+          getUnloadedPictures();
+        }
+      );
+    }
+
+    return () => {
+      if (isAboveIOS14 && subscription) {
+        subscription.remove();
+      }
+    };
+  }, [getUnloadedPictures, isAboveIOS14]);
 
   return {
     photos,
     loadNextPagePictures,
     isLoading,
     isLoadingNextPage,
+    isReloading,
     hasNextPage,
   };
 };

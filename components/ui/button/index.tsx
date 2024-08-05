@@ -1,5 +1,5 @@
-import React, { LegacyRef, forwardRef } from "react";
-import { Pressable, PressableProps, Text, View } from "react-native";
+import React, { LegacyRef, PropsWithChildren, forwardRef } from "react";
+import { Pressable, PressableProps, Text, View, ViewProps } from "react-native";
 import Animated, {
   SharedValue,
   useSharedValue,
@@ -9,8 +9,9 @@ import { VariantProps, cva } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+
 const buttonVariatns = cva(
-  "flex justify-center items-center py-4 mx-auto bg-white w-full",
+  "flex justify-center items-center py-4 mx-auto bg-white",
   {
     variants: {
       variant: {
@@ -24,16 +25,17 @@ const buttonVariatns = cva(
         s: "",
         md: "rounded-2xl",
         lg: "",
+        full: "w-full rounded-2xl",
       },
     },
     defaultVariants: {
       variant: "single",
-      size: "md",
+      size: "full",
     },
     compoundVariants: [
       {
         variant: "horizontal",
-        size: "md",
+        size: "full",
       },
     ],
   }
@@ -45,11 +47,20 @@ interface ButtonProps
   label: string;
   secondary?: ButtonProps & { label: string };
   variant?: "single" | "horizontal" | "vertical" | "outlined";
+  viewProps?: ViewProps;
 }
 
-export const Button = forwardRef<View, ButtonProps>(
+export const Button = forwardRef<View, PropsWithChildren<ButtonProps>>(
   (
-    { variant = "single", size, label, secondary, ...props }: ButtonProps,
+    {
+      variant = "single",
+      size,
+      children,
+      label,
+      secondary,
+      viewProps,
+      ...props
+    },
     ref
   ) => {
     const opacity = useSharedValue(1);
@@ -68,7 +79,7 @@ export const Button = forwardRef<View, ButtonProps>(
     };
 
     return (
-      <View className="space-y-4">
+      <View {...viewProps} className={cn("space-y-4", viewProps?.className)}>
         <AnimatedPressable
           {...props}
           ref={ref}
@@ -87,14 +98,18 @@ export const Button = forwardRef<View, ButtonProps>(
             props.className
           )}
         >
-          <Text
-            className={cn(
-              "text-body-b14 font-bold",
-              variant === "outlined" ? "text-white" : ""
-            )}
-          >
-            {label}
-          </Text>
+          {children ? (
+            children
+          ) : (
+            <Text
+              className={cn(
+                "text-body4-m16 font-bold",
+                variant === "outlined" ? "text-white" : ""
+              )}
+            >
+              {label}
+            </Text>
+          )}
         </AnimatedPressable>
         {variant === "vertical" && (
           <Pressable {...secondary} className={cn("mx-auto")}>

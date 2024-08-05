@@ -1,12 +1,12 @@
 import React from "react";
-import { Stack } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import Header from "@/components/select-photo/header";
 
 const SelectPhotoLayout = () => {
   return (
     <>
-      <Stack>
+      {/* <Stack>
         <Stack.Screen name="index" 
           options={{
             title: "",
@@ -14,7 +14,8 @@ const SelectPhotoLayout = () => {
             headerStyle: { backgroundColor: "#161622" },
           }}
         />
-      </Stack>
+      </Stack> */}
+      <Slot />
 
       <StatusBar backgroundColor="#161622" style="dark" />
     </>

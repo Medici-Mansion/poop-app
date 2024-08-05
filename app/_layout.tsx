@@ -92,7 +92,7 @@ function RootNavigation() {
                 <Stack.Screen name="sign-up" />
 
                 <Stack.Screen name="(auth)" />
-                <Stack.Screen name="profile" />
+                <Stack.Screen name="my-profile" />
                 <Stack.Screen name="select-photo" />
               </Stack>
             </Host>

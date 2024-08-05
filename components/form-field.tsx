@@ -8,7 +8,7 @@ import {
 } from "react";
 import { Text, TextInputProps } from "react-native";
 
-import { Input } from "@/components/profile/create/input";
+import { Input } from "@/components/my-profile/create/input";
 import { RefCallBack } from "react-hook-form";
 import { TextInput } from "react-native";
 

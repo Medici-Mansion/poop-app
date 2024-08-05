@@ -17,9 +17,43 @@ export const PoopApi = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
 
+export enum GraphicType {
+  Lottie = "Lottie",
+  GIF = "GIF",
+}
+export enum GraphicOrderKey {
+  CREATED_AT = "createdAt",
+  UPDATED_AT = "updatedAt",
+  NAME = "name",
+}
+
+export enum Direction {
+  ASC = "asc",
+  DESC = "desc",
+}
+
 // Common
 export const getBreeds = async () => {
   const { data } = await PoopApi.get<BreedData>("/v1/common/breeds");
+  return data;
+};
+
+export const getGraphics = async (params: {
+  page: number;
+  pageSize: number;
+  graphicType?: "GIF" | "LOTTIE";
+  orderKey?: GraphicOrderKey;
+  direction?: Direction;
+}) => {
+  const { data } = await PoopApi.get<
+    Response<{
+      page: number;
+      total: number;
+      totalPage: number;
+      list: { category: string; id: string; type: string; url: string }[];
+    }>
+  >("/v1/graphics", { params });
+
   return data;
 };
 

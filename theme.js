@@ -1,16 +1,19 @@
+/** @type  */
 const theme = {
   fontFamily: {
     pretendard: "Pretendard-Regular",
   },
   fontSize: {
     // HEAD
+    "head1-sb48": 48,
     "head-sb24": 24,
     "head-sb21": 21,
     "head-sb16": 16,
+    "head5-sb16": 16,
     "head-sb14": 14,
     "head-sb12": 12,
     // // BODY
-    "body-b16": 16,
+
     "body-b12": [
       12,
       {
@@ -21,6 +24,12 @@ const theme = {
       14,
       {
         fontWeight: 700,
+      },
+    ],
+    "body4-m16": [
+      16,
+      {
+        fontWeight: 500,
       },
     ],
     "body-m14": [

@@ -10,5 +10,5 @@ export const PasswordValidation = {
       message: "띄어쓰기 없이 6~12자로 입력해주세요.",
     },
   },
-  parse: (password: string) => password.replace(/s+/g, ""),
+  parse: (password: string) => password.replace(/\s+/g, ""),
 };

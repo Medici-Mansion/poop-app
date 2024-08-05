@@ -1,31 +1,30 @@
 import { useRef, useEffect, useCallback } from "react";
-import { router } from "expo-router";
+import { router, useRouter } from "expo-router";
 import { Text, View } from "react-native";
-import { useRoute } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
 import {
   GestureHandlerRootView,
   ScrollView,
 } from "react-native-gesture-handler";
 
-import { getFormData } from "@/utils";
+import { getFormData } from "@/lib/utils";
 import { gender } from "@/constants";
 import Event from "@/constants/RouteEvent";
 import { useProfileStore } from "@/store/profile";
 import useCreateProfile from "@/hooks/use-create-profile";
 import usePhotoPicker from "@/hooks/use-photo-picker";
 
-import { 
-  Input, 
-  NameInput, 
-  RadioGroup, 
-  GalleryButton, 
-  DateTimeSheet, 
-  BreedSelectSheet 
-} from '@/components/my-profile/create';
+import {
+  Input,
+  NameInput,
+  RadioGroup,
+  GalleryButton,
+  DateTimeSheet,
+  BreedSelectSheet,
+} from "@/components/my-profile/create";
 
 export default function CreateProfile() {
-  const route = useRoute();
+  const route = useRouter();
   const profileStore = useProfileStore();
   const { pickImage } = usePhotoPicker({ onPick: handlePickImage });
 

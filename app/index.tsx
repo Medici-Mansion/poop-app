@@ -1,18 +1,12 @@
-import { StatusBar } from "expo-status-bar";
+import { useSession } from "@/providers/session-provider";
 import { Redirect } from "expo-router";
-import { useUserStore } from "@/store/user";
 
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-
-const index = () => {
-  const { isLogin } = useUserStore();
-  if (!isLogin) return <Redirect href="/my-profile/create" />;
-  return (
-    <SafeAreaView className="bg-background h-full">
-      <StatusBar backgroundColor="#161622" style="light" />
-    </SafeAreaView>
-  );
+export const unstable_settings = {
+  initialRouteName: "/sign-in",
 };
 
-export default index;
+export default function IndexPage() {
+  const { hasSession } = useSession();
+  if (hasSession) return <Redirect href="/(auth)/(tabs)/home" />;
+  return <Redirect href="/sign-in" />;
+}

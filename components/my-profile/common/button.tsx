@@ -1,38 +1,45 @@
-import React from 'react';
-import { Pressable, PressableProps, Text, View, StyleProp, TextStyle } from 'react-native';
-import Animated, { useSharedValue, withSpring } from 'react-native-reanimated';
-import { VariantProps, cva } from 'class-variance-authority';
-import { cn } from '@/utils';
+import React from "react";
+import {
+  Pressable,
+  PressableProps,
+  Text,
+  View,
+  StyleProp,
+  TextStyle,
+} from "react-native";
+import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
+import { VariantProps, cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
 
 // TODO: 기존 ui/button.tsx과 합쳐야함
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 const buttonVariatns = cva(
-  'flex justify-center items-center py-4 mx-auto bg-white w-full',
+  "flex justify-center items-center py-4 mx-auto bg-white w-full",
   {
     variants: {
       variant: {
-        single: '',
-        horizontal: '',
-        vertical: '',
+        single: "",
+        horizontal: "",
+        vertical: "",
       },
 
       size: {
-        s: '',
-        md: 'rounded-2xl',
-        lg: '',
+        s: "",
+        md: "rounded-2xl",
+        lg: "",
       },
     },
     defaultVariants: {
-      variant: 'single',
-      size: 'md',
+      variant: "single",
+      size: "md",
     },
     compoundVariants: [
       {
-        variant: 'horizontal',
-        size: 'md',
+        variant: "horizontal",
+        size: "md",
       },
     ],
-  },
+  }
 );
 
 interface ButtonProps
@@ -70,22 +77,25 @@ export const Button = ({
       <AnimatedPressable
         {...props}
         style={[{ opacity, transform: [{ scale }] }, props.style]}
-        onPressIn={event => {
+        onPressIn={(event) => {
           handlePressIn();
           props.onPressIn && props.onPressIn(event);
         }}
-        onPressOut={event => {
+        onPressOut={(event) => {
           handlePressOut();
           props.onPressOut && props.onPressOut(event);
         }}
         className={cn(
           buttonVariatns({ variant, size }),
-          props.disabled && 'bg-gray-300',
-        )}>
-        <Text className="text-body-b14" style={textStyle}>{label}</Text>
+          props.disabled && "bg-gray-300"
+        )}
+      >
+        <Text className="text-body-b14" style={textStyle}>
+          {label}
+        </Text>
       </AnimatedPressable>
-      {variant === 'vertical' && (
-        <Pressable {...secondary} className={cn('mx-auto')}>
+      {variant === "vertical" && (
+        <Pressable {...secondary} className={cn("mx-auto")}>
           <Text className="text-gray-200 text-body-b12" style={textStyle}>
             {secondary?.label}
           </Text>

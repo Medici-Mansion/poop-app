@@ -23,6 +23,8 @@ const Profile = ({
   return focused ? <ProfileActiveIcon {...rest} /> : <ProfileIcon {...rest} />;
 };
 
+export { default as LogoIcon } from "./logo.svg";
+
 export { default as InputDeleteButton } from "./input-delete-button.svg";
 export { default as InputCheckbutton } from "./input-check-button.svg";
 export { default as InputEyeOn } from "./input-eye-on.svg";

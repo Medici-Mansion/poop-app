@@ -8,12 +8,24 @@ import {
 } from "@/store/state/session/types";
 import { track } from "@/lib/analytics/analytics";
 import { logger } from "@/lib/logger";
-import { signUp, login as signIn, setAccessToken, getMe } from "@/apis";
+import {
+  signUp,
+  login as signIn,
+  setAccessToken,
+  getMe,
+  socialSignup,
+  getMyProfileList,
+  getLatestProfile,
+} from "@/apis";
 import { Schema } from "@/store/state/persisted/schema";
+import { isEmpty } from "@/lib/utils";
+import * as AppleAuthentication from "expo-apple-authentication";
+import { router } from "expo-router";
 
-export function getInitialState(persistedUser: SessionAccount): State {
+export function getInitialState(persistedUser: Schema["session"]): State {
   return {
-    profile: persistedUser,
+    user: persistedUser.user,
+    profile: persistedUser.profile,
     needsPersist: false,
   };
 }
@@ -28,11 +40,14 @@ const ApiContext = React.createContext<SessionApiContext>({
   createAccount: async () => {},
   login: async () => {},
   logout: async () => {},
-  resumeSession: async () => {},
   removeAccount: () => {},
+  refresh: async () => {},
 });
 
 export type Action =
+  | {
+      type: "request-verify-code";
+    }
   | {
       type: "switched-to-account";
       user: SessionAccount;
@@ -57,25 +72,36 @@ export type Action =
     }
   | {
       type: "synced-accounts";
-      syncedUser: SessionAccount;
-      syncedProfile?: SessionProfile;
+      syncedUser?: SessionAccount | null;
+      syncedProfile?: SessionProfile | null;
     };
 
 export type State = {
-  readonly user?: SessionAccount;
-  readonly profile?: SessionProfile;
+  readonly user?: SessionAccount | null;
+  readonly profile?: SessionProfile | null;
   needsPersist: boolean;
 };
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
+    case "switched-to-account":
+      const { user } = action;
+      return {
+        needsPersist: true,
+        user,
+      };
+    case "synced-accounts":
+      const { syncedProfile, syncedUser } = action;
+      return {
+        user: syncedUser,
+        profile: syncedProfile,
+        needsPersist: false,
+      };
     case "create-profile":
     case "logged-out":
     case "removed-account":
     case "store-token":
-    case "switched-to-account":
     case "switched-to-profile":
-    case "synced-accounts":
       break;
   }
   return state;
@@ -87,11 +113,8 @@ export function Provider({ children }: React.PropsWithChildren<{}>) {
     const initialState = getInitialState(persisted.get("session"));
     return initialState;
   });
+  console.log(state, "<<state");
 
-  const persist = useCallback((values: Schema) => {
-    persisted.get("session");
-  }, []);
-  // persisted
   const createAccount = React.useCallback<SessionApiContext["createAccount"]>(
     async (params) => {
       logger.log("CREATE ACCOUNT");
@@ -99,112 +122,133 @@ export function Provider({ children }: React.PropsWithChildren<{}>) {
       track("Try Create Account");
       logger.log("account:create:begin", {});
       const account = await signUp(params);
-      account.body.data;
+
       if (signal.aborted) {
         return;
       }
       dispatch({
-        type: "switched-to-account",
-        user: account,
+        type: "request-verify-code",
       });
       track("Create Account");
       logger.log("account:create:success", {});
     },
-    [cancelPendingTask],
+    [cancelPendingTask]
   );
 
   const login = React.useCallback<SessionApiContext["login"]>(
     async (params) => {
       const signal = cancelPendingTask();
+      let accessToken = "";
+      try {
+        switch (params.type) {
+          case "SOCIAL":
+            const { provider } = params;
+            switch (provider) {
+              case "APPLE":
+                const credential = await AppleAuthentication.signInAsync({
+                  nonce: "123123123",
+                  requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                  ],
+                });
 
-      const { accessToken } = await signIn({
-        id: params.userId,
-        password: params.password,
-      });
+                const { accessToken: socialAccessToken } = await socialSignup({
+                  provider,
+                  token: credential.identityToken!,
+                });
+                accessToken = socialAccessToken;
 
-      await setAccessToken({ accessToken, shouldRefresh: true });
+                // signed in
+
+                break;
+              case "GOOGLE":
+                break;
+            }
+            break;
+          case "credential":
+            const { accessToken: credentialToken } = await signIn({
+              id: params.userId,
+              password: params.password,
+            });
+            accessToken = credentialToken;
+        }
+
+        await setAccessToken({ accessToken, shouldRefresh: false });
+        const { body: user } = await getMe();
+        const response = await getMyProfileList();
+
+        if (!response.body.length) {
+          router.replace("/profile/main");
+        } else {
+          router.replace("/profile-select");
+        }
+
+        if (signal.aborted) {
+          return;
+        }
+
+        dispatch({
+          type: "switched-to-account",
+          user,
+        });
+        track("Sign In");
+      } catch (e) {
+        console.log(e, "<<<ee");
+        if (e.code === "ERR_REQUEST_CANCELED") {
+          // handle that the user canceled the sign-in flow
+        } else {
+          // handle other errors
+        }
+      }
+    },
+    [cancelPendingTask]
+  );
+
+  const logout = React.useCallback<SessionApiContext["logout"]>(() => {}, [
+    cancelPendingTask,
+  ]);
+
+  const refresh = React.useCallback<SessionApiContext["refresh"]>(
+    async (token) => {
+      logger.info("refresh");
+      const signal = cancelPendingTask();
+      await setAccessToken({ accessToken: token, shouldRefresh: true });
       const { body: user } = await getMe();
+      const { body: latestProfile } = await getLatestProfile();
+      logger.info("refresh DONE", { type: "debug" });
+
       if (signal.aborted) {
         return;
       }
+
+      logger.info("synced-accounts", { type: "debug" });
       dispatch({
-        type: "switched-to-account",
-        user,
+        type: "synced-accounts",
+        syncedUser: user,
+        syncedProfile: latestProfile,
       });
-      track("Sign In");
     },
-    [cancelPendingTask],
-  );
-
-  const logout = React.useCallback<SessionApiContext["logout"]>(() => {
-    // addSessionDebugLog({ type: "method:start", method: "logout" });
-    // cancelPendingTask();
-    // dispatch({
-    //   type: "logged-out",
-    // });
-    // logEvent("account:loggedOut", { logContext });
-    // addSessionDebugLog({ type: "method:end", method: "logout" });
-  }, [cancelPendingTask]);
-
-  const resumeSession = React.useCallback<SessionApiContext["resumeSession"]>(
-    async (storedAccount) => {
-      const signal = cancelPendingTask();
-      // const { agent, account } = await createAgentAndResume(
-      //   storedAccount,
-      //   onAgentSessionChange,
-      // );
-
-      // if (signal.aborted) {
-      //   return;
-      // }
-      // dispatch({
-      //   type: "switched-to-account",
-      //   newAgent: agent,
-      //   newAccount: account,
-      // });
-      // addSessionDebugLog({
-      //   type: "method:end",
-      //   method: "resumeSession",
-      //   account,
-      // });
-    },
-    [cancelPendingTask],
+    [cancelPendingTask]
   );
 
   const removeAccount = React.useCallback<SessionApiContext["removeAccount"]>(
-    (account) => {
-      // addSessionDebugLog({
-      //   type: "method:start",
-      //   method: "removeAccount",
-      //   account,
-      // });
-      // cancelPendingTask();
-      // dispatch({
-      //   type: "removed-account",
-      //   accountDid: account.did,
-      // });
-      // addSessionDebugLog({
-      //   type: "method:end",
-      //   method: "removeAccount",
-      //   account,
-      // });
-    },
-    [cancelPendingTask],
+    (account) => {},
+    [cancelPendingTask]
   );
 
-  // React.useEffect(() => {
-  //   if (state.needsPersist) {
-  //     state.needsPersist = false;
-  //     const persistedData = {
-  //       accounts: state.accounts,
-  //       currentAccount: state.accounts.find(
-  //         (a) => a.did === state.currentAgentState.did,
-  //       ),
-  //     };
-  //     addSessionDebugLog({ type: "persisted:broadcast", data: persistedData });
-  //     persisted.write("session", persistedData);
-  //   }
-  // }, [state]);
+  React.useEffect(() => {
+    if (state.needsPersist) {
+      state.needsPersist = false;
+      const persistedData = {
+        user: state.user,
+        profile: state.profile,
+        token: persisted.get("session").token,
+      };
+      logger.info("persisted:broadcast");
+      persisted.write("session", persistedData);
+    }
+  }, [state]);
 
   React.useEffect(() => {
     return persisted.onUpdate(() => {
@@ -215,18 +259,16 @@ export function Provider({ children }: React.PropsWithChildren<{}>) {
         syncedUser: synced.user,
         syncedProfile: synced.profile,
       });
-
-      resumeSession(synced.user);
     });
-  }, [state, resumeSession]);
+  }, [state]);
 
   const stateContext = React.useMemo<SessionStateContext>(
     () => ({
       user: state.user,
       profile: state.profile,
-      hasSession: !!state.user,
+      hasSession: !isEmpty(state.user),
     }),
-    [state],
+    [state]
   );
 
   const api = React.useMemo(
@@ -234,10 +276,10 @@ export function Provider({ children }: React.PropsWithChildren<{}>) {
       createAccount,
       login,
       logout,
-      resumeSession,
       removeAccount,
+      refresh,
     }),
-    [createAccount, login, logout, resumeSession, removeAccount],
+    [createAccount, login, logout, removeAccount]
   );
 
   return (

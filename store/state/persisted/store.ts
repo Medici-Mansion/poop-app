@@ -3,15 +3,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logger } from "@/lib/logger";
 import { Schema, schema } from "@/store/state/persisted/schema";
 
-const BSKY_STORAGE = "BSKY_STORAGE";
+const POOP_STORAGE = "POOP_STORAGE";
 
 export async function write(value: Schema) {
   schema.parse(value);
-  await AsyncStorage.setItem(BSKY_STORAGE, JSON.stringify(value));
+  await AsyncStorage.setItem(POOP_STORAGE, JSON.stringify(value));
 }
 
 export async function read(): Promise<Schema | undefined> {
-  const rawData = await AsyncStorage.getItem(BSKY_STORAGE);
+  const rawData = await AsyncStorage.getItem(POOP_STORAGE);
   const objData = rawData ? JSON.parse(rawData) : undefined;
 
   // new user
@@ -37,7 +37,7 @@ export async function read(): Promise<Schema | undefined> {
 
 export async function clear() {
   try {
-    await AsyncStorage.removeItem(BSKY_STORAGE);
+    await AsyncStorage.removeItem(POOP_STORAGE);
   } catch (e: any) {
     logger.error(`persisted store: failed to clear`, { message: e.toString() });
   }

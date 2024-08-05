@@ -23,9 +23,8 @@ import { getMyProfileList, injectInterceptor, socialSignup } from "@/apis";
 import { AxiosError } from "axios";
 import { Response } from "@/types/server";
 import { Button } from "@/components/ui";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
+// import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
-import * as AppleAuthentication from "expo-apple-authentication";
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -33,15 +32,17 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { AnimatedPressable } from "@/components/ui/animate-pressable";
 import { Apple, Google } from "@/assets/icons";
+import { useSessionApi } from "@/providers/session-provider";
 
 const SignIn = () => {
   const [error, setError] = useState<SignInErrorType>({});
+  const { login } = useSessionApi();
 
   const { mutateAsync, isPending } = useLogin({
     onSuccess: async (data) => {
       const { accessToken } = data || {};
       await Promise.allSettled([AsyncStorage.setItem(Token.ACT, accessToken)]);
-      injectInterceptor({ accessToken });
+      await injectInterceptor({ accessToken });
 
       const response = await getMyProfileList();
 
@@ -69,8 +70,9 @@ const SignIn = () => {
     mutationFn: socialSignup,
     async onSuccess(data, variables, context) {
       const { accessToken } = data || {};
+
       await Promise.allSettled([AsyncStorage.setItem(Token.ACT, accessToken)]);
-      injectInterceptor({ accessToken });
+      await injectInterceptor({ accessToken });
 
       const response = await getMyProfileList();
 
@@ -79,6 +81,12 @@ const SignIn = () => {
       }
 
       return router.replace("/profile-select");
+    },
+
+    onError: (err: AxiosError<Response<null>>) => {
+      setError({
+        fieldErrors: { id: [err.response?.data?.result?.resultMessage || ""] },
+      });
     },
   });
 
@@ -96,17 +104,17 @@ const SignIn = () => {
   };
 
   const handleGoogleLogin = async () => {
-    try {
-      const service = await GoogleSignin.hasPlayServices();
-      const user = await GoogleSignin.signIn();
-      console.log(user);
-      // const userInfo = await GoogleOneTapSignIn.signIn({
-      //   webClientId: `autoDetect`, // works only if you use Firebase
-      //   iosClientId: config.iosClientId, // only needed if you're not using Firebase
-      // });
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   const service = await GoogleSignin.hasPlayServices();
+    //   const user = await GoogleSignin.signIn();
+    //   console.log(user);
+    //   // const userInfo = await GoogleOneTapSignIn.signIn({
+    //   //   webClientId: `autoDetect`, // works only if you use Firebase
+    //   //   iosClientId: config.iosClientId, // only needed if you're not using Firebase
+    //   // });
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   const insets = useSafeAreaInsets();
@@ -178,29 +186,8 @@ const SignIn = () => {
               <View className="items-center flex-row justify-center space-x-4">
                 <AnimatedPressable
                   className="rounded-full bg-white w-[60px] aspect-square items-center justify-center"
-                  onPress={async () => {
-                    try {
-                      const credential = await AppleAuthentication.signInAsync({
-                        nonce: "123123123",
-                        requestedScopes: [
-                          AppleAuthentication.AppleAuthenticationScope
-                            .FULL_NAME,
-                          AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                        ],
-                      });
-                      mutate({
-                        provider: "APPLE",
-                        token: credential.identityToken ?? "",
-                      });
-                      // signed in
-                    } catch (e) {
-                      console.log(e, "<<<ee");
-                      if (e.code === "ERR_REQUEST_CANCELED") {
-                        // handle that the user canceled the sign-in flow
-                      } else {
-                        // handle other errors
-                      }
-                    }
+                  onPress={() => {
+                    login({ type: "SOCIAL", provider: "APPLE" });
                   }}
                 >
                   <Apple />

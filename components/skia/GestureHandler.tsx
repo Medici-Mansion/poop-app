@@ -23,12 +23,40 @@ interface GestureHandlerProps {
   debug?: boolean;
 }
 
+const extractTransformations = (matrix: SharedValue<SkMatrix>) => {
+  const values = matrix.value.get();
+  const [m11, m12, m13, m21, m22, m23] = values;
+
+  const scaleX = Math.sqrt(m11 * m11 + m21 * m21);
+  const scaleY = Math.sqrt(m12 * m12 + m22 * m22);
+  const rotation = Math.atan2(m21, m11);
+  const translate_x = m13;
+  const translate_y = m23;
+
+  return {
+    rotation,
+    scale: (scaleX + scaleY) / 2,
+    translate_x,
+    translate_y,
+  };
+};
+
 export const GestureHandler = ({ matrix, size }: GestureHandlerProps) => {
-  const pivot = useSharedValue(Skia.Point(0, 0));
+  const pivot = useSharedValue(Skia.Point(1, 1));
   const offset = useSharedValue(Skia.Matrix());
+
   const pan = Gesture.Pan().onChange((event) => {
     matrix.value = translate(matrix.value, event.changeX, event.changeY);
+    const values = matrix.value.get();
+    const [m11, m12, m13, m21, m22, m23] = values;
+
+    // const scaleX = Math.sqrt(m11 * m11 + m21 * m21);
+    // const scaleY = Math.sqrt(m12 * m12 + m22 * m22);
+    // const rotation = Math.atan2(m21, m11);
+    // const translate_x = m13;
+    // const translate_y = m23;
   });
+
   const pinch = Gesture.Pinch()
     .onBegin((event) => {
       console.log(event);

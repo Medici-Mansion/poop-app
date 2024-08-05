@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import {
   Canvas,
   useImage,
-  Image,
   useCanvasRef,
   rect,
   processTransform2d,
@@ -16,12 +15,12 @@ import { ModalButton } from "@/components/skia/ModalButton";
 import { ShareButton } from "@/components/skia/ShareButton";
 import { useStickerContext } from "@/components/skia/StickerContext";
 import { GestureHandler } from "@/components/skia/GestureHandler";
-import { router, Stack } from "expo-router";
-import { useToonImage } from "../_layout";
+import { router } from "expo-router";
 import { Picture } from "@/components/skia/Picture";
 import { deflate } from "./StickerModal";
 import { makeMutable } from "react-native-reanimated";
-const { width, height } = Dimensions.get("window");
+import { useToonImage } from "@/providers/toon-provider";
+const window = Dimensions.get("window");
 const iconSize = 64;
 
 const inflate = (rct: SkRect, amount: number) =>
@@ -36,13 +35,12 @@ export default function MakeToon() {
   const ref = useCanvasRef();
   const { images } = useToonImage();
   const { stickers } = useStickerContext();
-  const { navigate } = useNavigation();
 
   const imagesPars = useMemo(
     () =>
       images.map((i) => {
-        const src = rect(0, 0, i.size, i.size);
-        const dst = deflate(rect(0, 0, i.size, i.size), 24);
+        const src = rect(0, 0, i.width, i.height);
+        const dst = deflate(rect(0, 0, window.width, window.height), 24);
         const m3 = processTransform2d(fitbox("contain", src, dst));
         const matrix = makeMutable(m3);
         const bounds = inflate(src, i.size / 2);

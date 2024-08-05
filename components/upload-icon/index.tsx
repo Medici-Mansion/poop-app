@@ -11,7 +11,7 @@ import { Image as ExpoImage } from "expo-image";
 import * as ImagePicker from "expo-image-picker";
 import { compressIfNeeded } from "@/lib/utils/media/image.shared";
 import { Challenge, Plus, PlusActive, Write } from "@/assets/icons";
-import { useToonImage } from "@/app/(auth)/_layout";
+import { useToonImage } from "@/providers/toon-provider";
 
 interface UploadModalButtonProps {
   focused: boolean;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { ViewContextProvider } from '@/providers/view-context-provider';
+import { ViewContextProvider } from "@/providers/view-context-provider";
 
 import { Header as CreateHeader } from "@/components/my-profile/create";
 import { Header as UserHeader } from "@/components/my-profile/user";
@@ -12,22 +12,11 @@ const ProfileLayout = () => {
   return (
     <>
       <ViewContextProvider>
-        <Stack>
-          <Stack.Screen name="create" 
-            options={{
-              title: "",
-              headerLeft: () => <CreateHeader.LeftButton />,
-              headerRight: () => <CreateHeader.RightButton />,
-              headerStyle: { backgroundColor: "#161622" },
-              headerShadowVisible: false,
-            }} 
-          />
-          <Stack.Screen name="main" 
-            options={{
-              title: "",
-              headerStyle: { backgroundColor: "#161622" },
-            }} 
-          />
+        <Stack
+          screenOptions={{
+            animation: "ios",
+          }}
+        >
           <Stack.Screen
             name="user"
             options={{
@@ -38,7 +27,8 @@ const ProfileLayout = () => {
               headerShadowVisible: false,
             }}
           />
-          <Stack.Screen name="activity" 
+          <Stack.Screen
+            name="activity"
             options={{
               title: "활동",
               headerLeft: () => <ActivityHeader.LeftButton />,
@@ -46,16 +36,17 @@ const ProfileLayout = () => {
               headerStyle: { backgroundColor: "#161622" },
               headerTitleStyle: { color: "white" },
               headerShadowVisible: false,
-            }} 
+            }}
           />
-          <Stack.Screen name="settings" 
+          <Stack.Screen
+            name="settings"
             options={{
               title: "설정",
               headerLeft: () => <SettingsHeader.LeftButton />,
               headerStyle: { backgroundColor: "#161622" },
               headerTitleStyle: { color: "white" },
               headerShadowVisible: false,
-            }} 
+            }}
           />
         </Stack>
       </ViewContextProvider>

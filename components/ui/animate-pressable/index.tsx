@@ -1,12 +1,17 @@
 import React, { PropsWithChildren } from "react";
 import { Pressable, PressableProps } from "react-native";
-import Animated, { useSharedValue, withSpring } from "react-native-reanimated";
+import Animated, {
+  AnimatedProps,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 const AnimatedPressableWrapper = Animated.createAnimatedComponent(Pressable);
 
 interface AnimatedPressableProps extends PressableProps {}
 
 export const AnimatedPressable = (
-  props: PropsWithChildren<AnimatedPressableProps>
+  props: PropsWithChildren<AnimatedProps<AnimatedPressableProps>> &
+    AnimatedPressableProps
 ) => {
   const opacity = useSharedValue(1);
   const scale = useSharedValue(1);

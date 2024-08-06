@@ -12,14 +12,17 @@ export const TERMS = [
   {
     id: 1,
     title: "[필수] 만 14세 이상입니다",
+    pressable: false,
   },
   {
     id: 2,
     title: "[필수] 이용약관 동의",
+    pressable: true,
   },
   {
     id: 3,
     title: "[필수] 개인정보 수집 및 이용 동의",
+    pressable: true,
   },
 ];
 
@@ -105,7 +108,7 @@ export const consonantsList: Consonants[] = [
 ];
 
 export const gender = [
-  { label: '암컷', value: 'FEMALE' },
-  { label: '수컷', value: 'MALE' },
-  { label: '선택안함', value: 'NONE' },
+  { label: "암컷", value: "FEMALE" },
+  { label: "수컷", value: "MALE" },
+  { label: "선택안함", value: "NONE" },
 ] as const;

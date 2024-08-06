@@ -22,6 +22,7 @@ import {
   DateTimeSheet,
   BreedSelectSheet,
 } from "@/components/my-profile/create";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function CreateProfile() {
   const route = useRouter();
@@ -84,68 +85,70 @@ export default function CreateProfile() {
   }, []);
 
   return (
-    <GestureHandlerRootView>
-      <ScrollView className="w-full h-full flex-1 bg-gray-600">
-        <View className="px-4 flex flex-col py-10 items-center w-full h-ful">
-          <GalleryButton
-            image={profileStore.profile.avatar?.uri}
-            onPress={pickImage}
-          />
-
-          <View className="w-full mt-16">
-            <NameInput ref={nameInputRef} />
-          </View>
-
-          <View className="w-full mt-8">
-            <Input
-              label="반려견 생년월일"
-              placeholder="생년월일"
-              editable={false}
-              value={profileStore.profile.birthday}
-              onPress={() => timePicker.current?.show()}
+    <SafeAreaView className="flex-1 bg-gray-600">
+      <GestureHandlerRootView>
+        <ScrollView className="w-full h-full flex-1 bg-gray-600">
+          <View className="px-4 flex flex-col py-10 items-center w-full h-ful">
+            <GalleryButton
+              image={profileStore.profile.avatar?.uri}
+              onPress={pickImage}
             />
-          </View>
 
-          <View className="w-full mt-8 relative">
-            <Input
-              label="견종"
-              placeholder="견종 선택"
-              editable={false}
-              containerClassName="bg-gray-600 border-gray-400 border-2"
-              value={profileStore.profile.breed?.name || ""}
-              onPress={() => breedRef.current?.open()}
-              suffix={
-                <MaterialIcons
-                  name="keyboard-arrow-down"
-                  size={24}
-                  color="white"
-                />
-              }
-            />
-          </View>
+            <View className="w-full mt-16">
+              <NameInput ref={nameInputRef} />
+            </View>
 
-          <View className="w-full mt-8">
-            <Text className="text-gray-200 b-12 text-14 font-bold mb-4">
-              성별
-            </Text>
-            <RadioGroup
-              options={gender}
-              selectedOption={profileStore.profile.gender}
-              onSelect={profileStore.setGender}
-            />
+            <View className="w-full mt-8">
+              <Input
+                label="반려견 생년월일"
+                placeholder="생년월일"
+                editable={false}
+                value={profileStore.profile.birthday}
+                onPress={() => timePicker.current?.show()}
+              />
+            </View>
+
+            <View className="w-full mt-8 relative">
+              <Input
+                label="견종"
+                placeholder="견종 선택"
+                editable={false}
+                containerClassName="bg-gray-600 border-gray-400 border-2"
+                value={profileStore.profile.breed?.name || ""}
+                onPress={() => breedRef.current?.open()}
+                suffix={
+                  <MaterialIcons
+                    name="keyboard-arrow-down"
+                    size={24}
+                    color="white"
+                  />
+                }
+              />
+            </View>
+
+            <View className="w-full mt-8">
+              <Text className="text-gray-200 b-12 text-14 font-bold mb-4">
+                성별
+              </Text>
+              <RadioGroup
+                options={gender}
+                selectedOption={profileStore.profile.gender}
+                onSelect={profileStore.setGender}
+              />
+            </View>
           </View>
-        </View>
-      </ScrollView>
-      <DateTimeSheet
-        ref={timePicker}
-        date={profileStore.profile.birthday}
-        onConfirm={profileStore.setBirthday}
-      />
-      <BreedSelectSheet
-        value={profileStore.profile.breed?.id}
-        onSelect={profileStore.setBreed}
-        breedRef={breedRef}
-      />
-    </GestureHandlerRootView>
+        </ScrollView>
+        <DateTimeSheet
+          ref={timePicker}
+          date={profileStore.profile.birthday}
+          onConfirm={profileStore.setBirthday}
+        />
+        <BreedSelectSheet
+          value={profileStore.profile.breed?.id}
+          onSelect={profileStore.setBreed}
+          breedRef={breedRef}
+        />
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
 }

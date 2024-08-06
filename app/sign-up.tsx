@@ -67,7 +67,7 @@ const Signup = () => {
       birthday: "",
       phone: "",
     },
-    mode: "onChange",
+    mode: "onSubmit",
     shouldUnregister: false,
   });
 
@@ -178,6 +178,8 @@ const Signup = () => {
       });
   };
 
+  const formValueWatcher = form.watch();
+
   return (
     <FormProvider {...form}>
       <Pressable
@@ -214,7 +216,7 @@ const Signup = () => {
             <Text className="text-white font-bold text-2xl pb-10 flex flex-col justify-between">
               {SignupFormList[step]?.title}
             </Text>
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1 }} className="pb-10">
               <VerifyCodeInput
                 onSubmitEditing={onValidateKeyboardTopButtonClick}
                 formHandler={formHandler}
@@ -300,7 +302,8 @@ const Signup = () => {
                     className="w-full"
                     disabled={
                       !form?.getFieldState(signupFormFieldList[step]).isDirty ||
-                      !!form?.formState?.errors?.[signupFormFieldList[step]]
+                      formValueWatcher[signupFormFieldList[step]].length <= 2
+                      // !!form?.formState?.errors?.[signupFormFieldList[step]]
                     }
                     label={step === 4 ? "인증 번호 보내기" : "확인"}
                     onPress={onValidateKeyboardTopButtonClick}

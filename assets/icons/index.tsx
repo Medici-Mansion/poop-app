@@ -42,6 +42,7 @@ export { default as ChavronLeft } from "./chevron_left.svg";
 
 export { default as ArrowSmall } from "./arrow_small.svg";
 export { default as ArrowLeft } from "./arrow_left.svg";
+export { default as ArrowRight } from "./arrow_right.svg";
 export { default as Apple } from "./apple.svg";
 export { default as Google } from "./google.svg";
 

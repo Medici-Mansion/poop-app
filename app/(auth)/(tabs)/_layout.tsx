@@ -16,6 +16,14 @@ export default function TabLayout() {
         headerShown: false,
         tabBarShowLabel: false,
         headerTransparent: true,
+        tabBarVisibilityAnimationConfig: {
+          show: {
+            animation: "spring",
+          },
+          hide: {
+            animation: "spring",
+          },
+        },
       }}
       initialRouteName="home"
       backBehavior="history"
@@ -62,7 +70,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="my-profile"
         options={{
           title: "profile",
           tabBarIcon: Profile,

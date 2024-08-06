@@ -24,10 +24,10 @@ function modifyStyleSheet() {
         fontWeight: "800",
         lineHeight: calcLineHeight(24, 1.6),
       },
-      "text-head-sb21": {
+      "text-head4-sb21": {
         fontSize: 21,
         fontFamily: "Pretendard",
-        fontWeight: "800",
+        fontWeight: "600",
         lineHeight: calcLineHeight(21, 1.6),
       },
       "text-head-s16": {
@@ -54,6 +54,12 @@ function modifyStyleSheet() {
         fontFamily: "Pretendard",
         fontWeight: "700",
       },
+      "text-body1-b18": {
+        fontSize: 18,
+        fontFamily: "Pretendard",
+        fontWeight: "700",
+        lineHeight: calcLineHeight(20, 1.6),
+      },
       "text-body2-b16": {
         fontSize: 16,
         fontFamily: "Pretendard",
@@ -78,6 +84,11 @@ function modifyStyleSheet() {
         lineHeight: calcLineHeight(16, 1.6),
       },
       "text-body-m14": {
+        fontSize: 14,
+        fontFamily: "Pretendard",
+        fontWeight: "500",
+      },
+      "text-body5-m14": {
         fontSize: 14,
         fontFamily: "Pretendard",
         fontWeight: "500",

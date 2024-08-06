@@ -129,7 +129,10 @@ const SignIn = () => {
       >
         <Image
           className="w-[100px] h-[50px] mx-auto"
-          style={{ marginTop: insets.top * 2, marginBottom: insets.bottom * 2 }}
+          style={{
+            marginTop: 96 - insets.top,
+            marginBottom: insets.bottom * 2,
+          }}
           source={Images.logo}
           resizeMode="contain"
         />
@@ -177,11 +180,11 @@ const SignIn = () => {
             </View>
             <View className="flex-1 justify-end">
               <View className="flex-row items-center space-x-4 mb-6">
-                <View className="flex-1 h-px bg-gray-400 " />
+                <View className="flex-1 h-px bg-gray-500 " />
                 <Text className="text-body-b14 text-gray-200 font-bold">
                   소셜 계정으로 시작
                 </Text>
-                <View className="flex-1 h-px bg-gray-400 " />
+                <View className="flex-1 h-px bg-gray-500 " />
               </View>
               <View className="items-center flex-row justify-center space-x-4">
                 <AnimatedPressable

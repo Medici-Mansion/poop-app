@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const buttonVariatns = cva(
-  "flex justify-center items-center py-4 mx-auto bg-white",
+  "flex justify-center items-center py-4 mx-auto bg-white h-[56px]",
   {
     variants: {
       variant: {

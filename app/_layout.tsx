@@ -93,6 +93,8 @@ function RootNavigation() {
 
                 <Stack.Screen name="(auth)" />
                 <Stack.Screen name="select-photo" />
+                <Stack.Screen name="other-profile" />
+                <Stack.Screen name="follow-list" />
               </Stack>
             </Host>
           </QueryProvider>

@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
-import type { Tab } from '@/components/my-profile/user/menu-tabs';
+import type { Tab } from './menu-tabs';
 
-import ToonList from '@/components/my-profile/user/toon-list';
-import ChallengeList from '@/components/my-profile/user/challenge-list';
+import ToonList from './toon-list';
+import ChallengeList from './challenge-list';
 
 interface ContentProps {
   tab: Tab;
